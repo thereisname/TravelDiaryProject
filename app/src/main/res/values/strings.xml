@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">여행 일기</string>
+
+    <!-- Login & Register -->
+    <string name="hint_email">Email</string>
+    <string name="hint_pw">Password</string>
+    <string name="btn_login">로그인</string>
+    <string name="btn_r">회원가입</string>
+
+    <string name="re_pw">Re-Password</string>
+    <string name="Nickname">Nickname</string>
+    <string name="registerConfirm">가입하기</string>
 </resources>

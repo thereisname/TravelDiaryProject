@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.2"
+        android:background="@drawable/dandelion5" />
+
+    <EditText
+        android:id="@+id/inputNickName"
+        style="@style/inputEdit_style"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="150dp"
+        android:layout_marginEnd="30dp"
+        android:backgroundTint="@color/blue2"
+        android:fontFamily="@font/gangwon"
+        android:hint="@string/Nickname"
+        android:inputType="textEmailAddress" />
+
+    <EditText
+        android:id="@+id/inputEmail"
+        style="@style/inputEdit_style"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="250dp"
+        android:layout_marginEnd="30dp"
+        android:backgroundTint="@color/blue2"
+        android:fontFamily="@font/gangwon"
+        android:hint="@string/hint_email"
+        android:inputType="textEmailAddress" />
+
+    <EditText
+        android:id="@+id/inputPw"
+        style="@style/inputEdit_style"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="350dp"
+        android:layout_marginEnd="30dp"
+        android:backgroundTint="@color/blue2"
+        android:fontFamily="@font/gangwon"
+        android:hint="@string/hint_pw"
+        android:inputType="textPassword" />
+
+    <EditText
+        android:id="@+id/inputRePw"
+        style="@style/inputEdit_style"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="450dp"
+        android:layout_marginEnd="30dp"
+        android:backgroundTint="@color/blue2"
+        android:fontFamily="@font/gangwon"
+        android:hint="@string/re_pw"
+        android:inputType="textPassword" />
+
+    <Button
+        android:id="@+id/confirm_button"
+        android:layout_width="250dp"
+        android:layout_height="55dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="105dp"
+        android:layout_marginEnd="80dp"
+        android:layout_marginBottom="80dp"
+        android:background="@drawable/custom_button"
+        android:fontFamily="@font/gangwon"
+        android:text="@string/registerConfirm"
+        android:textColor="@color/blue2"
+        android:textSize="25sp"
+        android:textStyle="bold" />
+
+
+</RelativeLayout>

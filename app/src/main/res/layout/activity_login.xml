@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:weightSum="5">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        android:layout_weight="3"
+        android:background="@drawable/dandelion4" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="20dp"
+        android:layout_weight="2"
+        android:gravity="center|top"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/login_email"
+            style="@style/inputEdit_style"
+            android:backgroundTint="@color/blue2"
+            android:hint="@string/hint_email"
+            android:inputType="textEmailAddress" />
+
+        <EditText
+            android:id="@+id/login_pw"
+            style="@style/inputEdit_style"
+            android:layout_marginTop="30dp"
+            android:backgroundTint="@color/blue2"
+            android:hint="@string/hint_pw"
+            android:inputType="textPassword" />
+
+        <LinearLayout
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@color/white"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/loginBtn"
+                style="@style/login_btn"
+                android:layout_marginEnd="20dp"
+                android:text="@string/btn_login" />
+
+            <Button
+                android:id="@+id/registerBtn"
+                style="@style/login_btn"
+                android:layout_marginStart="20dp"
+                android:text="@string/btn_r" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

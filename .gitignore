@@ -208,4 +208,9 @@ fabric.properties
 
 !/gradle/wrapper/gradle-wrapper.jar
 
+
+### Add
+/app/src/main/java/com/example/traveldiary/SHA256.java
+/app/src/main/java/com/example/traveldiary/UserAccount.java
+
 # End of https://www.toptal.com/developers/gitignore/api/android,androidstudio,java,kotlin,firebase
