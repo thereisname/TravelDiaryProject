@@ -1,4 +1,4 @@
-package com.example.traveldiary.Activity;
+package com.example.traveldiary.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -52,7 +52,7 @@ public class LoginActivity extends AppCompatActivity {
                 mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(LoginActivity.this, task -> {
                     if (task.isSuccessful()) {
                         // Sign in success, update UI with the signed-in user's information
-                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        Intent intent = new Intent(getApplicationContext(), MainViewActivity.class);
                         intent.putExtra("userToken",mAuth.getCurrentUser().getUid());
                         startActivity(intent);
                     } else {

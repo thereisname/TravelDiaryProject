@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragment.FragmentClient">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/border_client">
+
+        <ImageButton
+            android:id="@+id/bookMarkBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/solid_button_bookmark"
+            android:maxWidth="40dp"
+            android:maxHeight="40dp"
+            android:minWidth="30dp"
+            android:minHeight="30dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/baseline_bookmark_border_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/fragment_title"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="10dp"
+            android:paddingLeft="20dp"
+            android:text="@string/title"
+            android:textColor="@color/blue2"
+            android:textSize="40sp"
+            android:textStyle="bold"
+            android:fontFamily="@font/gangwon"
+            app:layout_constraintEnd_toStartOf="@+id/bookMarkBtn"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/fragment_hashtag"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:layout_marginTop="10dp"
+            android:paddingLeft="20dp"
+            android:text="@string/hashtag"
+            android:textColor="@color/blue2"
+            android:textSize="19sp"
+            android:fontFamily="@font/gangwon"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fragment_title" />
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fragment_hashtag">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="70dp"
+                android:paddingHorizontal="10dp">
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=" 너를 보는게 지친 하루에\n
+내게 얼마나 힘이 된다는걸 넌 알까\n
+마음에 새겨진 그대가 있기에\n
+몇번이고 넘어지고 부서진다해도\n
+Always with you\n"
+                    android:textSize="19sp"
+                    android:textColor="@color/blue2"
+                    android:fontFamily="@font/gangwon"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="200dp"
+                    android:src="@drawable/baseline_image_24"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text=" 어떤 힘든일도 막다른길도 내겐없어\n
+화사한 햇살이 고개를 내밀어 날비춰 어둠은 사라져\n
+그대를 만나서 살아갈 의미를 찾아\n
+because i'm with you\n
+i'm with you\n
+너를 보는게 지친 하루에\n
+내게 얼마나 힘이 된다는걸 넌 알까\n
+마음에 새겨진 그대가 있기에\n
+몇번이고 넘어지고 부서진다해도\n
+Always with you\n
+모든게 두려워 모든걸 내려 놓았을때 그때\n
+그대가 저멀리 내게 미소 지며 다가와 내 손을 잡아줘\n
+어디에 있어도 그 어떤 모습이라해도\n
+널 알아볼게\n
+널 찾을게\n
+너를 보는게 지친 하루에\n
+내게 얼마나 힘이 된다는걸 넌 알까\n
+마음에 새겨진 그대가 있기에\n
+몇번이고 넘어지고 부서진다해도v
+그날이와도\n
+마음하나면 그걸로 충분해\n
+모든 시간이 행복일테니\n
+내곁에 있어줘요\n
+곁에 있을게 가까운곳에\n
+내가 언제나 함께 있다는걸 잊지마\n
+두눈에 비처럼 눈물이 고이면\n
+그대를 안아줄게 가장 힘든 날에\n"
+                    android:textSize="19sp"
+                    android:textColor="@color/blue2"
+                    android:fontFamily="@font/gangwon"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.842"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>
