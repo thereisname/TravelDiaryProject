@@ -1,4 +1,4 @@
-package com.example.traveldiary.Activity;
+package com.example.traveldiary.activity;
 
 import android.os.Bundle;
 import android.widget.Button;
@@ -32,9 +32,9 @@ public class RegisterActivity extends AppCompatActivity {
 
         Button confirm_button = findViewById(R.id.confirm_button);
         inputNickName = findViewById(R.id.inputNickName);
+        inputEmail = findViewById(R.id.inputEmail);
         inputPw = findViewById(R.id.inputPw);
         inputRePw = findViewById(R.id.inputRePw);
-        inputEmail = findViewById(R.id.inputEmail);
 
         confirm_button.setOnClickListener(v -> {
             SHA256 sha256 = new SHA256();
@@ -67,7 +67,7 @@ public class RegisterActivity extends AppCompatActivity {
                         Toast.makeText(RegisterActivity.this, "회원가입에 실패하였습니다.", Toast.LENGTH_SHORT).show();
                 });
             }
-
         });
     }
 }
+

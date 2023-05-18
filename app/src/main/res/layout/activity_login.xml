@@ -25,7 +25,6 @@
         <EditText
             android:id="@+id/login_email"
             style="@style/inputEdit_style"
-            android:backgroundTint="@color/blue2"
             android:hint="@string/hint_email"
             android:inputType="textEmailAddress" />
 
@@ -33,7 +32,6 @@
             android:id="@+id/login_pw"
             style="@style/inputEdit_style"
             android:layout_marginTop="30dp"
-            android:backgroundTint="@color/blue2"
             android:hint="@string/hint_pw"
             android:inputType="textPassword" />
 
@@ -41,7 +39,6 @@
             android:layout_width="350dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:background="@color/white"
             android:orientation="horizontal">
 
             <Button
