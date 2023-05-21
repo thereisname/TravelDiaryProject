@@ -1,5 +1,4 @@
 # TravelDiaryProject
-# TravelDiaryProject
 ### 개발환경
 - SDK version: 31 api
 
