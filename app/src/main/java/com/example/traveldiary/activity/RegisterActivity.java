@@ -1,6 +1,9 @@
 package com.example.traveldiary.activity;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -22,6 +25,7 @@ public class RegisterActivity extends AppCompatActivity {
     private FirebaseAuth mFirebaseAuth;
     private DatabaseReference mDatabase;
     private EditText inputNickName, inputPw, inputRePw, inputEmail;
+    private Button confirm_button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,42 +34,47 @@ public class RegisterActivity extends AppCompatActivity {
         mFirebaseAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference("UI");
 
-        Button confirm_button = findViewById(R.id.confirm_button);
+        confirm_button = findViewById(R.id.confirm_button);
         inputNickName = findViewById(R.id.inputNickName);
         inputEmail = findViewById(R.id.inputEmail);
         inputPw = findViewById(R.id.inputPw);
         inputRePw = findViewById(R.id.inputRePw);
-
         confirm_button.setOnClickListener(v -> {
-            SHA256 sha256 = new SHA256();
+            if (inputNickName.length() > 0 && inputEmail.length() > 0 && inputPw.length() > 0 && inputRePw.length() > 0) {
+                SHA256 sha256 = new SHA256();
 
-            String strNickName = inputNickName.getText().toString();
-            String strPw;
-            String strRePw;
-            try {
-                strPw = sha256.encrypt(sha256.encrypt(inputPw.getText().toString()));
-                strRePw = sha256.encrypt(sha256.encrypt(inputRePw.getText().toString()));
-            } catch (NoSuchAlgorithmException e) {
-                throw new RuntimeException(e);
-            }
-            String strEmail = inputEmail.getText().toString();
+                String strNickName = inputNickName.getText().toString();
+                String strPw;
+                String strRePw;
+                try {
+                    strPw = sha256.encrypt(sha256.encrypt(inputPw.getText().toString()));
+                    strRePw = sha256.encrypt(sha256.encrypt(inputRePw.getText().toString()));
+                } catch (NoSuchAlgorithmException e) {
+                    throw new RuntimeException(e);
+                }
+                String strEmail = inputEmail.getText().toString();
 
-            if (strPw.equals(strRePw)) {
-                mFirebaseAuth.createUserWithEmailAndPassword(strEmail, strPw).addOnCompleteListener(RegisterActivity.this, task -> {
-                    if (task.isSuccessful()) {
-                        // 가입 성공
-                        FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
-                        UserAccount account = new UserAccount();
-                        account.setIdToken(firebaseUser.getUid());
-                        account.setUserEmail(firebaseUser.getEmail());
-                        account.setUserNickName(strNickName);
+                if (strPw.equals(strRePw)) {
+                    mFirebaseAuth.createUserWithEmailAndPassword(strEmail, strPw).addOnCompleteListener(RegisterActivity.this, task -> {
+                        if (task.isSuccessful()) {
+                            // 가입 성공
+                            FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
+                            UserAccount account = new UserAccount();
+                            account.setIdToken(firebaseUser.getUid());
+                            account.setUserEmail(firebaseUser.getEmail());
+                            account.setUserNickName(strNickName);
 
-                        mDatabase.child("users").child(firebaseUser.getUid()).setValue(account);
-                        Toast.makeText(this, "회원가입에 성공하였습니다.", Toast.LENGTH_LONG).show();
-                        System.exit(0);
-                    } else
-                        Toast.makeText(RegisterActivity.this, "회원가입에 실패하였습니다.", Toast.LENGTH_SHORT).show();
-                });
+                            mDatabase.child("users").child(firebaseUser.getUid()).setValue(account);
+                            Toast.makeText(getApplicationContext(), "회원가입에 성공하였습니다.", Toast.LENGTH_LONG).show();
+                            System.exit(0);
+                        } else
+                            Toast.makeText(RegisterActivity.this, "회원가입에 실패하였습니다.", Toast.LENGTH_SHORT).show();
+                    });
+                } else {
+                    Toast.makeText(getApplicationContext(), "비밀번호가 일치하지 않습니다.", Toast.LENGTH_LONG).show();
+                }
+            } else {
+                Toast.makeText(this, "내용을 입력해주세요.", Toast.LENGTH_LONG).show();
             }
         });
     }
