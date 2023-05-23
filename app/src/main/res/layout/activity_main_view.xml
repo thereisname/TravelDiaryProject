@@ -80,9 +80,7 @@
 
     <View
         android:id="@+id/view2"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/white"
+        style="@style/all_toolbar_view"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -90,35 +88,22 @@
 
     <LinearLayout
         android:id="@+id/linearLayout5"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/view_border"
-        android:gravity="center|center_horizontal"
-        android:paddingVertical="7dp"
+        style="@style/all_toolbar_linearLayout"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
         <ImageView
             android:id="@+id/home"
-            android:layout_width="37dp"
-            android:layout_height="37dp"
-            android:layout_weight="1"
-            android:src="@drawable/baseline_home_24" />
+            style="@style/all_toolbar_imageView.home" />
 
         <ImageView
             android:id="@+id/upload"
-            android:layout_width="37dp"
-            android:layout_height="37dp"
-            android:layout_weight="1"
-            android:src="@drawable/baseline_circle_24" />
+            style="@style/all_toolbar_imageView.upload" />
 
         <ImageView
             android:id="@+id/myPage"
-            android:layout_width="37dp"
-            android:layout_height="37dp"
-            android:layout_weight="1"
-            android:src="@drawable/baseline_account_circle_24" />
+            style="@style/all_toolbar_imageView.myPage" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

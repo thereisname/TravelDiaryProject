@@ -18,6 +18,39 @@
         <item name="android:fontFamily">@font/gangwon</item>
     </style>
 
+    <style name="all_toolbar_view">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">#80000000</item>
+        <item name="layout_constraintBottom_toTopOf">@id/linearLayout5</item>
+    </style>
+
+    <style name="all_toolbar_linearLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/view_border</item>
+        <item name="android:gravity">center|center_horizontal</item>
+        <item name="android:paddingVertical">7dp</item>
+    </style>
+
+    <style name="all_toolbar_imageView">
+        <item name="android:layout_width">37dp</item>
+        <item name="android:layout_height">37dp</item>
+        <item name="android:layout_weight">1</item>
+    </style>
+    <style name="all_toolbar_imageView.home">
+        <item name="android:src">@drawable/baseline_home_24</item>
+        <item name="android:contentDescription">home</item>
+    </style>
+    <style name="all_toolbar_imageView.upload">
+        <item name="android:src">@drawable/baseline_circle_24</item>
+        <item name="android:contentDescription">upload</item>
+    </style>
+    <style name="all_toolbar_imageView.myPage">
+        <item name="android:src">@drawable/baseline_account_circle_24</item>
+        <item name="android:contentDescription">myPage</item>
+    </style>
+    
     <style name="inputEdit_style">
         <item name="android:layout_width">350dp</item>
         <item name="android:layout_height">wrap_content</item>
