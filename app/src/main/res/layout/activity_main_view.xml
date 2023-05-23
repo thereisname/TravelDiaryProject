@@ -34,7 +34,7 @@
                 android:drawableStart="@drawable/baseline_search_24"
                 android:drawablePadding="5dp"
                 android:fontFamily="@font/gangwon"
-                android:hint="검색"
+                android:hint="@string/all_hint_search"
                 android:inputType="text"
                 android:paddingHorizontal="10dp"
                 android:paddingVertical="7dp"

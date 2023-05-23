@@ -15,28 +15,28 @@
         android:id="@+id/inputNickName"
         style="@style/inputEdit_style.register"
         android:layout_marginTop="150dp"
-        android:hint="@string/Nickname"
+        android:hint="@string/register_nickname"
         android:inputType="text" />
 
     <EditText
         android:id="@+id/inputEmail"
         style="@style/inputEdit_style.register"
         android:layout_marginTop="250dp"
-        android:hint="@string/hint_email"
+        android:hint="@string/all_hint_email"
         android:inputType="textEmailAddress" />
 
     <EditText
         android:id="@+id/inputPw"
         style="@style/inputEdit_style.register"
         android:layout_marginTop="350dp"
-        android:hint="@string/hint_pw"
+        android:hint="@string/all_hint_pw"
         android:inputType="textPassword" />
 
     <EditText
         android:id="@+id/inputRePw"
         style="@style/inputEdit_style.register"
         android:layout_marginTop="450dp"
-        android:hint="@string/re_pw"
+        android:hint="@string/register_rePw"
         android:inputType="textPassword" />
 
     <Button
@@ -47,7 +47,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginTop="105dp"
         android:layout_marginBottom="80dp"
-        android:text="@string/registerConfirm" />
+        android:text="@string/register_ConfirmBtn" />
 
 
 </RelativeLayout>

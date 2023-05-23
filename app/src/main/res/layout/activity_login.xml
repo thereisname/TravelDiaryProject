@@ -25,14 +25,14 @@
         <EditText
             android:id="@+id/login_email"
             style="@style/inputEdit_style"
-            android:hint="@string/hint_email"
+            android:hint="@string/all_hint_email"
             android:inputType="textEmailAddress" />
 
         <EditText
             android:id="@+id/login_pw"
             style="@style/inputEdit_style"
             android:layout_marginTop="30dp"
-            android:hint="@string/hint_pw"
+            android:hint="@string/all_hint_pw"
             android:inputType="textPassword" />
 
         <LinearLayout
@@ -45,13 +45,13 @@
                 android:id="@+id/loginBtn"
                 style="@style/login_btn"
                 android:layout_marginEnd="20dp"
-                android:text="@string/btn_login" />
+                android:text="@string/loginActivity_loginBtn" />
 
             <Button
                 android:id="@+id/registerBtn"
                 style="@style/login_btn"
                 android:layout_marginStart="20dp"
-                android:text="@string/btn_r" />
+                android:text="@string/loginActivity_registerBtn" />
 
         </LinearLayout>
     </LinearLayout>
