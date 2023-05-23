@@ -26,7 +26,10 @@ public class MainViewActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_view, fragmentClient).commit();
 
         myPage.setOnClickListener(v -> {
-
+            Intent intent = new Intent(this, MypageActivity.class);
+            intent.putExtra("userToken", userToken);
+            startActivity(intent);
+            finish();
         });
 
         ImageView upload = findViewById(R.id.upload);
