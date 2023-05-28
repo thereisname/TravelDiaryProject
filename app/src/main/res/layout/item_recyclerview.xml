@@ -10,8 +10,7 @@
         android:id="@+id/cardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="20dp"
-        app:cardUseCompatPadding="true">
+        app:cardCornerRadius="20dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -34,7 +33,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/gangwon"
                     android:text="@string/all_title"
-                    android:textColor="@color/blue2"
+                    android:textColor="@color/text_gray"
                     android:textSize="27sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -51,7 +50,7 @@
                     android:fontFamily="@font/gangwon"
                     android:maxLines="3"
                     android:paddingEnd="7dp"
-                    android:textColor="@color/blue2"
+                    android:textColor="@color/text_gray"
                     android:textSize="15sp"
                     app:layout_constraintBottom_toTopOf="@+id/hashTag"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -66,7 +65,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/gangwon"
                     android:text="@string/all_hashtag"
-                    android:textColor="@color/blue2"
+                    android:textColor="@color/text_gray"
                     android:textSize="17sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"

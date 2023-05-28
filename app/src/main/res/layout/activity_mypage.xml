@@ -71,7 +71,6 @@
         android:layout_marginStart="15dp"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="15dp"
-        android:layout_marginBottom="15dp"
         app:layout_constraintBottom_toTopOf="@+id/view2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -81,7 +80,7 @@
 
     <View
         android:id="@+id/view2"
-       style="@style/all_toolbar_view"
+        style="@style/all_toolbar_view"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"

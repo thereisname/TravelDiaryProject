@@ -38,7 +38,7 @@
                 android:inputType="text"
                 android:paddingHorizontal="10dp"
                 android:paddingVertical="7dp"
-                android:textColor="@color/blue2"
+                android:textColor="@color/text_gray"
                 android:textColorHint="@color/blue2"
                 android:textSize="25sp"
                 android:textStyle="bold"
