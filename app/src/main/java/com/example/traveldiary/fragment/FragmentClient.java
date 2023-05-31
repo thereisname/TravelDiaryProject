@@ -27,7 +27,8 @@ public class FragmentClient extends Fragment {
                 bookmark.setImageResource(R.drawable.baseline_bookmark_border_24);
                 isAttBookmark = 0;
             } else {
-
+                bookmark.setImageResource(R.drawable.baseline_bookmark_24);
+                isAttBookmark = 1;
             }
 
         });
