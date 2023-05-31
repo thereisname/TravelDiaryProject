@@ -35,10 +35,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.RegisterActivity"
-            android:exported="false" />
-        <activity
-            android:name=".activity.LoginActivity"
+            android:name=".activity.MainActivity"
+            android:theme="@style/mainActivity_dataBtn"
             android:exported="false">
 
         </activity>

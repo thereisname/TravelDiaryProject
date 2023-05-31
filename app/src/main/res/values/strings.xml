@@ -18,4 +18,11 @@
     <string name="all_title">Title</string>
     <string name="all_hashtag">#봄 #친구랑 #식도락</string>
     <string name="all_hint_search">검색</string>
+
+    <!--Main -->
+    <string name="main_dataPick_startText">시작일 : </string>
+    <string name="main_dataPick_endText">종료일 : </string>
+    <string name="main_dataPick_Btn">기간 선택</string>
+
+    <string name="mainActivity_dataPick_title">Select dates</string>
 </resources>
