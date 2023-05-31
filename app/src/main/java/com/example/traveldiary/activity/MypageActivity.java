@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.traveldiary.R;
 import com.example.traveldiary.fragment.FragmentBoard;
@@ -24,7 +26,13 @@ public class MypageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mypage);
         String userToken = getIntent().getStringExtra("userToken");
-
+        TextView logoutBtn = findViewById(R.id.logoutBtn);
+        
+        logoutBtn.setOnClickListener(v -> {
+            startActivity(new Intent(this, LoginActivity.class));
+            Toast.makeText(getApplicationContext(), "Logout successful.", Toast.LENGTH_SHORT).show();
+            System.exit(0);
+        });
 
         fragmentBoard = new FragmentBoard();
         fragmentBookmark = new FragmentBookmark();

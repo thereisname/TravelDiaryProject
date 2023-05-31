@@ -40,6 +40,21 @@
         app:layout_constraintStart_toEndOf="@+id/imageView"
         app:layout_constraintTop_toBottomOf="@+id/nickName" />
 
+    <TextView
+        android:id="@+id/logoutBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:fontFamily="@font/gangwon"
+        android:text="@string/mypage_logoutBtn"
+        android:textColor="@color/blue2"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.95"
+        app:layout_constraintStart_toEndOf="@+id/nickName"
+        app:layout_constraintTop_toTopOf="@+id/nickName" />
+
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/tableLayout"
         android:layout_width="match_parent"
