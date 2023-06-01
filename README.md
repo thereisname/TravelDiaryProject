@@ -48,3 +48,15 @@ ex)
 - **textview_articledetail_title** -> title TextView in ArticleDetailFragment
 
 [name 작성방법 출처](https://jeroenmols.com/blog/2016/03/07/resourcenaming/)
+
+
+### memory leaked test
+```
+  dependencies {
+    ...
+  
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.9'
+  
+    ...
+  }
+```
