@@ -25,4 +25,27 @@
     <string name="main_dataPick_Btn">기간 선택</string>
 
     <string name="mainActivity_dataPick_title">Select dates</string>
+
+    <!-- Upload calender -->
+    <string name="uploadCalender_text_calender">#여행 기간</string>
+    <string name="uploadCalender_text_persons">#여행 인원</string>
+    <string name="uploadCalender_text_style">#여행 스타일</string>
+
+    <string name="uploadCalender_chip_persons_one">혼자 여행</string>
+    <string name="uploadCalender_chip_persons_couple">커플 여행</string>
+    <string name="uploadCalender_chip_persons_friend">친구와 여행</string>
+    <string name="uploadCalender_chip_persons_family">가족 여행</string>
+
+    <string name="uploadCalender_chip_style_plan">계획적인</string>
+    <string name="uploadCalender_chip_style_free">자유로운</string>
+    <string name="uploadCalender_chip_style_vacation">휴가</string>
+    <string name="uploadCalender_chip_style_recollection">추억</string>
+    <string name="uploadCalender_chip_style_healing">힐링</string>
+    <string name="uploadCalender_chip_style_activity">액티비티</string>
+    <string name="uploadCalender_chip_style_famous">맛집투어</string>
+    <string name="uploadCalender_chip_style_romance">낭만</string>
+    <string name="uploadCalender_chip_style_emotional">감성</string>
+
+    <string name="uploadCalender_boardBtn">글쓰기</string>
+
 </resources>

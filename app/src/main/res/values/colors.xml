@@ -19,4 +19,10 @@
     <color name="pastel1">#D3FBFB</color>
 
     <color name="text_gray">#73777b</color>
+    <color name="chip_background_color_selected">#69B7BF</color>
+    <color name="chip_background_color_unselected">#F8F8F8</color>
+    <color name="chip_text_color_selected">#FFFFFF</color>
+    <color name="chip_text_color_unselected">#73777b</color>
+    <color name="chip_stroke_color_selected">#F44336</color>
+    <color name="chip_stroke_color_unselected">#FFEB3B</color>
 </resources>

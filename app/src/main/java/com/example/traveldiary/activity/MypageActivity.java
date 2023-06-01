@@ -76,7 +76,7 @@ public class MypageActivity extends AppCompatActivity {
 
         ImageView upload = findViewById(R.id.upload);
         upload.setOnClickListener(v -> {
-            Intent intent = new Intent(this, MainActivity.class);
+            Intent intent = new Intent(this, UploadCalendarActivity.class);
             intent.putExtra("userToken", userToken);
             startActivity(intent);
             finish();

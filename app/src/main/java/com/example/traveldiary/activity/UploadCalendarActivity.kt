@@ -3,19 +3,19 @@ package com.example.traveldiary.activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.example.traveldiary.databinding.ActivityMainBinding
 import com.google.android.material.datepicker.MaterialDatePicker
 import java.text.SimpleDateFormat
 import androidx.core.util.Pair
 import com.example.traveldiary.R
+import com.example.traveldiary.databinding.ActivityUploadCalendarBinding
 import java.util.*
 
-class MainActivity : AppCompatActivity() {
-    lateinit var binding: ActivityMainBinding
+class UploadCalendarActivity : AppCompatActivity() {
+    lateinit var binding: ActivityUploadCalendarBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityUploadCalendarBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         // intent 불러오기.
@@ -38,10 +38,14 @@ class MainActivity : AppCompatActivity() {
                 val startDate = datePicked.first
                 val endDate = datePicked.second
                 if (startDate != null && endDate != null) {
-                    binding.dataPickerTextStart.text = convertLongToDate(startDate)
-                    binding.dataPickerTextEnd.text = convertLongToDate(endDate)
+                    binding.dataPickerText.text =
+                        convertLongToDate(startDate) + " ~ " + convertLongToDate(endDate)
                 }
             }
+        }
+
+        binding.next.setOnClickListener {
+            startActivity(Intent(this, UploadBoardActivity::class.java))
         }
 
         // toolbar Btn
@@ -70,7 +74,7 @@ class MainActivity : AppCompatActivity() {
     private fun convertLongToDate(time: Long): String {
         val date = Date(time)
         val format = SimpleDateFormat(
-            "yyyy년-MM월-dd일", Locale.getDefault()
+            "yyyy.MM.dd", Locale.getDefault()
         )
         return format.format(date)
     }
