@@ -65,6 +65,7 @@
     </style>
     <style name="inputEdit_style.register">
         <item name="android:layout_alignParentStart">true</item>
+        <item name="android:textColor">@color/blue2</item>
         <item name="android:layout_alignParentEnd">true</item>
         <item name="android:layout_marginHorizontal">30dp</item>
     </style>
