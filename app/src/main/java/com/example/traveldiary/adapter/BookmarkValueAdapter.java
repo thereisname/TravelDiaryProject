@@ -74,7 +74,7 @@ public class BookmarkValueAdapter extends RecyclerView.Adapter<BookmarkValueAdap
             super(itemView);
             cardView = itemView.findViewById(R.id.cardView);
             content = itemView.findViewById(R.id.content);
-            image = itemView.findViewById(R.id.image);
+            image = itemView.findViewById(R.id.mainImg);
             title = itemView.findViewById(R.id.title);
             hashTag = itemView.findViewById(R.id.hashTag);
 

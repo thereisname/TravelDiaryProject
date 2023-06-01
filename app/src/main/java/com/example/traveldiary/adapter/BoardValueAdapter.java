@@ -23,10 +23,9 @@ public class BoardValueAdapter extends RecyclerView.Adapter<BoardValueAdapter.Vi
     private Context context;
 
     public BoardValueAdapter(Context context, OnItemClickListener itemClickListener) {
-        this.context =context;
+        this.context = context;
         this.itemClickListener = itemClickListener;
     }
-
 
     @NonNull
     @Override
@@ -74,7 +73,7 @@ public class BoardValueAdapter extends RecyclerView.Adapter<BoardValueAdapter.Vi
             super(itemView);
             cardView = itemView.findViewById(R.id.cardView);
             content = itemView.findViewById(R.id.content);
-            image = itemView.findViewById(R.id.image);
+            image = itemView.findViewById(R.id.mainImg);
             title = itemView.findViewById(R.id.title);
             hashTag = itemView.findViewById(R.id.hashTag);
 

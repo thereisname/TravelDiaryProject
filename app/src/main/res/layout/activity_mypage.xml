@@ -75,7 +75,7 @@
             android:elevation="1dp"
             app:tabGravity="fill"
             app:tabMode="fixed"
-            app:tabSelectedTextColor="#78AFF3"
+            app:tabSelectedTextColor="@color/text_gray"
             app:tabTextColor="#78AFF3" />
     </com.google.android.material.appbar.AppBarLayout>
 
