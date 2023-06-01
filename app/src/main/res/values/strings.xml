@@ -48,4 +48,8 @@
 
     <string name="uploadCalender_boardBtn">글쓰기</string>
 
+    <!--Upload Board -->
+    <string name="uploadBoard_uploadBtn">올리기</string>
+    <string name="uploadBoard_hint_title">제목</string>
+
 </resources>

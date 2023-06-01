@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.TravelDiary" parent="Theme.AppCompat.Light">
+    <style name="Theme.TravelDiary" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/purple_500</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
@@ -119,9 +119,6 @@
         <item name="android:textColor">@color/text_gray</item>
         <item name="android:textSize">24sp</item>
     </style>
-    <style name="mainActivity_dataPick_textView.">
-        <item name="android:textColor">@color/text_gray</item>
-    </style>
 
     <style name="mainActivity_hashtag" >
         <item name="android:layout_width">wrap_content</item>
@@ -134,4 +131,10 @@
         <item name="android:textSize">24sp</item>
     </style>
 
+    <style name="uploadBoard_RichEditorBtn">
+        <item name="android:layout_width">48dp</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="background">@null</item>
+        <item name="android:contentDescription">@null</item>
+    </style>
 </resources>

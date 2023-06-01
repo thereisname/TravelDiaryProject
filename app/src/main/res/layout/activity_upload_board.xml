@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context=".activity.UploadBoardActivity">
+
+    <Button
+        android:id="@+id/uploadBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/border"
+        android:fontFamily="@font/gangwon"
+        android:text="@string/uploadBoard_uploadBtn"
+        android:textColor="@color/blue2"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="10dp"
+        android:fontFamily="@font/gangwon"
+        android:hint="@string/uploadBoard_hint_title"
+        android:inputType="text"
+        android:textColor="@color/text_gray"
+        android:textColorHint="@color/blue2"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/uploadBtn" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/border"
+        android:orientation="vertical"
+        android:paddingHorizontal="10dp"
+        android:paddingBottom="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title">
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/action_undo"
+                    style="@style/uploadBoard_RichEditorBtn"
+                    android:src="@drawable/baseline_undo_24" />
+
+                <ImageButton
+                    android:id="@+id/action_redo"
+                    style="@style/uploadBoard_RichEditorBtn"
+                    android:src="@drawable/baseline_redo_24" />
+
+                <ImageButton
+                    android:id="@+id/action_bold"
+                    style="@style/uploadBoard_RichEditorBtn"
+                    android:src="@drawable/baseline_format_bold_24" />
+
+                <ImageButton
+                    android:id="@+id/action_italic"
+                    style="@style/uploadBoard_RichEditorBtn"
+                    android:src="@drawable/baseline_format_italic_24" />
+
+                <ImageButton
+                    android:id="@+id/action_strikethrough"
+                    style="@style/uploadBoard_RichEditorBtn"
+                    android:src="@drawable/baseline_strikethrough_s_24" />
+
+                <ImageButton
+                    android:id="@+id/action_underline"
+                    style="@style/uploadBoard_RichEditorBtn"
+                    android:src="@drawable/baseline_format_underlined_24" />
+
+                <ImageButton
+                    android:id="@+id/action_indent"
+                    style="@style/uploadBoard_RichEditorBtn"
+                    android:src="@drawable/baseline_format_indent_increase_24" />
+
+                <ImageButton
+                    android:id="@+id/action_outdent"
+                    style="@style/uploadBoard_RichEditorBtn"
+                    android:src="@drawable/baseline_format_indent_decrease_24" />
+
+                <ImageButton
+                    android:id="@+id/action_insert_image"
+                    style="@style/uploadBoard_RichEditorBtn"
+                    android:src="@drawable/baseline_insert_photo_24" />
+            </LinearLayout>
+        </HorizontalScrollView>
+
+        <jp.wasabeef.richeditor.RichEditor
+            android:id="@+id/editor"
+            android:layout_width="match_parent"
+            android:layout_height="550dp"
+            android:layout_marginTop="10dp" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/view2"
+        style="@style/all_toolbar_view"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout5"
+        style="@style/all_toolbar_linearLayout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:id="@+id/home"
+            style="@style/all_toolbar_imageView.home" />
+
+        <ImageView
+            android:id="@+id/upload"
+            style="@style/all_toolbar_imageView.upload" />
+
+        <ImageView
+            android:id="@+id/myPage"
+            style="@style/all_toolbar_imageView.myPage" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
