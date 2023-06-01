@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.example.traveldiary.R;
 
@@ -19,6 +20,8 @@ public class UploadBoardActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload_board);
+
+        String userToken = getIntent().getStringExtra("userToken");
 
         mEditor = (RichEditor) findViewById(R.id.editor);
 
@@ -58,6 +61,22 @@ public class UploadBoardActivity extends AppCompatActivity {
             intent.setType("Image/*");
             intent.setAction(Intent.ACTION_GET_CONTENT);
             startActivityForResult(Intent.createChooser(intent, "Select Picture"), 1);
+        });
+
+        ImageView myPage = findViewById(R.id.myPage);
+        myPage.setOnClickListener(v -> {
+            Intent intent = new Intent(this, MypageActivity.class);
+            intent.putExtra("userToken", userToken);
+            startActivity(intent);
+            finish();
+        });
+
+        ImageView home = findViewById(R.id.home);
+        home.setOnClickListener(v -> {
+            Intent intent = new Intent(this, MainViewActivity.class);
+            intent.putExtra("userToken", userToken);
+            startActivity(intent);
+            finish();
         });
     }
 

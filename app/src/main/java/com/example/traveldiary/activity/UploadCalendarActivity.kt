@@ -3,11 +3,11 @@ package com.example.traveldiary.activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.datepicker.MaterialDatePicker
-import java.text.SimpleDateFormat
 import androidx.core.util.Pair
 import com.example.traveldiary.R
 import com.example.traveldiary.databinding.ActivityUploadCalendarBinding
+import com.google.android.material.datepicker.MaterialDatePicker
+import java.text.SimpleDateFormat
 import java.util.*
 
 class UploadCalendarActivity : AppCompatActivity() {
@@ -45,7 +45,9 @@ class UploadCalendarActivity : AppCompatActivity() {
         }
 
         binding.next.setOnClickListener {
-            startActivity(Intent(this, UploadBoardActivity::class.java))
+            val intent = Intent(this,UploadBoardActivity::class.java)
+            intent.putExtra("userToken", userToken)
+            startActivity(intent)
         }
 
         // toolbar Btn
