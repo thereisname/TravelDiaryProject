@@ -5,10 +5,17 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.traveldiary.R;
 import com.example.traveldiary.adapter.BoardValueAdapter;
@@ -109,6 +116,43 @@ public class FragmentBookmark extends Fragment {
     }
 
     public void onItemSelected(View view, int position, ArrayList<myPageValue> items) {
+        //Save the clicked position value among the ArrayList values as a resultValue type in the variable item.
+        myPageValue item = items.get(position);
+        //Create a Dialog class to define a custom dialog.
+        final Dialog dialog = new Dialog(getActivity());
+        //Custom Dialog Corner Radius Processing
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        //Hide the title bar of the activity.
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        //Set the layout of the custom dialog.
+        dialog.setContentView(R.layout.dialog_board_detail);
+        //Adjust the screen size.
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(dialog.getWindow().getAttributes());
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.height = WindowManager.LayoutParams.MATCH_PARENT;
+        Window window = dialog.getWindow();
+        window.setAttributes(lp);
+
+        //Create variables and find in layout.
+        TextView title, hashTag, content;
+        ImageView mainImg;
+
+        title = dialog.findViewById(R.id.title);
+        hashTag = dialog.findViewById(R.id.hashTag);
+        content = dialog.findViewById(R.id.content);
+        mainImg = dialog.findViewById(R.id.mainImg);
+
+        title.setText(item.getTitle());
+        hashTag.setText(item.getHashTag());
+        content.setText(item.getCon());
+        Log.i("img uri", String.valueOf(item.getMainImg()));
+        mainImg.setImageResource(item.getMainImg());
+
+
+        dialog.show();
+        ImageView closeButton = dialog.findViewById(R.id.closeButton);
+        closeButton.setOnClickListener(v -> dialog.dismiss());
 
     }
 }
