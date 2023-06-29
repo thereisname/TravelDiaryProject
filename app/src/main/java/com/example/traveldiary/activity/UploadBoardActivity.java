@@ -7,13 +7,15 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.traveldiary.R;
 
 import jp.wasabeef.richeditor.RichEditor;
+import jp.wasabeef.richeditor.RichEditor.OnTextChangeListener;
 
 public class UploadBoardActivity extends AppCompatActivity {
-
+    private TextView mPreview;
     private RichEditor mEditor;
 
     @Override
@@ -30,6 +32,9 @@ public class UploadBoardActivity extends AppCompatActivity {
 
         mEditor.setPadding(10, 10, 10, 10);
         mEditor.setPlaceholder("Insert text here...");
+
+        mPreview = (TextView) findViewById(R.id.preview);
+        mEditor.setOnTextChangeListener(text -> mPreview.setText(text));
 
         findViewById(R.id.action_undo).setOnClickListener(v -> mEditor.undo());
         findViewById(R.id.action_redo).setOnClickListener(v -> mEditor.redo());
