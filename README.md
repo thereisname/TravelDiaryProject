@@ -50,6 +50,21 @@ ex)
 [name 작성방법 출처](https://jeroenmols.com/blog/2016/03/07/resourcenaming/)
 
 
+<br>
+
+### DB 저장 방식 (firebase 사용 계획)
+1. Authentication: 사용자 이메일정보를 수집
+2. RealTime Database: 회원가입 시 입력한 정보와 게시물 id, 북마크 id를 저장함. 이때 사용자 uid를 컬렉션명으로 함.<br>
+   -> user > [UID] > info > [사용자 정보들] <br>
+   -> user > [UID] > board > [id] <br>
+   -> user > [UID] > bookmark > [id]
+3. firestore Database: 게시물 업로드 내용을 저장함. 이때 이름은 게시물별 id를 생성하여 저장.
+4. Storage: image 경로를 저장. (사용할 logo도 저장하여 불러오기) <br>
+   -> image > [img 경로]
+
+<br>
+
+
 ### memory leaked test
 ```
   dependencies {
