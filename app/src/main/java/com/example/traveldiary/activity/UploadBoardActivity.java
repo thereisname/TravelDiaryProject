@@ -70,7 +70,6 @@ public class UploadBoardActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         });
-
         ImageView home = findViewById(R.id.home);
         home.setOnClickListener(v -> {
             Intent intent = new Intent(this, MainViewActivity.class);
