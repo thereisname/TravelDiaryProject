@@ -5,16 +5,27 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.View;
+
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.traveldiary.R;
+
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
 
 import jp.wasabeef.richeditor.RichEditor;
 
 public class UploadBoardActivity extends AppCompatActivity {
 
     private RichEditor mEditor;
+    private TextView mPreview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +34,12 @@ public class UploadBoardActivity extends AppCompatActivity {
 
         String userToken = getIntent().getStringExtra("userToken");
 
+        LoginActivity.db = FirebaseFirestore.getInstance();
+        LoginActivity.storage = FirebaseStorage.getInstance();    // 이미지 경로를 저장하기 위한 DB에 접근하기 위환 인스턴스 선언
+
+        // Create a storage reference from our app
+        StorageReference storageRef = LoginActivity.storage.getReference();
+
         mEditor = (RichEditor) findViewById(R.id.editor);
 
         mEditor.setEditorHeight(200);
@@ -30,6 +47,9 @@ public class UploadBoardActivity extends AppCompatActivity {
 
         mEditor.setPadding(10, 10, 10, 10);
         mEditor.setPlaceholder("Insert text here...");
+
+        mPreview = (TextView) findViewById(R.id.preview);
+        mEditor.setOnTextChangeListener(text -> mPreview.setText(text));
 
         findViewById(R.id.action_undo).setOnClickListener(v -> mEditor.undo());
         findViewById(R.id.action_redo).setOnClickListener(v -> mEditor.redo());
@@ -77,6 +97,18 @@ public class UploadBoardActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         });
+
+        findViewById(R.id.uploadBtn).setOnClickListener(v -> save(mPreview));
+    }
+
+    public void save(TextView mPreview) {
+        EditText title = findViewById(R.id.title);
+        LocalDate now = LocalDate.now();
+        Map<String, Object> item = new HashMap<>();
+        item.put("upload_data", String.valueOf(now));
+        item.put("title", title.getText().toString());
+        item.put("con", mPreview.getText().toString());
+        LoginActivity.db.collection("data").document("one").set(item);
     }
 
     @Override
