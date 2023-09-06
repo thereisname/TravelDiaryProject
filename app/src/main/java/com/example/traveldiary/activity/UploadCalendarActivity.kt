@@ -1,7 +1,11 @@
 package com.example.traveldiary.activity
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
+import android.util.Log
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.util.Pair
 import com.example.traveldiary.R
@@ -9,10 +13,12 @@ import com.example.traveldiary.databinding.ActivityUploadCalendarBinding
 import com.google.android.material.datepicker.MaterialDatePicker
 import java.text.SimpleDateFormat
 import java.util.*
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 
 class UploadCalendarActivity : AppCompatActivity() {
     lateinit var binding: ActivityUploadCalendarBinding
-
+    lateinit var filePath: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityUploadCalendarBinding.inflate(layoutInflater)
@@ -62,6 +68,36 @@ class UploadCalendarActivity : AppCompatActivity() {
             intent.putExtra("userToken", userToken)
             startActivity(intent)
             finish()
+        }
+
+
+        val requestLauncher = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ){
+            if(it.resultCode === android.app.Activity.RESULT_OK){
+                Glide
+                    .with(getApplicationContext())
+                    .load(it.data?.data)
+                    .apply(RequestOptions().override(250, 200))
+                    .centerCrop()
+                    .into(binding.imageButton)
+
+                val cursor = contentResolver.query(it.data?.data as Uri,
+                    arrayOf<String>(MediaStore.Images.Media.DATA), null, null, null);
+                cursor?.moveToFirst().let {
+                    filePath=cursor?.getString(0) as String
+                }
+
+            }
+        }
+
+        binding.imageButton.setOnClickListener{
+            Log.d("로그", "눌림")
+            val intent = Intent(Intent.ACTION_PICK)
+            intent.setDataAndType(
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*"
+            )
+            requestLauncher.launch(intent)
         }
     }
 
