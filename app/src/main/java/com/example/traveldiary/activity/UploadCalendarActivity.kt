@@ -71,6 +71,8 @@ class UploadCalendarActivity : AppCompatActivity() {
         }
 
 
+        // 대표 이미지 가져오는 곳
+
         val requestLauncher = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()
         ){
@@ -92,7 +94,6 @@ class UploadCalendarActivity : AppCompatActivity() {
         }
 
         binding.imageButton.setOnClickListener{
-            Log.d("로그", "눌림")
             val intent = Intent(Intent.ACTION_PICK)
             intent.setDataAndType(
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*"

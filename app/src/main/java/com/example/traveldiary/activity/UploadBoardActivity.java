@@ -1,10 +1,16 @@
 package com.example.traveldiary.activity;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -56,13 +62,31 @@ public class UploadBoardActivity extends AppCompatActivity {
 
         findViewById(R.id.action_outdent).setOnClickListener(v -> mEditor.setOutdent());
 
+        // 갤러리 런처
+        ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if (result.getResultCode() == RESULT_OK) {
+                            Intent intent = result.getData();
+                            Uri uri = intent.getData();
+                            mEditor.insertImage(String.valueOf(uri),"", 320);
+                        }
+
+                    }
+                }
+        );
+        // 갤러리에서 사진 가져오기
         findViewById(R.id.action_insert_image).setOnClickListener(v -> {
-            Intent intent = new Intent();
-            intent.setType("Image/*");
-            intent.setAction(Intent.ACTION_GET_CONTENT);
-            startActivityForResult(Intent.createChooser(intent, "Select Picture"), 1);
+            Intent intent = new Intent(Intent.ACTION_PICK);
+            intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+            intent.setAction(Intent.ACTION_PICK);
+
+            activityResultLauncher.launch(intent);
         });
 
+        // 네비게이션
         ImageView myPage = findViewById(R.id.myPage);
         myPage.setOnClickListener(v -> {
             Intent intent = new Intent(this, MypageActivity.class);
@@ -78,6 +102,8 @@ public class UploadBoardActivity extends AppCompatActivity {
             finish();
         });
     }
+
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
