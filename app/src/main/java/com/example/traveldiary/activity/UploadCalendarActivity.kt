@@ -5,6 +5,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.util.Pair
@@ -15,14 +16,19 @@ import java.text.SimpleDateFormat
 import java.util.*
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.google.firebase.storage.StorageReference
+import java.io.File
 
 class UploadCalendarActivity : AppCompatActivity() {
     lateinit var binding: ActivityUploadCalendarBinding
     lateinit var filePath: String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityUploadCalendarBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+
 
         // intent 불러오기.
         val userToken = intent.getStringExtra("userToken")
@@ -51,9 +57,13 @@ class UploadCalendarActivity : AppCompatActivity() {
         }
 
         binding.next.setOnClickListener {
+//            upload("a@email.com")
             val intent = Intent(this,UploadBoardActivity::class.java)
             intent.putExtra("userToken", userToken)
+
+
             startActivity(intent)
+
         }
 
         // toolbar Btn
@@ -88,6 +98,8 @@ class UploadCalendarActivity : AppCompatActivity() {
                     arrayOf<String>(MediaStore.Images.Media.DATA), null, null, null);
                 cursor?.moveToFirst().let {
                     filePath=cursor?.getString(0) as String
+
+
                 }
 
             }
@@ -100,6 +112,21 @@ class UploadCalendarActivity : AppCompatActivity() {
             )
             requestLauncher.launch(intent)
         }
+    }
+
+//    private fun upload(id : String){
+//        val storage = LoginActivity.storage
+//        val storageRef : StorageReference = storage.reference
+//        val imgRef : StorageReference = storageRef.child("image/${id}.jpg")
+//
+//        val file = Uri.fromFile(File(filePath))
+//        imgRef.putFile(file)
+//            .addOnFailureListener{
+//                Log.d("jung", "failure........" + it)
+//            }.addOnSuccessListener {
+//                Toast.makeText(this, "데이터 저장되었습니다.", Toast.LENGTH_SHORT).show()
+//                finish()
+//            }
     }
 
     /**
@@ -117,4 +144,3 @@ class UploadCalendarActivity : AppCompatActivity() {
         )
         return format.format(date)
     }
-}

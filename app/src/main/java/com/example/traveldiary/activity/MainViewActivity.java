@@ -1,16 +1,25 @@
 package com.example.traveldiary.activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.widget.ImageView;
+
+
 
 import com.example.traveldiary.R;
 import com.example.traveldiary.fragment.FragmentClient;
 import com.example.traveldiary.fragment.FragmentImage;
 
+import java.util.List;
+
 public class MainViewActivity extends AppCompatActivity {
+
+
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -18,6 +27,7 @@ public class MainViewActivity extends AppCompatActivity {
 
         String userToken = getIntent().getStringExtra("userToken");
 
+        
         ImageView myPage = findViewById(R.id.myPage);
         FragmentImage fragmentImage = new FragmentImage();
         FragmentClient fragmentClient = new FragmentClient(userToken);
@@ -34,11 +44,18 @@ public class MainViewActivity extends AppCompatActivity {
 
         ImageView upload = findViewById(R.id.upload);
         upload.setOnClickListener(v -> {
+
+
             Intent intent = new Intent(this, UploadCalendarActivity.class);
             intent.putExtra("userToken", userToken);
             startActivity(intent);
             finish();
         });
 
+
+
+
     }
+
+
 }

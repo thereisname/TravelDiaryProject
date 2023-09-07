@@ -2,27 +2,43 @@ package com.example.traveldiary.activity;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.PermissionChecker;
 
+import android.annotation.SuppressLint;
+import android.content.ContentResolver;
 import android.content.Intent;
+
 import android.net.Uri;
 import android.os.Bundle;
 
 import android.provider.MediaStore;
+import android.text.TextUtils;
+import android.util.Log;
+import android.webkit.MimeTypeMap;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+
+import com.example.traveldiary.Manifest;
 import com.example.traveldiary.R;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
 
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
-
 import jp.wasabeef.richeditor.RichEditor;
 
 public class UploadBoardActivity extends AppCompatActivity {
@@ -30,6 +46,10 @@ public class UploadBoardActivity extends AppCompatActivity {
     private RichEditor mEditor;
     private TextView mPreview;
     private String userToken;
+
+    private ImageView preImage;
+    private Uri filePath;
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +61,9 @@ public class UploadBoardActivity extends AppCompatActivity {
         LoginActivity.storage = FirebaseStorage.getInstance();    // 이미지 경로를 저장하기 위한 DB에 접근하기 위환 인스턴스 선언
 
         // Create a storage reference from our app
-        StorageReference storageRef = LoginActivity.storage.getReference();
+
+
+        preImage = (ImageView) findViewById(R.id.preimag);
 
         mEditor = (RichEditor) findViewById(R.id.editor);
 
@@ -79,13 +101,23 @@ public class UploadBoardActivity extends AppCompatActivity {
 
         findViewById(R.id.action_outdent).setOnClickListener(v -> mEditor.setOutdent());
 
+
+
         ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if(result.getResultCode() == RESULT_OK) {
-                        Intent intent = result.getData();
-                        Uri uri = intent.getData();
-                        mEditor.insertImage(String.valueOf(uri), "", 320);
+                        Glide
+                                .with(getApplicationContext()).load(result.getData().getData())
+                                .apply(RequestOptions.overrideOf(250, 300))
+                                .centerCrop()
+                                .into(preImage);
+                        mEditor.insertImage(String.valueOf(result.getData().getData()), " ", 320);
+
+                       filePath = result.getData().getData();
+
+
+
                     }
                 }
         );
@@ -115,6 +147,8 @@ public class UploadBoardActivity extends AppCompatActivity {
         findViewById(R.id.uploadBtn).setOnClickListener(v -> save(mPreview));
     }
 
+
+    // DB에 올리는 함수
     public void save(TextView mPreview) {
         EditText title = findViewById(R.id.title);
         LocalDate now = LocalDate.now();
@@ -122,11 +156,58 @@ public class UploadBoardActivity extends AppCompatActivity {
         item.put("upload_data", String.valueOf(now));
         item.put("title", title.getText().toString());
         item.put("con", mPreview.getText().toString());
-        LoginActivity.db.collection("data").document("one").set(item);
+        LoginActivity.db.collection("data").document("one").set(item).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+               uploadImage(filePath);
+            }
+        });
+
 
         Intent intent = new Intent(this, MainViewActivity.class);
         intent.putExtra("userToken", userToken);
         startActivity(intent);
         finish();
     }
+
+    // 이미지 올리는 곳
+    public void uploadImage(Uri uri){
+
+
+        StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+        StorageReference imgRef = storageRef.child(System.currentTimeMillis() + "." + getFileExtension(uri));
+        imgRef.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                imgRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        Toast.makeText(getApplicationContext(), "업로드 성공", Toast.LENGTH_SHORT).show();
+                        Log.d("로그", "Firebase image upload success");
+                    }
+                });
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getApplicationContext(), "업로드 실패", Toast.LENGTH_SHORT).show();
+                Log.d("로그", "Firebase image upload Fail");
+            }
+        });
+
+
+    }
+    // Uri 형태 가져오는 함수
+    private String getFileExtension(Uri uri){
+
+        ContentResolver cr = getContentResolver();
+        MimeTypeMap mime = MimeTypeMap.getSingleton();
+
+        return mime.getExtensionFromMimeType(cr.getType(uri));
+    }
+
+
+
+
 }
