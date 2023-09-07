@@ -142,4 +142,11 @@
             android:id="@+id/myPage"
             style="@style/all_toolbar_imageView.myPage" />
     </LinearLayout>
+    <TextView
+        android:id="@+id/preview"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

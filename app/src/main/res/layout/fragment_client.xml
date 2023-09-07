@@ -71,7 +71,7 @@
                 android:layout_marginBottom="70dp"
                 android:paddingHorizontal="10dp">
 
-                <WebView
+                <TextView
                     android:id="@+id/con"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

@@ -29,13 +29,13 @@ public class UploadBoardActivity extends AppCompatActivity {
 
     private RichEditor mEditor;
     private TextView mPreview;
-
+    private String userToken;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload_board);
 
-        String userToken = getIntent().getStringExtra("userToken");
+        userToken = getIntent().getStringExtra("userToken");
 
         LoginActivity.db = FirebaseFirestore.getInstance();
         LoginActivity.storage = FirebaseStorage.getInstance();    // 이미지 경로를 저장하기 위한 DB에 접근하기 위환 인스턴스 선언
@@ -123,5 +123,10 @@ public class UploadBoardActivity extends AppCompatActivity {
         item.put("title", title.getText().toString());
         item.put("con", mPreview.getText().toString());
         LoginActivity.db.collection("data").document("one").set(item);
+
+        Intent intent = new Intent(this, MainViewActivity.class);
+        intent.putExtra("userToken", userToken);
+        startActivity(intent);
+        finish();
     }
 }
