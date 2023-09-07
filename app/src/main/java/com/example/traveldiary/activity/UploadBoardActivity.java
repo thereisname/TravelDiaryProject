@@ -1,11 +1,14 @@
 package com.example.traveldiary.activity;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
+import android.provider.MediaStore;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -76,11 +79,22 @@ public class UploadBoardActivity extends AppCompatActivity {
 
         findViewById(R.id.action_outdent).setOnClickListener(v -> mEditor.setOutdent());
 
+        ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if(result.getResultCode() == RESULT_OK) {
+                        Intent intent = result.getData();
+                        Uri uri = intent.getData();
+                        mEditor.insertImage(String.valueOf(uri), "", 320);
+                    }
+                }
+        );
+
         findViewById(R.id.action_insert_image).setOnClickListener(v -> {
-            Intent intent = new Intent();
-            intent.setType("Image/*");
-            intent.setAction(Intent.ACTION_GET_CONTENT);
-            startActivityForResult(Intent.createChooser(intent, "Select Picture"), 1);
+            Intent intent = new Intent(Intent.ACTION_PICK);
+            intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+            intent.setAction(Intent.ACTION_PICK);
+            activityResultLauncher.launch(intent);
         });
 
         ImageView myPage = findViewById(R.id.myPage);
@@ -109,17 +123,5 @@ public class UploadBoardActivity extends AppCompatActivity {
         item.put("title", title.getText().toString());
         item.put("con", mPreview.getText().toString());
         LoginActivity.db.collection("data").document("one").set(item);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            if (requestCode == 1) {
-                Uri currImageURI = data.getData();
-                mEditor.insertImage(String.valueOf(currImageURI), "", 320);
-            }
-
-        }
     }
 }
