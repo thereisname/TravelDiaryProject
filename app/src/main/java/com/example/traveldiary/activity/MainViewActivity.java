@@ -20,7 +20,7 @@ public class MainViewActivity extends AppCompatActivity {
 
         ImageView myPage = findViewById(R.id.myPage);
         FragmentImage fragmentImage = new FragmentImage();
-        FragmentClient fragmentClient = new FragmentClient();
+        FragmentClient fragmentClient = new FragmentClient(userToken);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragmentLayout, fragmentImage).commit();
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_view, fragmentClient).commit();

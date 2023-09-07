@@ -11,11 +11,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.traveldiary.R;
 import com.example.traveldiary.SHA256;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
 
 import java.security.NoSuchAlgorithmException;
 
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "EmailPassword";
+    public static FirebaseFirestore db;   // 게시물 저장 DB
+    public static FirebaseStorage storage;    // 이미지 저장 DB
     private FirebaseAuth mAuth;
 
     @Override
