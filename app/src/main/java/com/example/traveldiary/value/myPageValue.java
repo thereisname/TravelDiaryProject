@@ -8,6 +8,7 @@ public class myPageValue {
 
 
 
+
     public myPageValue(String title, String con, int mainImg, String hashTag) {
         this.title = title;
         this.con = con;

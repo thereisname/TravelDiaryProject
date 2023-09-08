@@ -36,18 +36,24 @@ import com.google.firebase.storage.UploadTask;
 
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
 import jp.wasabeef.richeditor.RichEditor;
 
 public class UploadBoardActivity extends AppCompatActivity {
 
+    private ArrayList<Uri> uriArrayList = new ArrayList<Uri>();
+
+    private String TAG = "로그";
     private RichEditor mEditor;
     private TextView mPreview;
     private String userToken;
 
     private ImageView preImage;
     private Uri filePath;
+
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,8 +67,6 @@ public class UploadBoardActivity extends AppCompatActivity {
 
         // Create a storage reference from our app
 
-
-        preImage = (ImageView) findViewById(R.id.preimag);
 
         mEditor = (RichEditor) findViewById(R.id.editor);
 
@@ -101,21 +105,24 @@ public class UploadBoardActivity extends AppCompatActivity {
         findViewById(R.id.action_outdent).setOnClickListener(v -> mEditor.setOutdent());
 
 
-
         ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
-                    if(result.getResultCode() == RESULT_OK) {
+                    if (result.getResultCode() == RESULT_OK && result != null) {
                         Glide
                                 .with(getApplicationContext()).load(result.getData().getData())
                                 .apply(RequestOptions.overrideOf(250, 300))
                                 .centerCrop()
-                                .into(preImage);
+                                .override(320, 240);
+                        // 이미지 크기를 4:3으로 저장
                         mEditor.insertImage(String.valueOf(result.getData().getData()), " ", 320);
 
-                       filePath = result.getData().getData();
+                        filePath = result.getData().getData();
 
+                        Log.d("로그", "이미지 가져오기 성공");
 
+                        uriArrayList.add(filePath);
+                        Log.d("로그", "리스트에 uri 넣기 성공" + String.valueOf(uriArrayList.size()));
 
                     }
                 }
@@ -149,6 +156,7 @@ public class UploadBoardActivity extends AppCompatActivity {
 
     // DB에 올리는 함수
     public void save(TextView mPreview) {
+
         EditText title = findViewById(R.id.title);
         LocalDate now = LocalDate.now();
         Map<String, Object> item = new HashMap<>();
@@ -158,7 +166,9 @@ public class UploadBoardActivity extends AppCompatActivity {
         LoginActivity.db.collection("data").document("one").set(item).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
-               uploadImage(filePath);
+                if (filePath != null) {
+                    uploadImage(filePath);
+                }
             }
         });
 
@@ -170,43 +180,48 @@ public class UploadBoardActivity extends AppCompatActivity {
     }
 
     // 이미지 올리는 곳
-    public void uploadImage(Uri uri){
-
+    public void uploadImage(Uri uri) {
 
         StorageReference storageRef = FirebaseStorage.getInstance().getReference();
-        StorageReference imgRef = storageRef.child(System.currentTimeMillis() + "." + getFileExtension(uri));
-        imgRef.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                imgRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
-                        Toast.makeText(getApplicationContext(), "업로드 성공", Toast.LENGTH_SHORT).show();
-                        Log.d("로그", "Firebase image upload success");
-                    }
-                });
 
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getApplicationContext(), "업로드 실패", Toast.LENGTH_SHORT).show();
-                Log.d("로그", "Firebase image upload Fail");
-            }
-        });
+        //System.currentTimeMillis() 예전 사진 이름이였던거
 
+        // 다수의 이미지를 넣기 위해 for문 사용
+        for (int index = 0; index < uriArrayList.size(); index++) {
 
+            //name : firebase에 올라가는 이름이다.
+            StorageReference imgRef = storageRef.child("name" + index + "." + getFileExtension(uri));
+            imgRef.putFile(uriArrayList.get(index)).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    imgRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            Toast.makeText(getApplicationContext(), "업로드 성공", Toast.LENGTH_SHORT).show();
+                            Log.d("로그", "Firebase image upload success");
+                        }
+                    });
+
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(getApplicationContext(), "업로드 실패", Toast.LENGTH_SHORT).show();
+                    Log.d("로그", "Firebase image upload Fail");
+                }
+            });
+        }
     }
+
+
     // Uri 형태 가져오는 함수
-    private String getFileExtension(Uri uri){
+    private String getFileExtension(Uri uri) {
 
         ContentResolver cr = getContentResolver();
         MimeTypeMap mime = MimeTypeMap.getSingleton();
 
         return mime.getExtensionFromMimeType(cr.getType(uri));
     }
-
-
 
 
 }

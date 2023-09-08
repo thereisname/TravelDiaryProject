@@ -3,6 +3,7 @@ package com.example.traveldiary.activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -38,6 +39,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        // 권한 체크 함수 불러오기
         permissionCheck();
 
         // [START initialize_auth]
@@ -75,6 +77,8 @@ public class LoginActivity extends AppCompatActivity {
         });
         register.setOnClickListener(v ->
             startActivity(new Intent(this, RegisterActivity.class)));
+
+        Log.d("로그", mAuth.getCurrentUser().getEmail().toString());
     }
 
     // 권한 체크
