@@ -15,11 +15,14 @@ import android.widget.TextView;
 
 import com.example.traveldiary.R;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,6 +33,9 @@ public class UploadBoardActivity extends AppCompatActivity {
     private RichEditor mEditor;
     private TextView mPreview;
     private String userToken;
+    private Map<String, Object> info;
+    private DatabaseReference mDatabase;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -116,17 +122,29 @@ public class UploadBoardActivity extends AppCompatActivity {
     }
 
     public void save(TextView mPreview) {
+        info = (Map<String, Object>) getIntent().getSerializableExtra("info");
         EditText title = findViewById(R.id.title);
-        LocalDate now = LocalDate.now();
+        LocalDateTime now = LocalDateTime.now();
+        String formatNow = now.format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm:ss"));
+
         Map<String, Object> item = new HashMap<>();
-        item.put("upload_data", String.valueOf(now));
+        item.put("uploadDate", formatNow);
         item.put("title", title.getText().toString());
         item.put("con", mPreview.getText().toString());
-        LoginActivity.db.collection("data").document("one").set(item);
+        item.put("date", info.get("date"));
+        item.put("mainImg", info.get("mainImg"));
+        item.put("hashTag", info.get("hashTag"));
 
-        Intent intent = new Intent(this, MainViewActivity.class);
-        intent.putExtra("userToken", userToken);
-        startActivity(intent);
-        finish();
+        LoginActivity.db.collection("data").add(item).addOnSuccessListener(documentReference -> {
+            String getID = documentReference.getId();
+            documentReference.update("conID", getID);
+
+            mDatabase = FirebaseDatabase.getInstance().getReference("UI");
+            mDatabase.child("users").child(userToken).child("board").setValue(getID);
+            Intent intent = new Intent(this, MainViewActivity.class);
+            intent.putExtra("userToken", userToken);
+            startActivity(intent);
+            finish();
+        });
     }
 }

@@ -43,7 +43,7 @@ public class MypageActivity extends AppCompatActivity {
 
         TextView nickName = findViewById(R.id.nickName);
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("UI");
-        mDatabase.child("users").child(userToken).child("userNickName").addListenerForSingleValueEvent(new ValueEventListener() {
+        mDatabase.child("users").child(userToken).child("info").child("userNickName").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 nickName.setText(String.valueOf(snapshot.getValue()));

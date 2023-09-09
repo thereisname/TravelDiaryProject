@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
+
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.util.Pair
 import com.example.traveldiary.R
@@ -15,10 +16,12 @@ import java.text.SimpleDateFormat
 import java.util.*
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import kotlin.collections.HashMap
 
 class UploadCalendarActivity : AppCompatActivity() {
     lateinit var binding: ActivityUploadCalendarBinding
     lateinit var filePath: String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityUploadCalendarBinding.inflate(layoutInflater)
@@ -51,8 +54,26 @@ class UploadCalendarActivity : AppCompatActivity() {
         }
 
         binding.next.setOnClickListener {
-            val intent = Intent(this,UploadBoardActivity::class.java)
+            val intent = Intent(this, UploadBoardActivity::class.java)
             intent.putExtra("userToken", userToken)
+            val info = HashMap<String, Any>()
+            info["date"] = binding.dataPickerText.text.toString()
+            try {
+                info["mainImg"] = filePath
+            } catch (e: Exception) {
+                info["mainImg"] = R.drawable.baseline_image_24.toString()
+            }
+
+            val arr: Array<Int> = Array(4) { 0 }
+            if (binding.chip1.isChecked) arr[0] = 1
+            if (binding.chip2.isChecked) arr[1] = 1
+            if (binding.chip3.isChecked) arr[2] = 1
+            if (binding.chip4.isChecked) arr[3] = 1
+
+            info["hashTag"] = arr.contentToString()
+
+            Log.d("info HashMap", info.toString())
+            intent.putExtra("info", info)
             startActivity(intent)
         }
 
@@ -73,8 +94,8 @@ class UploadCalendarActivity : AppCompatActivity() {
 
         val requestLauncher = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()
-        ){
-            if(it.resultCode === android.app.Activity.RESULT_OK){
+        ) {
+            if (it.resultCode === android.app.Activity.RESULT_OK) {
                 Glide
                     .with(getApplicationContext())
                     .load(it.data?.data)
@@ -82,16 +103,18 @@ class UploadCalendarActivity : AppCompatActivity() {
                     .centerCrop()
                     .into(binding.imageButton)
 
-                val cursor = contentResolver.query(it.data?.data as Uri,
-                    arrayOf<String>(MediaStore.Images.Media.DATA), null, null, null);
+                val cursor = contentResolver.query(
+                    it.data?.data as Uri,
+                    arrayOf<String>(MediaStore.Images.Media.DATA), null, null, null
+                );
                 cursor?.moveToFirst().let {
-                    filePath=cursor?.getString(0) as String
+                    filePath = cursor?.getString(0) as String
                 }
 
             }
         }
 
-        binding.imageButton.setOnClickListener{
+        binding.imageButton.setOnClickListener {
             Log.d("로그", "눌림")
             val intent = Intent(Intent.ACTION_PICK)
             intent.setDataAndType(
