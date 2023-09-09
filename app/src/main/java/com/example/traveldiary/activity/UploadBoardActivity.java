@@ -16,7 +16,9 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
 import android.webkit.MimeTypeMap;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -150,19 +152,47 @@ public class UploadBoardActivity extends AppCompatActivity {
             finish();
         });
 
-        findViewById(R.id.uploadBtn).setOnClickListener(v -> save(mPreview));
+        Button uploadBtn = (Button) findViewById(R.id.uploadBtn);
+
+        uploadBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String str = mEditor.getHtml();
+                ArrayList<Integer> strImgStartIndex = new ArrayList<Integer>();
+                ArrayList<Integer> strImgEndIndex = new ArrayList<Integer>();
+                for (int i = 0; i < str.length(); i++) {
+                    if (str.charAt(i) == '<' && str.charAt(i + 1) == 'i') {
+                        strImgStartIndex.add(i);
+                        Log.d(TAG, "이미지 시작 index" + str.charAt(i));
+
+                    }
+                    if (str.charAt(i) == '>' && str.charAt(i - 2) == '0' && str.charAt(i - 3) == '2') {
+                        Log.d(TAG, "인택스" + str.charAt(i));
+                        strImgEndIndex.add(i);
+                    }
+                }
+                int count = strImgStartIndex.size();
+                while (count > 0) {
+                    str = str.replace(str.substring(strImgStartIndex.get(count - 1), strImgEndIndex.get(count - 1) + 1), "image" + count);
+                    count--;
+                }
+
+                Toast.makeText(getApplicationContext(), "버튼 눌림확인", Toast.LENGTH_SHORT).show();
+                save(str);
+            }
+        });
     }
 
 
     // DB에 올리는 함수
-    public void save(TextView mPreview) {
-
+    public void save(String str) {
+        Log.d(TAG, "save가 실행됨");
         EditText title = findViewById(R.id.title);
         LocalDate now = LocalDate.now();
         Map<String, Object> item = new HashMap<>();
         item.put("upload_data", String.valueOf(now));
         item.put("title", title.getText().toString());
-        item.put("con", mPreview.getText().toString());
+        item.put("con", str);
         LoginActivity.db.collection("data").document("one").set(item).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
