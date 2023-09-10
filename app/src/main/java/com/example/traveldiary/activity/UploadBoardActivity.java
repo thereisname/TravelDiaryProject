@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.example.traveldiary.R;
 
+import com.example.traveldiary.value.BoardValue;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -137,10 +138,12 @@ public class UploadBoardActivity extends AppCompatActivity {
 
         LoginActivity.db.collection("data").add(item).addOnSuccessListener(documentReference -> {
             String getID = documentReference.getId();
-            documentReference.update("conID", getID);
+            documentReference.update("boardID", getID);
 
             mDatabase = FirebaseDatabase.getInstance().getReference("UI");
-            mDatabase.child("users").child(userToken).child("board").setValue(getID);
+            BoardValue board = new BoardValue(getID, title.getText().toString(), (String) info.get("mainImg"), (String) info.get("hashTag"));
+            mDatabase.child("users").child(userToken).child("board").child(getID).setValue(board);
+
             Intent intent = new Intent(this, MainViewActivity.class);
             intent.putExtra("userToken", userToken);
             startActivity(intent);
