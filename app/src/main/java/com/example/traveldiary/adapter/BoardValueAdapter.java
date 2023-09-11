@@ -1,6 +1,7 @@
 package com.example.traveldiary.adapter;
 
 import android.content.Context;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -88,8 +89,8 @@ public class BoardValueAdapter extends RecyclerView.Adapter<BoardValueAdapter.Vi
 
         public void setItem(MyPageValue item) {
             title.setText(item.getTitle());
-            content.setText(item.getCon());
-            image.setImageResource(item.getMainImg());
+            content.setText(Html.fromHtml(item.getCon(), Html.FROM_HTML_MODE_LEGACY));
+            image.setImageResource(R.drawable.baseline_image_24);
             hashTag.setText(item.getHashTag());
         }
     }

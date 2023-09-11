@@ -90,8 +90,9 @@ public class BookmarkValueAdapter extends RecyclerView.Adapter<BookmarkValueAdap
         public void setItem(MyPageValue item) {
             title.setText(item.getTitle());
             content.setText(item.getCon());
-            image.setImageResource(item.getMainImg());
-            hashTag.setText(item.getHashTag());
+//            image.setImageResource(item.getMainImg());
+            image.setImageResource(R.drawable.baseline_image_24);
+//            hashTag.setText(item.getHashTag());
         }
     }
 }

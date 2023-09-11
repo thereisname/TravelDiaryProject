@@ -4,7 +4,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
 
 import androidx.appcompat.app.AppCompatActivity
@@ -30,51 +29,10 @@ class UploadCalendarActivity : AppCompatActivity() {
         // intent 불러오기.
         val userToken = intent.getStringExtra("userToken")
 
-        //calendar Range
-        val dateRangePicker = MaterialDatePicker.Builder.dateRangePicker()
-            .setTitleText(resources.getString(R.string.mainActivity_dataPick_title))
-            .setSelection(
-                Pair(
-                    MaterialDatePicker.thisMonthInUtcMilliseconds(),
-                    MaterialDatePicker.todayInUtcMilliseconds()
-                )
-            )
-            .build()
-
-        binding.dataRangeBtn.setOnClickListener {
-            dateRangePicker.show(supportFragmentManager, "Material Date Range Picker")
-            dateRangePicker.addOnPositiveButtonClickListener { datePicked ->
-                val startDate = datePicked.first
-                val endDate = datePicked.second
-                if (startDate != null && endDate != null) {
-                    binding.dataPickerText.text =
-                        convertLongToDate(startDate) + " ~ " + convertLongToDate(endDate)
-                }
-            }
-        }
+        calendarPick()
 
         binding.next.setOnClickListener {
-            val intent = Intent(this, UploadBoardActivity::class.java)
-            intent.putExtra("userToken", userToken)
-            val info = HashMap<String, Any>()
-            info["date"] = binding.dataPickerText.text.toString()
-            try {
-                info["mainImg"] = filePath
-            } catch (e: Exception) {
-                info["mainImg"] = R.drawable.baseline_image_24.toString()
-            }
-
-            val arr: Array<Int> = Array(4) { 0 }
-            if (binding.chip1.isChecked) arr[0] = 1
-            if (binding.chip2.isChecked) arr[1] = 1
-            if (binding.chip3.isChecked) arr[2] = 1
-            if (binding.chip4.isChecked) arr[3] = 1
-
-            info["hashTag"] = arr.contentToString()
-
-            Log.d("info HashMap", info.toString())
-            intent.putExtra("info", info)
-            startActivity(intent)
+            nextBtnClickEvent(userToken)
         }
 
         // toolbar Btn
@@ -115,13 +73,66 @@ class UploadCalendarActivity : AppCompatActivity() {
         }
 
         binding.imageButton.setOnClickListener {
-            Log.d("로그", "눌림")
             val intent = Intent(Intent.ACTION_PICK)
             intent.setDataAndType(
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*"
             )
             requestLauncher.launch(intent)
         }
+    }
+
+    private fun calendarPick() {
+        //calendar Range
+        val dateRangePicker = MaterialDatePicker.Builder.dateRangePicker()
+            .setTitleText(resources.getString(R.string.mainActivity_dataPick_title))
+            .setSelection(
+                Pair(
+                    MaterialDatePicker.thisMonthInUtcMilliseconds(),
+                    MaterialDatePicker.todayInUtcMilliseconds()
+                )
+            )
+            .build()
+
+        binding.dataRangeBtn.setOnClickListener {
+            dateRangePicker.show(supportFragmentManager, "Material Date Range Picker")
+            dateRangePicker.addOnPositiveButtonClickListener { datePicked ->
+                val startDate = datePicked.first
+                val endDate = datePicked.second
+                if (startDate != null && endDate != null) {
+                    binding.dataPickerText.text = getString(
+                        R.string.uploadCalender_calendar,
+                        convertLongToDate(startDate),
+                        convertLongToDate(endDate)
+                    )
+                }
+            }
+        }
+    }
+
+    private fun HashTagCustom(): String {
+        var arr = " "
+        if (binding.chip1.isChecked) arr = "$arr#혼자 여행 "
+        if (binding.chip2.isChecked) arr = "$arr#커플 여행 "
+        if (binding.chip3.isChecked) arr = "$arr#친구와 여행 "
+        if (binding.chip4.isChecked) arr = "$arr#가족 여행 "
+        return arr
+    }
+
+    private fun nextBtnClickEvent(userToken: String?) {
+        val intent = Intent(this, UploadBoardActivity::class.java)
+        intent.putExtra("userToken", userToken)
+        val info = HashMap<String, Any>()
+        info["date"] = binding.dataPickerText.text.toString()
+        try {
+            info["mainImg"] = filePath
+        } catch (e: Exception) {
+            info["mainImg"] = R.drawable.baseline_image_24.toString()
+        }
+
+        info["hashTag"] = HashTagCustom()
+
+        intent.putExtra("info", info)
+        startActivity(intent)
     }
 
     /**
