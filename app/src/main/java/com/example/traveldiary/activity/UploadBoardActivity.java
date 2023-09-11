@@ -12,12 +12,11 @@ import android.provider.MediaStore;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.traveldiary.R;
 
-import com.example.traveldiary.value.BoardValue;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -89,7 +88,7 @@ public class UploadBoardActivity extends AppCompatActivity {
         ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
-                    if(result.getResultCode() == RESULT_OK) {
+                    if (result.getResultCode() == RESULT_OK) {
                         Intent intent = result.getData();
                         Uri uri = intent.getData();
                         mEditor.insertImage(String.valueOf(uri), "", 320);
@@ -135,19 +134,17 @@ public class UploadBoardActivity extends AppCompatActivity {
         item.put("date", info.get("date"));
         item.put("mainImg", info.get("mainImg"));
         item.put("hashTag", info.get("hashTag"));
+        item.put("userToken", userToken);
 
         LoginActivity.db.collection("data").add(item).addOnSuccessListener(documentReference -> {
             String getID = documentReference.getId();
             documentReference.update("boardID", getID);
 
-            mDatabase = FirebaseDatabase.getInstance().getReference("UI");
-            BoardValue board = new BoardValue(getID, title.getText().toString(), (String) info.get("mainImg"), (String) info.get("hashTag"));
-            mDatabase.child("users").child(userToken).child("board").child(getID).setValue(board);
-
             Intent intent = new Intent(this, MainViewActivity.class);
             intent.putExtra("userToken", userToken);
             startActivity(intent);
             finish();
-        });
+            Toast.makeText(this, "Upload successful", Toast.LENGTH_SHORT).show();
+        }).addOnFailureListener(e -> Toast.makeText(UploadBoardActivity.this, "Upload failed.", Toast.LENGTH_SHORT).show());
     }
 }
