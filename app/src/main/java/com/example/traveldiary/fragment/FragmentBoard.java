@@ -20,7 +20,9 @@ import android.widget.TextView;
 import com.example.traveldiary.OnItemClickListener;
 import com.example.traveldiary.R;
 import com.example.traveldiary.adapter.BoardValueAdapter;
-import com.example.traveldiary.value.myPageValue;
+import com.example.traveldiary.value.MyPageValue;
+
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 

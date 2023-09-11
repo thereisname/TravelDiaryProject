@@ -20,7 +20,11 @@ import android.widget.TextView;
 
 import com.example.traveldiary.R;
 import com.example.traveldiary.adapter.BoardValueAdapter;
-import com.example.traveldiary.value.myPageValue;
+import com.example.traveldiary.value.MyPageValue;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
+
 
 import java.util.ArrayList;
 
@@ -118,7 +122,7 @@ public class FragmentBookmark extends Fragment {
 
     public void onItemSelected(View view, int position, ArrayList<myPageValue> items) {
         //Save the clicked position value among the ArrayList values as a resultValue type in the variable item.
-        myPageValue item = items.get(position);
+        MyPageValue item = items.get(position);
         //Create a Dialog class to define a custom dialog.
         final Dialog dialog = new Dialog(getActivity());
         //Custom Dialog Corner Radius Processing
