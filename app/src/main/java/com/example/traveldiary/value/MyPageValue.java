@@ -1,57 +1,50 @@
 package com.example.traveldiary.value;
 
-public class MyPageValue {
+public class myPageValue {
     private String con;
-    private String mainImg;
+    private int mainImg;
     private String title;
     private String hashTag;
-    private String date;
-    private String uploadDate;
-    private String boardID;
-    private String userToken;
 
-    public MyPageValue() {
-    }
 
-    public MyPageValue(String con, String mainImg, String title, String hashTag, String date, String uploadDate, String boardID, String userToken) {
+
+
+    public myPageValue(String title, String con, int mainImg, String hashTag) {
+        this.title = title;
         this.con = con;
         this.mainImg = mainImg;
-        this.title = title;
         this.hashTag = hashTag;
-        this.date = date;
-        this.uploadDate = uploadDate;
-        this.boardID = boardID;
-    }
-
-    public String getCon() {
-        return con;
-    }
-
-    public String getMainImg() {
-        return mainImg;
-    }
-
-    public String getTitle() {
-        return title;
     }
 
     public String getHashTag() {
         return hashTag;
     }
 
-    public String getDate() {
-        return date;
+    public void setHashTag(String hashTag) {
+        this.hashTag = hashTag;
     }
 
-    public String getUploadDate() {
-        return uploadDate;
+    public void setCon(String con) {
+        this.con = con;
     }
 
-    public String getBoardID() {
-        return boardID;
+    public void setMainImg(int mainImg) {
+        this.mainImg = mainImg;
     }
 
-    public String getUserToken() {
-        return userToken;
+    public String getCon() {
+        return con;
+    }
+
+    public int getMainImg() {
+        return mainImg;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getTitle() {
+        return title;
     }
 }
