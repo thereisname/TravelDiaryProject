@@ -31,6 +31,8 @@ import com.example.traveldiary.R;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -39,6 +41,8 @@ import com.google.firebase.storage.UploadTask;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -57,6 +61,9 @@ public class UploadBoardActivity extends AppCompatActivity {
     private Uri filePath;
 
     @SuppressLint("MissingInflatedId")
+    private Map<String, Object> info;
+    private DatabaseReference mDatabase;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -190,9 +197,11 @@ public class UploadBoardActivity extends AppCompatActivity {
     public void save(String str) {
         Log.d(TAG, "save가 실행됨");
         EditText title = findViewById(R.id.title);
-        LocalDate now = LocalDate.now();
+        LocalDateTime now = LocalDateTime.now();
+        String formatNow = now.format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm:ss"));
+
         Map<String, Object> item = new HashMap<>();
-        item.put("upload_data", String.valueOf(now));
+        item.put("uploadDate", formatNow);
         item.put("title", title.getText().toString());
         item.put("con", str);
         LoginActivity.db.collection("data").document("one").set(item).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -203,12 +212,21 @@ public class UploadBoardActivity extends AppCompatActivity {
                 }
             }
         });
+        item.put("date", info.get("date"));
+        item.put("mainImg", info.get("mainImg"));
+        item.put("hashTag", info.get("hashTag"));
+        item.put("userToken", userToken);
 
+        LoginActivity.db.collection("data").add(item).addOnSuccessListener(documentReference -> {
+            String getID = documentReference.getId();
+            documentReference.update("boardID", getID);
 
-        Intent intent = new Intent(this, MainViewActivity.class);
-        intent.putExtra("userToken", userToken);
-        startActivity(intent);
-        finish();
+            Intent intent = new Intent(this, MainViewActivity.class);
+            intent.putExtra("userToken", userToken);
+            startActivity(intent);
+            finish();
+            Toast.makeText(this, "Upload successful", Toast.LENGTH_SHORT).show();
+        }).addOnFailureListener(e -> Toast.makeText(UploadBoardActivity.this, "Upload failed.", Toast.LENGTH_SHORT).show());
     }
 
     // 이미지 올리는 곳

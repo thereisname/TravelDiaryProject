@@ -1,9 +1,6 @@
 package com.example.traveldiary.activity;
 
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -64,7 +61,7 @@ public class RegisterActivity extends AppCompatActivity {
                             account.setUserEmail(firebaseUser.getEmail());
                             account.setUserNickName(strNickName);
 
-                            mDatabase.child("users").child(firebaseUser.getUid()).setValue(account);
+                            mDatabase.child("users").child(firebaseUser.getUid()).child("info").setValue(account);
                             Toast.makeText(getApplicationContext(), "회원가입에 성공하였습니다.", Toast.LENGTH_LONG).show();
                             System.exit(0);
                         } else
