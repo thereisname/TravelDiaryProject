@@ -31,7 +31,6 @@ class UploadCalendarActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 
-
         // intent 불러오기.
         val userToken = intent.getStringExtra("userToken")
 
@@ -136,17 +135,17 @@ class UploadCalendarActivity : AppCompatActivity() {
         } catch (e: Exception) {
             info["mainImg"] = R.drawable.baseline_image_24.toString()
         }
-         val storage = LoginActivity.storage
-         val storageRef : StorageReference = storage.reference
-         val imgRef : StorageReference = storageRef.child("image/${userToken}}.jpg")
+        val storage = LoginActivity.storage
+        val storageRef: StorageReference = storage.reference
+        val imgRef: StorageReference = storageRef.child("image/${userToken}}.jpg")
 
-         val file = Uri.fromFile(File(filePath))
-         imgRef.putFile(file)
-           .addOnFailureListener{
-               Log.d("jung", "failure........" + it)
-           }.addOnSuccessListener {
-               Toast.makeText(this, "데이터 저장되었습니다.", Toast.LENGTH_SHORT).show()               
-           }
+        val file = Uri.fromFile(File(filePath))
+        imgRef.putFile(file)
+            .addOnFailureListener {
+                Log.d("jung", "failure........" + it)
+            }.addOnSuccessListener {
+                Toast.makeText(this, "데이터 저장되었습니다.", Toast.LENGTH_SHORT).show()
+            }
 
         info["hashTag"] = HashTagCustom()
 
@@ -169,3 +168,4 @@ class UploadCalendarActivity : AppCompatActivity() {
         )
         return format.format(date)
     }
+}

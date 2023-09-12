@@ -57,7 +57,6 @@ public class UploadBoardActivity extends AppCompatActivity {
     private TextView mPreview;
     private String userToken;
 
-    private ImageView preImage;
     private Uri filePath;
 
     @SuppressLint("MissingInflatedId")
@@ -207,9 +206,8 @@ public class UploadBoardActivity extends AppCompatActivity {
         LoginActivity.db.collection("data").document("one").set(item).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
-                if (filePath != null) {
-                    uploadImage(filePath);
-                }
+
+                uploadImage((String) info.get("userToken"));
             }
         });
         item.put("date", info.get("date"));
@@ -230,7 +228,9 @@ public class UploadBoardActivity extends AppCompatActivity {
     }
 
     // 이미지 올리는 곳
-    public void uploadImage(Uri uri) {
+    public void uploadImage(String docID) {
+
+        uriArrayList.add((Uri) info.get("mainImg"));
 
         StorageReference storageRef = FirebaseStorage.getInstance().getReference();
 
@@ -240,7 +240,7 @@ public class UploadBoardActivity extends AppCompatActivity {
         for (int index = 0; index < uriArrayList.size(); index++) {
 
             //name : firebase에 올라가는 이름이다.
-            StorageReference imgRef = storageRef.child("name" + index + "." + getFileExtension(uri));
+            StorageReference imgRef = storageRef.child(docID + "/image" + index + "." + getFileExtension(filePath));
             imgRef.putFile(uriArrayList.get(index)).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -264,7 +264,7 @@ public class UploadBoardActivity extends AppCompatActivity {
     }
 
 
-    // Uri 형태 가져오는 함수
+    // 이미지 형태 가져오는 함수
     private String getFileExtension(Uri uri) {
 
         ContentResolver cr = getContentResolver();

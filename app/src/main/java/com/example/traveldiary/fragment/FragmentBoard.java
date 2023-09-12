@@ -22,7 +22,7 @@ import com.example.traveldiary.OnItemClickListener;
 import com.example.traveldiary.R;
 import com.example.traveldiary.activity.LoginActivity;
 import com.example.traveldiary.adapter.BoardValueAdapter;
-import com.example.traveldiary.value.MyPageValue;
+import com.example.traveldiary.value.myPageValue;
 
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -52,7 +52,7 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
         String userToken = bundle.getString("userToken");
         LoginActivity.db.collection("data").whereEqualTo("userToken", userToken).get().addOnSuccessListener(queryDocumentSnapshots -> {
             for (QueryDocumentSnapshot queryDocumentSnapshot : queryDocumentSnapshots) {
-                MyPageValue mp = queryDocumentSnapshot.toObject(MyPageValue.class);
+                myPageValue mp = queryDocumentSnapshot.toObject(myPageValue.class);
                 adapter.addItem(mp);
             }
             recyclerView.setAdapter(adapter);
@@ -61,7 +61,7 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
 
     public void onItemSelected(View view, int position, ArrayList<MyPageValue> items) {
         //Save the clicked position value among the ArrayList values as a resultValue type in the variable item.
-        MyPageValue item = items.get(position);
+        myPageValue item = items.get(position);
         //Create a Dialog class to define a custom dialog.
         final Dialog dialog = new Dialog(getActivity());
         //Custom Dialog Corner Radius Processing

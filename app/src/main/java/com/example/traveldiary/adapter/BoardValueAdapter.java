@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.traveldiary.value.MyPageValue;
 import com.example.traveldiary.OnItemClickListener;
 import com.example.traveldiary.R;
+import com.example.traveldiary.value.myPageValue;
 
 import java.util.ArrayList;
 
@@ -47,7 +48,7 @@ public class BoardValueAdapter extends RecyclerView.Adapter<BoardValueAdapter.Vi
         return items.size();
     }
 
-    public void addItem(MyPageValue item) {
+    public void addItem(myPageValue item) {
         items.add(item);
     }
 
