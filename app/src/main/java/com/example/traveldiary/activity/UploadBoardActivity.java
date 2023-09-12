@@ -160,23 +160,25 @@ public class UploadBoardActivity extends AppCompatActivity {
                 String str = mEditor.getHtml();
                 ArrayList<Integer> strImgStartIndex = new ArrayList<Integer>();
                 ArrayList<Integer> strImgEndIndex = new ArrayList<Integer>();
+                //이미지 링크 추출하는 loop
                 for (int i = 0; i < str.length(); i++) {
                     if (str.charAt(i) == '<' && str.charAt(i + 1) == 'i') {
-                        strImgStartIndex.add(i);
-                        Log.d(TAG, "이미지 시작 index" + str.charAt(i));
+                        strImgStartIndex.add(i+10);
+                        Log.d(TAG, "이미지 시작 index" + str.charAt(i+10));
 
                     }
                     if (str.charAt(i) == '>' && str.charAt(i - 2) == '0' && str.charAt(i - 3) == '2') {
-                        Log.d(TAG, "인택스" + str.charAt(i));
-                        strImgEndIndex.add(i);
+                        Log.d(TAG, "인택스" + str.charAt(i-21));
+                        strImgEndIndex.add(i-21);
                     }
                 }
+                // 이미지 링크 자리에 image 번호로 대체
                 int count = strImgStartIndex.size();
                 while (count > 0) {
-                    str = str.replace(str.substring(strImgStartIndex.get(count - 1), strImgEndIndex.get(count - 1) + 1), "image" + count);
+                    str = str.replace(str.substring(strImgStartIndex.get(count - 1), strImgEndIndex.get(count - 1)), "image" + count);
                     count--;
                 }
-
+                // 정상 처리하는지 확인
                 Toast.makeText(getApplicationContext(), "버튼 눌림확인", Toast.LENGTH_SHORT).show();
                 save(str);
             }
