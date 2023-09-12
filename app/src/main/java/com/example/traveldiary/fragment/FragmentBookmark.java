@@ -1,11 +1,5 @@
 package com.example.traveldiary.fragment;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -18,15 +12,20 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.traveldiary.R;
-import com.example.traveldiary.activity.LoginActivity;
 import com.example.traveldiary.activity.MypageActivity;
 import com.example.traveldiary.adapter.BoardValueAdapter;
 import com.example.traveldiary.value.MyPageValue;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
-
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
@@ -50,11 +49,12 @@ public class FragmentBookmark extends Fragment {
     public void loadDate() {
         Bundle bundle = getArguments();
         String userToken = bundle.getString("userToken");
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
         MypageActivity.mDatabase.child("users").child(userToken).child("bookmark").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot data : snapshot.getChildren()) {
-                    LoginActivity.db.collection("data").document(data.getKey()).get().addOnSuccessListener(documentSnapshot -> {
+                    db.collection("data").document(data.getKey()).get().addOnSuccessListener(documentSnapshot -> {
                         MyPageValue mp = documentSnapshot.toObject(MyPageValue.class);
                         adapter.addItem(mp);
                         adapter.notifyDataSetChanged();
@@ -104,6 +104,5 @@ public class FragmentBookmark extends Fragment {
         dialog.show();
         ImageView closeButton = dialog.findViewById(R.id.closeButton);
         closeButton.setOnClickListener(v -> dialog.dismiss());
-
     }
 }
