@@ -1,8 +1,5 @@
 package com.example.traveldiary.fragment;
 
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.os.Bundle;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -11,8 +8,10 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import com.example.traveldiary.R;
-import com.example.traveldiary.activity.LoginActivity;
 import com.example.traveldiary.value.MyPageValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -36,7 +35,7 @@ public class FragmentClient extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         isAttBookmark = 0;
-        LoginActivity.db = FirebaseFirestore.getInstance();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
         View view = inflater.inflate(R.layout.fragment_client, container, false);
 
         ImageButton bookmark = view.findViewById(R.id.bookMarkBtn);
@@ -45,7 +44,7 @@ public class FragmentClient extends Fragment {
         TextView uploadDate = view.findViewById(R.id.uploadDate);
         TextView con = view.findViewById(R.id.con);
 
-        LoginActivity.db.collection("data").whereNotEqualTo("userToken", getUserToken()).limit(1).get().addOnSuccessListener(queryDocumentSnapshots -> {
+        db.collection("data").whereNotEqualTo("userToken", getUserToken()).limit(1).get().addOnSuccessListener(queryDocumentSnapshots -> {
             for (QueryDocumentSnapshot queryDocumentSnapshot : queryDocumentSnapshots) {
                 MyPageValue mp = queryDocumentSnapshot.toObject(MyPageValue.class);
                 fragment_title.setText(mp.getTitle());
@@ -53,7 +52,6 @@ public class FragmentClient extends Fragment {
                 con.setText(Html.fromHtml(mp.getCon(), Html.FROM_HTML_MODE_LEGACY));
                 uploadDate.setText(getString(R.string.uploadBoard_uploadDate, mp.getUploadDate()));
             }
-            ;
         });
 
         bookmark.setOnClickListener(v -> {

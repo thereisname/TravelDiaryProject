@@ -32,8 +32,7 @@ public class MypageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_mypage);
         String userToken = getIntent().getStringExtra("userToken");
         TextView logoutBtn = findViewById(R.id.logoutBtn);
-//        storage = FirebaseStorage.getInstance();    // 스토리지에 접근하기 위환 인스턴스 선언
-        
+
         logoutBtn.setOnClickListener(v -> {
             startActivity(new Intent(this, LoginActivity.class));
             Toast.makeText(getApplicationContext(), "Logout successful.", Toast.LENGTH_SHORT).show();
@@ -86,12 +85,10 @@ public class MypageActivity extends AppCompatActivity {
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-
             }
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-
             }
         });
 
