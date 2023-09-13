@@ -1,6 +1,10 @@
 package com.example.traveldiary.adapter;
 
+import static com.example.traveldiary.R.id.fragment_inPutImage;
+
 import android.content.Context;
+import android.net.Uri;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,14 +15,20 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.traveldiary.value.myPageValue;
+import com.bumptech.glide.Glide;
+import com.example.traveldiary.value.MyPageValue;
 import com.example.traveldiary.OnItemClickListener;
 import com.example.traveldiary.R;
+import com.example.traveldiary.value.MyPageValue;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
 public class BoardValueAdapter extends RecyclerView.Adapter<BoardValueAdapter.ViewHolder> {
-    private ArrayList<myPageValue> items = new ArrayList<>();
+    private ArrayList<MyPageValue> items = new ArrayList<>();
     private OnItemClickListener itemClickListener;
     private Context context;
 
@@ -37,7 +47,7 @@ public class BoardValueAdapter extends RecyclerView.Adapter<BoardValueAdapter.Vi
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
-        myPageValue item = items.get(position);
+        MyPageValue item = items.get(position);
         viewHolder.setItem(item);
     }
 
@@ -46,19 +56,19 @@ public class BoardValueAdapter extends RecyclerView.Adapter<BoardValueAdapter.Vi
         return items.size();
     }
 
-    public void addItem(myPageValue item) {
+    public void addItem(MyPageValue item) {
         items.add(item);
     }
 
-    public void setItems(ArrayList<myPageValue> items) {
+    public void setItems(ArrayList<MyPageValue> items) {
         this.items = items;
     }
 
-    public myPageValue getItem(int position) {
+    public MyPageValue getItem(int position) {
         return items.get(position);
     }
 
-    public void setItem(int position, myPageValue item) {
+    public void setItem(int position, MyPageValue item) {
         items.set(position, item);
     }
 
@@ -86,11 +96,13 @@ public class BoardValueAdapter extends RecyclerView.Adapter<BoardValueAdapter.Vi
             });
         }
 
-        public void setItem(myPageValue item) {
+        public void setItem(MyPageValue item) {
             title.setText(item.getTitle());
-            content.setText(item.getCon());
-            image.setImageResource(item.getMainImg());
+            content.setText(Html.fromHtml(item.getCon(), Html.FROM_HTML_MODE_LEGACY));
+            image.setImageResource(R.drawable.baseline_image_24);
             hashTag.setText(item.getHashTag());
         }
+
+
     }
 }

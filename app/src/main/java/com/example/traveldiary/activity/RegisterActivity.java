@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.traveldiary.R;
 import com.example.traveldiary.SHA256;
-import com.example.traveldiary.UserAccount;
+import com.example.traveldiary.value.UserAccount;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -18,11 +18,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.security.NoSuchAlgorithmException;
 
 public class RegisterActivity extends AppCompatActivity {
-    // 1. DB 읽거나 쓰기 위해서 DatabaseReference 인스턴스 필요.
     private FirebaseAuth mFirebaseAuth;
     private DatabaseReference mDatabase;
     private EditText inputNickName, inputPw, inputRePw, inputEmail;
-    private Button confirm_button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +29,7 @@ public class RegisterActivity extends AppCompatActivity {
         mFirebaseAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference("UI");
 
-        confirm_button = findViewById(R.id.confirm_button);
+        Button confirm_button = findViewById(R.id.confirm_button);
         inputNickName = findViewById(R.id.inputNickName);
         inputEmail = findViewById(R.id.inputEmail);
         inputPw = findViewById(R.id.inputPw);

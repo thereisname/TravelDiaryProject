@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">여행 일기</string>
+    <string name="app_name">여행 일기1</string>
 
     <!-- Login & Register -->
     <string name="all_hint_email">이메일</string>
@@ -31,6 +31,7 @@
     <string name="uploadCalender_text_calender">#여행 기간</string>
     <string name="uploadCalender_text_persons">#여행 인원</string>
     <string name="uploadCalender_text_style">#여행 스타일</string>
+    <string name="uploadCalender_text_mainImg"># 대표 이미지</string>
 
     <string name="uploadCalender_chip_persons_one">혼자 여행</string>
     <string name="uploadCalender_chip_persons_couple">커플 여행</string>
@@ -48,9 +49,11 @@
     <string name="uploadCalender_chip_style_emotional">감성</string>
 
     <string name="uploadCalender_boardBtn">글쓰기</string>
+    <string name="uploadCalender_calendar">%s ~ %s</string>
 
     <!--Upload Board -->
     <string name="uploadBoard_uploadBtn">올리기</string>
     <string name="uploadBoard_hint_title">제목</string>
-
+    <string name="uploadBoard_uploadDate">Upload Date: %s</string>
+    <string name="uploadBoard_date">여행일: %s</string>
 </resources>

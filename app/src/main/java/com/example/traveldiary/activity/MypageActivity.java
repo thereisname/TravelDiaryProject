@@ -24,6 +24,7 @@ import com.google.firebase.database.ValueEventListener;
 public class MypageActivity extends AppCompatActivity {
     FragmentBoard fragmentBoard;
     FragmentBookmark fragmentBookmark;
+    public static DatabaseReference mDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +32,7 @@ public class MypageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_mypage);
         String userToken = getIntent().getStringExtra("userToken");
         TextView logoutBtn = findViewById(R.id.logoutBtn);
-        
+
         logoutBtn.setOnClickListener(v -> {
             startActivity(new Intent(this, LoginActivity.class));
             Toast.makeText(getApplicationContext(), "Logout successful.", Toast.LENGTH_SHORT).show();
@@ -42,7 +43,7 @@ public class MypageActivity extends AppCompatActivity {
         fragmentBookmark = new FragmentBookmark();
 
         TextView nickName = findViewById(R.id.nickName);
-        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("UI");
+        mDatabase = FirebaseDatabase.getInstance().getReference("UI");
         mDatabase.child("users").child(userToken).child("info").child("userNickName").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -55,6 +56,10 @@ public class MypageActivity extends AppCompatActivity {
         });
 
         getSupportFragmentManager().beginTransaction().replace(R.id.container, fragmentBoard).commit();
+        Bundle bundle = new Bundle();
+        bundle.putString("userToken", userToken);
+        fragmentBoard.setArguments(bundle);
+
         TabLayout tabs = findViewById(R.id.tabs);
         tabs.addTab(tabs.newTab().setText("게시물"));
         tabs.addTab(tabs.newTab().setText("북마크"));
@@ -64,22 +69,26 @@ public class MypageActivity extends AppCompatActivity {
                 int position = tab.getPosition();
                 Log.d("position", String.valueOf(position));
                 Fragment selected = null;
-                if (position == 0)
+                if (position == 0) {
                     selected = fragmentBoard;
-                else
+                    fragmentBoard.setArguments(bundle);
+                    fragmentBookmark.onDestroy();
+                    fragmentBookmark.onDetach();
+                } else {
                     selected = fragmentBookmark;
-
+                    fragmentBookmark.setArguments(bundle);
+                    fragmentBoard.onDestroy();
+                    fragmentBoard.onDetach();
+                }
                 getSupportFragmentManager().beginTransaction().replace(R.id.container, selected).commit();
             }
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-
             }
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-
             }
         });
 

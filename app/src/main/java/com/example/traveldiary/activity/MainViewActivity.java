@@ -1,16 +1,20 @@
 package com.example.traveldiary.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.traveldiary.R;
 import com.example.traveldiary.fragment.FragmentClient;
 import com.example.traveldiary.fragment.FragmentImage;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 public class MainViewActivity extends AppCompatActivity {
+
+
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,4 +45,6 @@ public class MainViewActivity extends AppCompatActivity {
         });
 
     }
+
+
 }

@@ -13,6 +13,7 @@
         android:fillViewport="true"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
         app:layout_constraintEnd_toEndOf="parent"
+        android:scrollbars="vertical"
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -80,18 +81,22 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView2">
 
                 <com.google.android.material.chip.Chip
+                    android:id="@+id/chip1"
                     style="@style/uploadCalender_CustomChipStyle"
-                    android:text="@string/uploadCalender_chip_persons_one" />
+                    android:text="@string/uploadCalender_chip_persons_one"/>
 
                 <com.google.android.material.chip.Chip
+                    android:id="@+id/chip2"
                     style="@style/uploadCalender_CustomChipStyle"
                     android:text="@string/uploadCalender_chip_persons_couple" />
 
                 <com.google.android.material.chip.Chip
+                    android:id="@+id/chip3"
                     style="@style/uploadCalender_CustomChipStyle"
                     android:text="@string/uploadCalender_chip_persons_friend" />
 
                 <com.google.android.material.chip.Chip
+                    android:id="@+id/chip4"
                     style="@style/uploadCalender_CustomChipStyle"
                     android:text="@string/uploadCalender_chip_persons_family" />
 
@@ -164,7 +169,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
                 android:fontFamily="@font/gangwon"
-                android:text="대표 이미지"
+                android:text="@string/uploadCalender_text_mainImg"
                 android:textColor="@color/blue2"
                 android:textSize="24sp"
                 android:textStyle="bold"
@@ -188,7 +193,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
-                android:layout_marginBottom="40dp"
+                android:layout_marginBottom="50dp"
                 android:background="@drawable/border"
                 android:fontFamily="@font/gangwon"
                 android:paddingHorizontal="40dp"

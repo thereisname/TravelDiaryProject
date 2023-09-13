@@ -75,5 +75,6 @@ dependencies {
     // 이미지 Glide 설정
     implementation 'com.github.bumptech.glide:glide:4.10.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.13.2'
+
 }
 
