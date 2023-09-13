@@ -44,6 +44,7 @@ public class UploadBoardActivity extends AppCompatActivity {
 
         userToken = getIntent().getStringExtra("userToken");
 
+
         LoginActivity.db = FirebaseFirestore.getInstance();
         LoginActivity.storage = FirebaseStorage.getInstance();    // 이미지 경로를 저장하기 위한 DB에 접근하기 위환 인스턴스 선언
 
