@@ -25,6 +25,7 @@
         <EditText
             android:id="@+id/login_email"
             style="@style/inputEdit_style"
+            android:text="a@email.com"
             android:hint="@string/all_hint_email"
             android:inputType="textEmailAddress" />
 
@@ -32,6 +33,7 @@
             android:id="@+id/login_pw"
             style="@style/inputEdit_style"
             android:layout_marginTop="30dp"
+            android:text="111111"
             android:hint="@string/all_hint_pw"
             android:inputType="textPassword" />
 
