@@ -1,4 +1,4 @@
-package com.example.traveldiary;
+package com.example.traveldiary.value;
 
 /**
  * User Account Information Model Class. The class used for membership registration and login must include the following.

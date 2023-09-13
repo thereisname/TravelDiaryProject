@@ -4,22 +4,16 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.util.Pair
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.traveldiary.R
 import com.example.traveldiary.databinding.ActivityUploadCalendarBinding
 import com.google.android.material.datepicker.MaterialDatePicker
 import java.text.SimpleDateFormat
 import java.util.*
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
-import com.google.firebase.storage.StorageReference
-import java.io.File
-import kotlin.collections.HashMap
 
 class UploadCalendarActivity : AppCompatActivity() {
     lateinit var binding: ActivityUploadCalendarBinding
@@ -34,7 +28,7 @@ class UploadCalendarActivity : AppCompatActivity() {
         // intent 불러오기.
         val userToken = intent.getStringExtra("userToken")
 
-        calendarPick()
+        calendarPick()  // 여행일 선택창 output.
 
         binding.next.setOnClickListener {
             nextBtnClickEvent(userToken)
@@ -54,9 +48,7 @@ class UploadCalendarActivity : AppCompatActivity() {
             finish()
         }
 
-
         // 대표 이미지 가져오는 곳
-
         val requestLauncher = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()
         ) {
@@ -75,7 +67,6 @@ class UploadCalendarActivity : AppCompatActivity() {
                 cursor?.moveToFirst().let {
                     filePath = cursor?.getString(0) as String
                 }
-
             }
         }
 
@@ -135,17 +126,19 @@ class UploadCalendarActivity : AppCompatActivity() {
         } catch (e: Exception) {
             info["mainImg"] = R.drawable.baseline_image_24.toString()
         }
-        val storage = LoginActivity.storage
-        val storageRef: StorageReference = storage.reference
-        val imgRef: StorageReference = storageRef.child("image/${userToken}}.jpg")
 
-        val file = Uri.fromFile(File(filePath))
-        imgRef.putFile(file)
-            .addOnFailureListener {
-                Log.d("jung", "failure........" + it)
-            }.addOnSuccessListener {
-                Toast.makeText(this, "데이터 저장되었습니다.", Toast.LENGTH_SHORT).show()
-            }
+//        val storage = LoginActivity.storage
+//        val storageRef: StorageReference = storage.reference
+//        val imgRef: StorageReference = storageRef.child("image/${userToken}}.jpg")
+//
+//        val file = Uri.fromFile(File(filePath))
+//        imgRef.putFile(file)
+//            .addOnFailureListener {
+//                Log.d("jung", "failure........" + it)
+//            }.addOnSuccessListener {
+//                Toast.makeText(this, "데이터 저장되었습니다.", Toast.LENGTH_SHORT).show()
+//            }
+//
 
         info["hashTag"] = HashTagCustom()
 

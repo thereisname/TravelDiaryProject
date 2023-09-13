@@ -1,10 +1,5 @@
 package com.example.traveldiary.fragment;
 
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -18,11 +13,17 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.traveldiary.OnItemClickListener;
 import com.example.traveldiary.R;
-import com.example.traveldiary.activity.LoginActivity;
 import com.example.traveldiary.adapter.BoardValueAdapter;
-import com.example.traveldiary.value.myPageValue;
+
+import com.example.traveldiary.value.MyPageValue;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -50,9 +51,10 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
     public void loadDate() {
         Bundle bundle = getArguments();
         String userToken = bundle.getString("userToken");
-        LoginActivity.db.collection("data").whereEqualTo("userToken", userToken).get().addOnSuccessListener(queryDocumentSnapshots -> {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("data").whereEqualTo("userToken", userToken).get().addOnSuccessListener(queryDocumentSnapshots -> {
             for (QueryDocumentSnapshot queryDocumentSnapshot : queryDocumentSnapshots) {
-                myPageValue mp = queryDocumentSnapshot.toObject(myPageValue.class);
+                MyPageValue mp = queryDocumentSnapshot.toObject(MyPageValue.class);
                 adapter.addItem(mp);
             }
             recyclerView.setAdapter(adapter);
@@ -61,7 +63,7 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
 
     public void onItemSelected(View view, int position, ArrayList<MyPageValue> items) {
         //Save the clicked position value among the ArrayList values as a resultValue type in the variable item.
-        myPageValue item = items.get(position);
+        MyPageValue item = items.get(position);
         //Create a Dialog class to define a custom dialog.
         final Dialog dialog = new Dialog(getActivity());
         //Custom Dialog Corner Radius Processing
