@@ -24,27 +24,19 @@ class UploadCalendarActivity : AppCompatActivity() {
         binding = ActivityUploadCalendarBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
-        // intent 불러오기.
-        val userToken = intent.getStringExtra("userToken")
-
         calendarPick()  // 여행일 선택창 output.
 
         binding.next.setOnClickListener {
-            nextBtnClickEvent(userToken)
+            nextBtnClickEvent()
         }
 
         // toolbar Btn
         binding.home.setOnClickListener {
-            val intent = Intent(this, MainViewActivity::class.java)
-            intent.putExtra("userToken", userToken)
-            startActivity(intent)
+            startActivity(Intent(this, MainViewActivity::class.java))
             finish()
         }
         binding.myPage.setOnClickListener {
-            val intent = Intent(this, MypageActivity::class.java)
-            intent.putExtra("userToken", userToken)
-            startActivity(intent)
+            startActivity(Intent(this, MypageActivity::class.java))
             finish()
         }
 
@@ -116,9 +108,8 @@ class UploadCalendarActivity : AppCompatActivity() {
         return arr
     }
 
-    private fun nextBtnClickEvent(userToken: String?) {
+    private fun nextBtnClickEvent() {
         val intent = Intent(this, UploadBoardActivity::class.java)
-        intent.putExtra("userToken", userToken)
         val info = HashMap<String, Any>()
         info["date"] = binding.dataPickerText.text.toString()
         try {

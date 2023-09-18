@@ -20,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.traveldiary.R;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -36,7 +37,6 @@ public class UploadBoardActivity extends AppCompatActivity {
     private ArrayList<Uri> uriArrayList = new ArrayList<>();
     private RichEditor mEditor;
     private TextView mPreview;
-    private String userToken;
     private Uri filePath;
     FirebaseFirestore db;
 
@@ -45,10 +45,7 @@ public class UploadBoardActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload_board);
 
-        userToken = getIntent().getStringExtra("userToken");
-
         db = FirebaseFirestore.getInstance();
-        LoginActivity.storage = FirebaseStorage.getInstance();    // 이미지 경로를 저장하기 위한 DB에 접근하기 위환 인스턴스 선언
 
         // Create a storage reference from our app
         mEditor = findViewById(R.id.editor);
@@ -113,16 +110,12 @@ public class UploadBoardActivity extends AppCompatActivity {
 
         ImageView myPage = findViewById(R.id.myPage);
         myPage.setOnClickListener(v -> {
-            Intent intent = new Intent(this, MypageActivity.class);
-            intent.putExtra("userToken", userToken);
-            startActivity(intent);
+            startActivity(new Intent(this, MypageActivity.class));
             finish();
         });
         ImageView home = findViewById(R.id.home);
         home.setOnClickListener(v -> {
-            Intent intent = new Intent(this, MainViewActivity.class);
-            intent.putExtra("userToken", userToken);
-            startActivity(intent);
+            startActivity(new Intent(this, MainViewActivity.class));
             finish();
         });
 
@@ -211,7 +204,7 @@ public class UploadBoardActivity extends AppCompatActivity {
         item.put("date", info.get("date"));
         item.put("mainImg", info.get("mainImg"));
         item.put("hashTag", info.get("hashTag"));
-        item.put("userToken", userToken);
+        item.put("userToken", FirebaseAuth.getInstance().getUid());
 
         return item;
     }

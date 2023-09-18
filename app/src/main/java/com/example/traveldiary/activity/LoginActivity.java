@@ -13,16 +13,23 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.traveldiary.R;
 import com.example.traveldiary.SHA256;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.auth.FirebaseUser;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.security.NoSuchAlgorithmException;
 
 public class LoginActivity extends AppCompatActivity {
-    public static FirebaseStorage storage;    // 이미지 저장 DB
     private FirebaseAuth mAuth;
     private PermissionSupport permission;
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if(currentUser != null)
+            startActivity(new Intent(this, MainViewActivity.class));
+    }
 
     @Override
     protected void onDestroy() {
@@ -59,9 +66,7 @@ public class LoginActivity extends AppCompatActivity {
                 mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(LoginActivity.this, task -> {
                     if (task.isSuccessful()) {
                         // Sign in success, update UI with the signed-in user's information
-                        Intent intent = new Intent(getApplicationContext(), MainViewActivity.class);
-                        intent.putExtra("userToken", mAuth.getCurrentUser().getUid());
-                        startActivity(intent);
+                        startActivity(new Intent(getApplicationContext(), MainViewActivity.class));
                         finish();
                     } else {
                         // If sign in fails, display a message to the user.
