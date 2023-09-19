@@ -34,7 +34,6 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mAuth.signOut();
     }
 
     protected void onCreate(Bundle savedInstanceState) {

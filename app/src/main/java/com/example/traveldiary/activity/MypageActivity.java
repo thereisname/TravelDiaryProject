@@ -1,8 +1,6 @@
 package com.example.traveldiary.activity;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
+import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +8,10 @@ import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import com.example.traveldiary.R;
 import com.example.traveldiary.fragment.FragmentBoard;
@@ -34,9 +36,12 @@ public class MypageActivity extends AppCompatActivity {
         TextView logoutBtn = findViewById(R.id.logoutBtn);
 
         logoutBtn.setOnClickListener(v -> {
-            startActivity(new Intent(this, LoginActivity.class));
+            Intent intent = new Intent(this, LoginActivity.class);
+            intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
             Toast.makeText(getApplicationContext(), "Logout successful.", Toast.LENGTH_SHORT).show();
-            System.exit(0);
+            FirebaseAuth.getInstance().signOut();
+            finish();
         });
 
         fragmentBoard = new FragmentBoard();
