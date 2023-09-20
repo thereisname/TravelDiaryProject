@@ -63,19 +63,13 @@ ex)
    |userEmail|String|사용자 이메일|
    |userNickName|String|사용자 nickname|
 
-   -> user > [UID] > board > [boardID] <br>
-   |Field|Type|ect|
-   |:---:|:---:|:---:|
-   |boardID|String|고유 board ID값. 이를 통해 firestore에서 board를 불러옴.기본키처럼 사용.|
-   |uploadDate|String|업로드한 날짜 + 시간|
-
    -> user > [UID] > bookmark > [id]
    |Field|Type|ect|
    |:---:|:---:|:---:|
    |boardID|String|고유 board ID값. 이를 통해 firestore에서 board를 불러옴. 기본키처럼 사용.|
    |uploadDate|String|업로드한 날짜 + 시간|
 
-4. firestore Database: 게시물 업로드 내용을 저장함. 이때 이름은 게시물별 id를 생성하여 저장.
+3. firestore Database: 게시물 업로드 내용을 저장함. 이때 이름은 게시물별 id를 생성하여 저장.
    |Field|Type|ect|
    |:---:|:---:|:---:|
    |boardID|String|고유 board ID값. 기본키값처럼 사용|
@@ -86,9 +80,11 @@ ex)
    |title|String|제목|
    |uploadDate|String|업로드한 날짜 + 시간. 업데이트 한 날짜는 별도 생성.|
    |updateDate|String|최종 수정일|
+   |userToken|String|사용자 UID 값|
 
-6. Storage: image 경로를 저장. (사용할 logo도 저장하여 불러오기) <br>
-   -> image > [docId] > [img 경로]
+4. Storage: image 경로를 저장. (사용할 logo도 저장하여 불러오기) <br>
+   -> image > [docId] > [img 경로]  (mainImage도 함께 docId 내 저장. 이름은 mainImg로 저장.) <br>
+   -> logo > [image]
 
 <br>
 
