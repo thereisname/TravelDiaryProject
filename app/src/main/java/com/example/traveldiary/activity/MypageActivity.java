@@ -30,6 +30,24 @@ public class MypageActivity extends AppCompatActivity {
     public static DatabaseReference mDatabase;
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        TextView nickName = findViewById(R.id.nickName);
+        mDatabase = FirebaseDatabase.getInstance().getReference("UI");
+        mDatabase.child("users").child(FirebaseAuth.getInstance().getUid()).child("info").child("userNickName").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                nickName.setText(String.valueOf(snapshot.getValue()));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+        getSupportFragmentManager().beginTransaction().replace(R.id.container, fragmentBoard).commit();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mypage);
@@ -47,24 +65,9 @@ public class MypageActivity extends AppCompatActivity {
         fragmentBoard = new FragmentBoard();
         fragmentBookmark = new FragmentBookmark();
 
-        TextView nickName = findViewById(R.id.nickName);
-        mDatabase = FirebaseDatabase.getInstance().getReference("UI");
-        mDatabase.child("users").child(FirebaseAuth.getInstance().getUid()).child("info").child("userNickName").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                nickName.setText(String.valueOf(snapshot.getValue()));
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-            }
-        });
-
-        getSupportFragmentManager().beginTransaction().replace(R.id.container, fragmentBoard).commit();
-
         TabLayout tabs = findViewById(R.id.tabs);
-        tabs.addTab(tabs.newTab().setText("게시물"));
-        tabs.addTab(tabs.newTab().setText("북마크"));
+        tabs.addTab(tabs.newTab().setText(R.string.mypage_boarder));
+        tabs.addTab(tabs.newTab().setText(R.string.mypage_bookmark));
         tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
