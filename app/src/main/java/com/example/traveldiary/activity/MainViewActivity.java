@@ -22,8 +22,7 @@ public class MainViewActivity extends AppCompatActivity {
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser != null) {
             userToken = currentUser.getUid();
-        }
-        else {
+        } else {
             startActivity(new Intent(this, LoginActivity.class));
             Toast.makeText(this, "알 수 없는 오류가 발생 했습니다. 로그인을 다시 해주세요.", Toast.LENGTH_SHORT).show();
             System.exit(0);

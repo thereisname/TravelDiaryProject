@@ -54,7 +54,7 @@ public class MypageActivity extends AppCompatActivity {
         TextView logoutBtn = findViewById(R.id.logoutBtn);
 
         logoutBtn.setOnClickListener(v -> {
-            Intent intent = new Intent(this, LoginActivity.class);
+            Intent intent = new Intent(this, StartViewActivity.class);
             intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
             Toast.makeText(getApplicationContext(), "Logout successful.", Toast.LENGTH_SHORT).show();

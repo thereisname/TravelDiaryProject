@@ -120,7 +120,7 @@ public class FragmentClient extends Fragment {
     int count = 0;
 
     private void createTextView(String str) {
-        TextView textViewNm = new TextView(getContext());
+        TextView textViewNm = new TextView(getActivity());
         textViewNm.setText(Html.fromHtml(str, Html.FROM_HTML_MODE_LEGACY).toString());
         textViewNm.setTextSize(15);
         textViewNm.setTextColor(Color.rgb(0, 0, 0));
