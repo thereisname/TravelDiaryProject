@@ -118,7 +118,7 @@
 
             <com.google.android.material.chip.ChipGroup
                 android:id="@+id/chipGroup2"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -126,38 +126,47 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView">
 
                 <com.google.android.material.chip.Chip
+                    android:id="@+id/chip10"
                     style="@style/uploadCalender_CustomChipStyle"
                     android:text="@string/uploadCalender_chip_style_plan" />
 
                 <com.google.android.material.chip.Chip
+                    android:id="@+id/chip11"
                     style="@style/uploadCalender_CustomChipStyle"
                     android:text="@string/uploadCalender_chip_style_free" />
 
                 <com.google.android.material.chip.Chip
+                    android:id="@+id/chip12"
                     style="@style/uploadCalender_CustomChipStyle"
                     android:text="@string/uploadCalender_chip_style_vacation" />
 
                 <com.google.android.material.chip.Chip
+                    android:id="@+id/chip13"
                     style="@style/uploadCalender_CustomChipStyle"
                     android:text="@string/uploadCalender_chip_style_recollection" />
 
                 <com.google.android.material.chip.Chip
+                    android:id="@+id/chip14"
                     style="@style/uploadCalender_CustomChipStyle"
                     android:text="@string/uploadCalender_chip_style_healing" />
 
                 <com.google.android.material.chip.Chip
+                    android:id="@+id/chip15"
                     style="@style/uploadCalender_CustomChipStyle"
                     android:text="@string/uploadCalender_chip_style_activity" />
 
                 <com.google.android.material.chip.Chip
+                    android:id="@+id/chip16"
                     style="@style/uploadCalender_CustomChipStyle"
                     android:text="@string/uploadCalender_chip_style_famous" />
 
                 <com.google.android.material.chip.Chip
+                    android:id="@+id/chip17"
                     style="@style/uploadCalender_CustomChipStyle"
                     android:text="@string/uploadCalender_chip_style_romance" />
 
                 <com.google.android.material.chip.Chip
+                    android:id="@+id/chip18"
                     style="@style/uploadCalender_CustomChipStyle"
                     android:text="@string/uploadCalender_chip_style_emotional" />
 
