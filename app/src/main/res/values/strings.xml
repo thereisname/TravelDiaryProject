@@ -2,13 +2,14 @@
     <string name="app_name">여행 일기1</string>
 
     <!-- Login & Register -->
-    <string name="all_hint_email">Email</string>
-    <string name="all_hint_pw">Password</string>
+    <string name="all_hint_email">이메일</string>
+    <string name="all_hint_pw">비밀번호</string>
     <string name="loginActivity_loginBtn">로그인</string>
     <string name="loginActivity_registerBtn">회원가입</string>
 
-    <string name="register_rePw">Re-Password</string>
-    <string name="register_nickname">Nickname</string>
+
+    <string name="register_rePw">비밀번호 확인</string>
+    <string name="register_nickname">닉네임</string>
     <string name="register_ConfirmBtn">가입하기</string>
 
     <!-- MyPage -->
