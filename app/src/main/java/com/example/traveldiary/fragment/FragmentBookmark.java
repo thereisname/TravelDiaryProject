@@ -22,6 +22,7 @@ import com.example.traveldiary.R;
 import com.example.traveldiary.activity.MypageActivity;
 import com.example.traveldiary.adapter.BoardValueAdapter;
 import com.example.traveldiary.value.MyPageValue;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -47,10 +48,8 @@ public class FragmentBookmark extends Fragment {
     }
 
     public void loadDate() {
-        Bundle bundle = getArguments();
-        String userToken = bundle.getString("userToken");
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        MypageActivity.mDatabase.child("users").child(userToken).child("bookmark").addValueEventListener(new ValueEventListener() {
+        MypageActivity.mDatabase.child("users").child(FirebaseAuth.getInstance().getUid()).child("bookmark").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot data : snapshot.getChildren()) {

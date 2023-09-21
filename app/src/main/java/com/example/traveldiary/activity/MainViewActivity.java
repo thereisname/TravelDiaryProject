@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.traveldiary.R;
 import com.example.traveldiary.fragment.FragmentClient;
@@ -35,17 +34,13 @@ public class MainViewActivity extends AppCompatActivity {
 
 
         myPage.setOnClickListener(v -> {
-            Intent intent = new Intent(this, MypageActivity.class);
-            intent.putExtra("userToken", userToken);
-            startActivity(intent);
+            startActivity(new Intent(this, MypageActivity.class));
             finish();
         });
 
         ImageView upload = findViewById(R.id.upload);
         upload.setOnClickListener(v -> {
-            Intent intent = new Intent(this, UploadCalendarActivity.class);
-            intent.putExtra("userToken", userToken);
-            startActivity(intent);
+            startActivity(new Intent(this, UploadCalendarActivity.class));
             finish();
         });
 

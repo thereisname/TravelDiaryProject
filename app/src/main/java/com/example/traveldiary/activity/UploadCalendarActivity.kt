@@ -24,27 +24,19 @@ class UploadCalendarActivity : AppCompatActivity() {
         binding = ActivityUploadCalendarBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
-        // intent 불러오기.
-        val userToken = intent.getStringExtra("userToken")
-
         calendarPick()  // 여행일 선택창 output.
 
         binding.next.setOnClickListener {
-            nextBtnClickEvent(userToken)
+            nextBtnClickEvent()
         }
 
         // toolbar Btn
         binding.home.setOnClickListener {
-            val intent = Intent(this, MainViewActivity::class.java)
-            intent.putExtra("userToken", userToken)
-            startActivity(intent)
+            startActivity(Intent(this, MainViewActivity::class.java))
             finish()
         }
         binding.myPage.setOnClickListener {
-            val intent = Intent(this, MypageActivity::class.java)
-            intent.putExtra("userToken", userToken)
-            startActivity(intent)
+            startActivity(Intent(this, MypageActivity::class.java))
             finish()
         }
 
@@ -113,12 +105,20 @@ class UploadCalendarActivity : AppCompatActivity() {
         if (binding.chip2.isChecked) arr = "$arr#커플 여행 "
         if (binding.chip3.isChecked) arr = "$arr#친구와 여행 "
         if (binding.chip4.isChecked) arr = "$arr#가족 여행 "
+
+        val style =
+            arrayOf("#게획적인 ", "#자유로운 ", "#휴가 ", "#추억 ", "#힐링 ", "#엑티비티 ", "#맛집투어 ", "#낭만 ", "#감성 ")
+        for (checkId in binding.chipGroup2.checkedChipIds) {
+            var check = checkId
+            while (check > 10)
+                check %= 10
+            arr += style[check - 1]
+        }
         return arr
     }
 
-    private fun nextBtnClickEvent(userToken: String?) {
+    private fun nextBtnClickEvent() {
         val intent = Intent(this, UploadBoardActivity::class.java)
-        intent.putExtra("userToken", userToken)
         val info = HashMap<String, Any>()
         info["date"] = binding.dataPickerText.text.toString()
         try {

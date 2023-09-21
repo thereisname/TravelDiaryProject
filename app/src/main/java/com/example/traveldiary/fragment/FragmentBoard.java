@@ -12,6 +12,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -21,10 +22,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.traveldiary.OnItemClickListener;
 import com.example.traveldiary.R;
 import com.example.traveldiary.adapter.BoardValueAdapter;
-
 import com.example.traveldiary.value.MyPageValue;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
-
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
@@ -32,6 +32,8 @@ import java.util.ArrayList;
 public class FragmentBoard extends Fragment implements OnItemClickListener {
     private RecyclerView recyclerView;
     private BoardValueAdapter adapter;
+    private FirebaseFirestore db;
+    Bitmap bitmap;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -43,16 +45,15 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
 
         adapter = new BoardValueAdapter(v.getContext(), this);
         recyclerView.setAdapter(adapter);
+
+        db = FirebaseFirestore.getInstance();
         loadDate();
 
         return v;
     }
 
     public void loadDate() {
-        Bundle bundle = getArguments();
-        String userToken = bundle.getString("userToken");
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("data").whereEqualTo("userToken", userToken).get().addOnSuccessListener(queryDocumentSnapshots -> {
+        db.collection("data").whereEqualTo("userToken", FirebaseAuth.getInstance().getUid()).get().addOnSuccessListener(queryDocumentSnapshots -> {
             for (QueryDocumentSnapshot queryDocumentSnapshot : queryDocumentSnapshots) {
                 MyPageValue mp = queryDocumentSnapshot.toObject(MyPageValue.class);
                 adapter.addItem(mp);
