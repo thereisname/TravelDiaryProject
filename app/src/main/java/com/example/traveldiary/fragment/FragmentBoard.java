@@ -21,8 +21,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.traveldiary.OnItemClickListener;
 import com.example.traveldiary.R;
 import com.example.traveldiary.adapter.BoardValueAdapter;
+
 import com.example.traveldiary.value.MyPageValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;

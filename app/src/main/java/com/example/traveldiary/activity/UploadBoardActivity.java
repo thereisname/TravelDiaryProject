@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
@@ -37,7 +38,7 @@ public class UploadBoardActivity extends AppCompatActivity {
     private TextView mPreview;
     private String userToken;
     private Uri filePath;
-    private FirebaseFirestore db;
+    FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,16 +72,6 @@ public class UploadBoardActivity extends AppCompatActivity {
         findViewById(R.id.action_strikethrough).setOnClickListener(v -> mEditor.setStrikeThrough());
 
         findViewById(R.id.action_underline).setOnClickListener(v -> mEditor.setUnderline());
-
-//        findViewById(R.id.action_txt_color).setOnClickListener(new View.OnClickListener() {
-//            private boolean isChanged;
-//
-//            @Override
-//            public void onClick(View v) {
-//                mEditor.setTextColor(isChanged ? Color.BLACK : Color.RED);
-//                isChanged = !isChanged;
-//            }
-//        });
 
         findViewById(R.id.action_indent).setOnClickListener(v -> mEditor.setIndent());
 
@@ -128,51 +119,79 @@ public class UploadBoardActivity extends AppCompatActivity {
         Button uploadBtn = findViewById(R.id.uploadBtn);
 
         uploadBtn.setOnClickListener(v -> {
-            String str = mEditor.getHtml();
-            ArrayList<Integer> strImgStartIndex = new ArrayList<>();
-            ArrayList<Integer> strImgEndIndex = new ArrayList<>();
-            //이미지 링크 추출하는 loop
-            for (int i = 0; i < str.length(); i++) {
-                if (str.charAt(i) == '<' && str.charAt(i + 1) == 'i') {
-                    strImgStartIndex.add(i + 10);
-
-                }
-                if (str.charAt(i) == '>' && str.charAt(i - 2) == '0' && str.charAt(i - 3) == '2') {
-                    strImgEndIndex.add(i - 21);
-                }
-            }
-            // 이미지 링크 자리에 image 번호로 대체
-            int count = strImgStartIndex.size();
-            while (count > 0) {
-                str = str.replace(str.substring(strImgStartIndex.get(count - 1), strImgEndIndex.get(count - 1)), "image" + count);
-                count--;
-            }
-            save(str);
+            save();
         });
     }
 
-    /**
-     * DB에 업로드 되는 함수.
-     *
-     * @param str Image 태그를 제외한 html tag 형태의 Content.
-     */
-    public void save(String str) {
-        Map<String, Object> item = itemCustom(str);
+//    private ArrayList<Uri> downloadImageUri(String getID) {
+//        ArrayList<Uri> imageUri = new ArrayList<Uri>();
+//        Log.d("로그2", imageUri.toString());
+//        StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+//        Log.d("로그3", imageUri.toString());
+//        storageReference.child("/Image/pMp11v28f4dXE22tSta0").listAll().addOnSuccessListener(listResult -> {
+//            Log.d("로그4", imageUri.toString());
+//            for (StorageReference item : listResult.getItems()) {
+//                Log.d("로그5", imageUri.toString());
+//                item.getDownloadUrl().addOnSuccessListener(command -> {
+//                    imageUri.add(command);
+//                    Log.d("로그1", String.valueOf(command));
+//
+//                });
+//            }
+//        }).addOnFailureListener(command -> Log.d("error", "불러오기 실패."));
+//        Log.d("image", String.valueOf(imageUri.size()));
+//        return imageUri;
+//    }
+
+
+    private String changeText(String getID) {
+        String str = mEditor.getHtml();
+        ArrayList<Integer> strImgStartIndex = new ArrayList<>();
+        ArrayList<Integer> strImgEndIndex = new ArrayList<>();
+
+//        ArrayList<Uri> images = downloadImageUri(getID);
+//        Log.d("images", images.toString());
+        //이미지 링크 추출하는 loop
+        for (int i = 0; i < str.length(); i++) {
+            if (str.charAt(i) == '<' && str.charAt(i + 1) == 'i') {
+                strImgStartIndex.add(i + 10);
+            }
+            if (str.charAt(i) == '>' && str.charAt(i - 2) == '0' && str.charAt(i - 3) == '2') {
+                strImgEndIndex.add(i - 21);
+            }
+        }
+        // 이미지 링크 자리에 image 번호로 대체
+        int count = strImgStartIndex.size();
+        while (count > 0) {
+            str = str.replace(str.substring(strImgStartIndex.get(count - 1), strImgEndIndex.get(count - 1)), "image"+count);
+            count--;
+        }
+        return str;
+    }
+
+    public void save() {
+        Map<String, Object> item = itemCustom();
 
         db.collection("data").add(item).addOnSuccessListener(documentReference -> {
             String getID = documentReference.getId();
             documentReference.update("boardID", getID);
-            if (filePath != null) uploadImage(filePath, getID);
 
-            Intent intent = new Intent(this, MainViewActivity.class);
-            intent.putExtra("userToken", userToken);
-            startActivity(intent);
-            finish();
-            Toast.makeText(this, "Upload successful", Toast.LENGTH_SHORT).show();
+            if (filePath != null) uploadImage(filePath, getID);
+           String changeText = changeText(getID);
+            documentReference.update("con", changeText);
+
         }).addOnFailureListener(e -> Toast.makeText(UploadBoardActivity.this, "Upload failed.", Toast.LENGTH_SHORT).show());
+
+//
+        Intent intent = new Intent(this, MainViewActivity.class);
+        intent.putExtra("userToken", userToken);
+        startActivity(intent);
+        finish();
+        Toast.makeText(this, "Upload successful", Toast.LENGTH_SHORT).show();
     }
 
-    private Map<String, Object> itemCustom(String str) {
+
+    private Map<String, Object> itemCustom() {
         Map<String, Object> info = (Map<String, Object>) getIntent().getSerializableExtra("info");
         EditText title = findViewById(R.id.title);
         LocalDateTime now = LocalDateTime.now();
@@ -181,7 +200,6 @@ public class UploadBoardActivity extends AppCompatActivity {
         Map<String, Object> item = new HashMap<>();
         item.put("uploadDate", formatNow);
         item.put("title", title.getText().toString());
-        item.put("con", str);
         item.put("date", info.get("date"));
         item.put("mainImg", info.get("mainImg"));
         item.put("hashTag", info.get("hashTag"));
@@ -192,8 +210,9 @@ public class UploadBoardActivity extends AppCompatActivity {
 
     // 이미지 올리는 곳
     public void uploadImage(Uri uri, String getID) {
+        //MAIN 이미지 넣는 곳
+        // uriArrayList.add(uri);
         StorageReference storageRef = FirebaseStorage.getInstance().getReference();
-
         // 다수의 이미지를 넣기 위해 for문 사용
         for (int index = 0; index < uriArrayList.size(); index++) {
             //name : firebase에 올라가는 이름이다.
@@ -204,7 +223,7 @@ public class UploadBoardActivity extends AppCompatActivity {
         }
     }
 
-    // Uri 형태 가져오는 함수
+    //  이미지 형태 가져오는 함수
     private String getFileExtension(Uri uri) {
         ContentResolver cr = getContentResolver();
         MimeTypeMap mime = MimeTypeMap.getSingleton();

@@ -24,6 +24,7 @@ class UploadCalendarActivity : AppCompatActivity() {
         binding = ActivityUploadCalendarBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
         // intent 불러오기.
         val userToken = intent.getStringExtra("userToken")
 
@@ -125,6 +126,8 @@ class UploadCalendarActivity : AppCompatActivity() {
         } catch (e: Exception) {
             info["mainImg"] = R.drawable.baseline_image_24.toString()
         }
+
+
 
         info["hashTag"] = HashTagCustom()
 
