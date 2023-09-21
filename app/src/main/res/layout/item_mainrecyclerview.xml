@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="10dp"
+    app:cardCornerRadius="20dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp"
+        >
+
+        <TextView
+            android:id="@+id/tv_mainTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="main Title"
+            android:textColor="@color/black"
+            android:gravity="center_horizontal"
+            android:textSize="24sp"
+            android:fontFamily="@font/gangwon"
+            android:textStyle="bold"
+            />
+
+        <ImageView
+            android:id="@+id/iv_mainImage"
+            android:layout_width="350dp"
+            android:layout_height="300dp"
+            android:src="@drawable/baseline_image_24"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            />
+
+        <TextView
+            android:id="@+id/tv_userEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="main Title"
+            android:gravity="right"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:fontFamily="@font/gangwon"
+            android:textStyle="bold"
+            android:layout_marginTop="10dp"
+            android:paddingRight="20dp"
+            />
+
+    </LinearLayout>
+
+
+</androidx.cardview.widget.CardView>
