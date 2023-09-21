@@ -67,7 +67,6 @@ public class FragmentClient extends Fragment {
         TextView fragment_title = view.findViewById(R.id.fragment_title);
         TextView fragment_hashtag = view.findViewById(R.id.fragment_hashtag);
 
-        Log.d(TAG, "확인하는중");
 
 
         listView = view.findViewById(R.id.listView);
@@ -77,7 +76,7 @@ public class FragmentClient extends Fragment {
                 checkText(mp);
                 fragment_title.setText(mp.getTitle());
                 fragment_hashtag.setText(mp.getHashTag());
-
+                Log.d(TAG, "데이터 가져오기");
 
             }
 
@@ -136,7 +135,7 @@ public class FragmentClient extends Fragment {
         }
 
         try{
-            sleep(1000);
+
             Imagedown(mp.getBoardID());
         }catch (Exception e){
 
