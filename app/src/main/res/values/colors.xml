@@ -17,6 +17,8 @@
     <color name="skyBlue">#81BBE1</color>
     <color name="pastel">#A9EDE9</color>
     <color name="pastel1">#D3FBFB</color>
+    <color name="icon">#04C4D9</color>
+
 
     <color name="text_gray">#73777b</color>
     <color name="chip_background_color_selected">#69B7BF</color>
