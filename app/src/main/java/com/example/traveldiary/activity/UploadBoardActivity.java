@@ -1,11 +1,12 @@
 package com.example.traveldiary.activity;
 
+import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
+
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
@@ -116,34 +117,11 @@ public class UploadBoardActivity extends AppCompatActivity {
         });
     }
 
-//    private ArrayList<Uri> downloadImageUri(String getID) {
-//        ArrayList<Uri> imageUri = new ArrayList<Uri>();
-//        Log.d("로그2", imageUri.toString());
-//        StorageReference storageReference = FirebaseStorage.getInstance().getReference();
-//        Log.d("로그3", imageUri.toString());
-//        storageReference.child("/Image/pMp11v28f4dXE22tSta0").listAll().addOnSuccessListener(listResult -> {
-//            Log.d("로그4", imageUri.toString());
-//            for (StorageReference item : listResult.getItems()) {
-//                Log.d("로그5", imageUri.toString());
-//                item.getDownloadUrl().addOnSuccessListener(command -> {
-//                    imageUri.add(command);
-//                    Log.d("로그1", String.valueOf(command));
-//
-//                });
-//            }
-//        }).addOnFailureListener(command -> Log.d("error", "불러오기 실패."));
-//        Log.d("image", String.valueOf(imageUri.size()));
-//        return imageUri;
-//    }
-
-
-    private String changeText(String getID) {
+    private String changeText() {
         String str = mEditor.getHtml();
         ArrayList<Integer> strImgStartIndex = new ArrayList<>();
         ArrayList<Integer> strImgEndIndex = new ArrayList<>();
 
-//        ArrayList<Uri> images = downloadImageUri(getID);
-//        Log.d("images", images.toString());
         //이미지 링크 추출하는 loop
         for (int i = 0; i < str.length(); i++) {
             if (str.charAt(i) == '<' && str.charAt(i + 1) == 'i') {
@@ -156,7 +134,7 @@ public class UploadBoardActivity extends AppCompatActivity {
         // 이미지 링크 자리에 image 번호로 대체
         int count = strImgStartIndex.size();
         while (count > 0) {
-            str = str.replace(str.substring(strImgStartIndex.get(count - 1), strImgEndIndex.get(count - 1)), "image"+count);
+            str = str.replace(str.substring(strImgStartIndex.get(count - 1), strImgEndIndex.get(count - 1)), "image" + count);
             count--;
         }
         return str;
@@ -170,17 +148,15 @@ public class UploadBoardActivity extends AppCompatActivity {
             documentReference.update("boardID", getID);
 
             if (filePath != null) uploadImage(filePath, getID);
-           String changeText = changeText(getID);
+            String changeText = changeText();
             documentReference.update("con", changeText);
 
+            Intent intent = new Intent(this, MainViewActivity.class);
+            intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            finish();
+            Toast.makeText(this, "Upload successful", Toast.LENGTH_SHORT).show();
         }).addOnFailureListener(e -> Toast.makeText(UploadBoardActivity.this, "Upload failed.", Toast.LENGTH_SHORT).show());
-
-//
-        Intent intent = new Intent(this, MainViewActivity.class);
-        intent.putExtra("userToken", userToken);
-        startActivity(intent);
-        finish();
-        Toast.makeText(this, "Upload successful", Toast.LENGTH_SHORT).show();
     }
 
 

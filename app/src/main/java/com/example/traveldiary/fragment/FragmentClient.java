@@ -12,6 +12,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -19,6 +20,7 @@ import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
 import com.example.traveldiary.R;
 import com.example.traveldiary.value.MyPageValue;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
@@ -28,32 +30,12 @@ import java.util.ArrayList;
 
 public class FragmentClient extends Fragment {
     private int isAttBookmark; // 0: 북마크 비활성화 상태, 1: 북마크 활성화 상태
-    private String userToken;
-
-    public FragmentClient(String userToken) {
-        setUserToken(userToken);
-    }
-
-    public void setUserToken(String userToken) {
-        this.userToken = userToken;
-    }
-
-    public String getUserToken() {
-        return userToken;
-    }
-
-    private String TAG = "로그";
-
     private MyPageValue mp;
-
     private LinearLayout listView;
-
     private ArrayList<Uri> imagess = new ArrayList<Uri>();
-
-    int num = 0;
     ArrayList<Integer> arrayStartIndex = new ArrayList<Integer>();
     ArrayList<Integer> arrayEndIndex = new ArrayList<Integer>();
-
+    int num = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -61,34 +43,21 @@ public class FragmentClient extends Fragment {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         View view = inflater.inflate(R.layout.fragment_client, container, false);
 
-
         ImageButton bookmark = view.findViewById(R.id.bookMarkBtn);
         TextView fragment_title = view.findViewById(R.id.fragment_title);
         TextView fragment_hashtag = view.findViewById(R.id.fragment_hashtag);
 
-
-
-
         listView = view.findViewById(R.id.listView);
-        db.collection("data").whereNotEqualTo("userToken", getUserToken()).limit(1).get().addOnSuccessListener(queryDocumentSnapshots -> {
+        db.collection("data").whereNotEqualTo("userToken", FirebaseAuth.getInstance().getUid()).limit(1).get().addOnSuccessListener(queryDocumentSnapshots -> {
             for (QueryDocumentSnapshot queryDocumentSnapshot : queryDocumentSnapshots) {
                 mp = queryDocumentSnapshot.toObject(MyPageValue.class);
-
                 fragment_title.setText(mp.getTitle());
                 fragment_hashtag.setText(mp.getHashTag());
-
-
                 checkText(mp);
-
-
             }
-
-
         });
-
         return view;
     }
-
 
     // 문자에서 이미지  시작과 끝을 가져오기
     private void checkText(MyPageValue mp) {
@@ -103,15 +72,12 @@ public class FragmentClient extends Fragment {
         }
         // 이미지 가져오기
         Imagedown(mp.getBoardID(), arrayStartIndex, arrayEndIndex);
-
-        Log.d(TAG, "시작과 끝 배열 크기 " + arrayEndIndex.size() + arrayStartIndex.size());
     }
 
     // Image 다운로드 함수
     private void Imagedown(String boardID, ArrayList<Integer> arrayStartIndex, ArrayList<Integer> arrayEndIndex) {
         StorageReference storageReference = FirebaseStorage.getInstance().getReference();
         storageReference.child("/Image/" + boardID).listAll().addOnSuccessListener(listResult -> {
-
 
             for (StorageReference item : listResult.getItems()) {
                 item.getDownloadUrl().addOnSuccessListener(command -> {
@@ -121,9 +87,6 @@ public class FragmentClient extends Fragment {
                     Log.d("로그1", imagess.get(0).toString() + "imagess 인덱스 첫번째 가져오기");
 
                     imagess.add(command);
-                    Log.d(TAG, "이미지 배열 첫번째 확인" + arrayStartIndex.get(0));
-                    Log.d(TAG, String.valueOf( "이미지 배열 사이즈 확인" + arrayStartIndex.size()));
-
 
                     if (arrayStartIndex.get(0) != 0) {
                         String str = mp.getCon().substring(0, arrayStartIndex.get(0));
@@ -131,29 +94,21 @@ public class FragmentClient extends Fragment {
                     } else {
                         for (int i = 0; i < arrayStartIndex.size(); i++) {
                             createImageView(imagess.get(i));
-                            if(i == arrayStartIndex.size()-1){
-                                String str = mp.getCon().substring(arrayEndIndex.get(i)+1, mp.getCon().length());
+                            if (i == arrayStartIndex.size() - 1) {
+                                String str = mp.getCon().substring(arrayEndIndex.get(i) + 1, mp.getCon().length());
                                 createTextView(str);
-
-                            }else{
-                                String str = mp.getCon().substring(arrayEndIndex.get(i)+1, arrayStartIndex.get(i+1));
+                            } else {
+                                String str = mp.getCon().substring(arrayEndIndex.get(i) + 1, arrayStartIndex.get(i + 1));
                                 createTextView(str);
                             }
-
-
-
                         }
-
                     }
                 });
             }
-
-
-        }).addOnFailureListener(command -> Log.d("error", "불러오기 실패."));
+        }).addOnFailureListener(command -> Toast.makeText(getActivity().getApplicationContext(), "이미지 로드를 실패했습니다.", Toast.LENGTH_SHORT).show());
     }
 
     private void createImageView(Uri img) {
-        Log.d("로그", "뷰 확인");
         ImageView imageView = new ImageView(getContext());
         Glide.with(getContext()).load(img).into(imageView);
         LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -174,8 +129,6 @@ public class FragmentClient extends Fragment {
         LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         textViewNm.setLayoutParams(param);
         listView.addView(textViewNm);
-        Log.d("로그", String.valueOf(textViewNm.getId() + "textview id"));
         count++;
     }
-
 }

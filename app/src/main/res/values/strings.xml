@@ -13,6 +13,8 @@
 
     <!-- MyPage -->
     <string name="mypage_logoutBtn">로그아웃</string>
+    <string name="mypage_boarder">게시물</string>
+    <string name="mypage_bookmark">북마크</string>
 
     <!-- mainView -->
     <string name="all_title">Title</string>
