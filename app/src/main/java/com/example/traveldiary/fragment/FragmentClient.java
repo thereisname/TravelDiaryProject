@@ -91,9 +91,12 @@ public class FragmentClient extends Fragment {
     }
 
 
+
+
     // 문자에서 이미지  시작과 끝을 가져오기
     private void checkText(MyPageValue mp) {
         String str = mp.getCon();
+
         for (int index = 0; index < str.length(); index++) {
             if (str.charAt(index) == '<' && str.charAt(index + 1) == 'i' && str.charAt(index + 2) == 'm') {
                 arrayStartIndex.add(index);
@@ -102,9 +105,8 @@ public class FragmentClient extends Fragment {
                 arrayEndIndex.add(index);
             }
         }
-        // 이미지 가져오기
-        // Imagedown(mp.getBoardID(), arrayStartIndex, arrayEndIndex);
 
+        Log.d(TAG, "글자가져오기 시작");
         if(arrayStartIndex.size() == 0){
             createTextView(mp.getCon());
         }else{
@@ -138,7 +140,6 @@ public class FragmentClient extends Fragment {
         }
 
         try{
-            sleep(1000);
             Imagedown(mp.getBoardID());
         }catch (Exception e){
 
