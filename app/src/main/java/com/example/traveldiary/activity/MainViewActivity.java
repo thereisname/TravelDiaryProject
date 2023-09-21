@@ -5,15 +5,17 @@ import android.os.Bundle;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.traveldiary.R;
 import com.example.traveldiary.fragment.FragmentClient;
-import com.example.traveldiary.fragment.FragmentImage;
+
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 public class MainViewActivity extends AppCompatActivity {
 
+    RecyclerView recyclerView;
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,11 +25,14 @@ public class MainViewActivity extends AppCompatActivity {
         String userToken = getIntent().getStringExtra("userToken");
 
         ImageView myPage = findViewById(R.id.myPage);
-        FragmentImage fragmentImage = new FragmentImage();
-        FragmentClient fragmentClient = new FragmentClient(userToken);
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentLayout, fragmentImage).commit();
+        FragmentClient fragmentClient = new FragmentClient(userToken);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_view, fragmentClient).commit();
+
+
+
+
+
 
         myPage.setOnClickListener(v -> {
             Intent intent = new Intent(this, MypageActivity.class);

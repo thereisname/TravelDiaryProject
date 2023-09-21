@@ -37,9 +37,7 @@
         <activity
             android:name=".activity.MypageActivity"
             android:exported="false" />
-        <activity
-            android:name=".fragment.FragmentImage"
-            android:exported="false" />
+
         <activity
             android:name=".fragment.FragmentClient"
             android:exported="false" />

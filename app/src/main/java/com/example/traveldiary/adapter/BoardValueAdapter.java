@@ -1,7 +1,5 @@
 package com.example.traveldiary.adapter;
 
-import static com.example.traveldiary.R.id.fragment_inPutImage;
-
 import android.content.Context;
 import android.net.Uri;
 import android.text.Html;
