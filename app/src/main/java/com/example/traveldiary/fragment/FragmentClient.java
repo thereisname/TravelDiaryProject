@@ -44,7 +44,6 @@ public class FragmentClient extends Fragment {
     public String getUserToken() {
         return userToken;
     }
-
     private String TAG = "로그";
 
     private MyPageValue mp;

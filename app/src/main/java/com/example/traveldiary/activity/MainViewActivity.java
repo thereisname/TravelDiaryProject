@@ -14,7 +14,7 @@ import com.google.firebase.storage.StorageReference;
 
 public class MainViewActivity extends AppCompatActivity {
 
-    RecyclerView recyclerView;
+
 
 
     protected void onCreate(Bundle savedInstanceState) {

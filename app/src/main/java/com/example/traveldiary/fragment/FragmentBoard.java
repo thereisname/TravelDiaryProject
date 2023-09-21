@@ -33,7 +33,7 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
     private RecyclerView recyclerView;
     private BoardValueAdapter adapter;
     private FirebaseFirestore db;
-    Bitmap bitmap;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
