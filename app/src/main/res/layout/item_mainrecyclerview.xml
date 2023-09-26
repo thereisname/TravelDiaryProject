@@ -11,43 +11,39 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="20dp"
-        >
+        android:padding="20dp">
 
         <TextView
             android:id="@+id/tv_mainTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/gangwon"
+            android:gravity="center_horizontal"
             android:text="main Title"
             android:textColor="@color/black"
-            android:gravity="center_horizontal"
             android:textSize="24sp"
-            android:fontFamily="@font/gangwon"
-            android:textStyle="bold"
-            />
+            android:textStyle="bold" />
 
         <ImageView
             android:id="@+id/iv_mainImage"
             android:layout_width="350dp"
             android:layout_height="300dp"
-            android:src="@drawable/baseline_image_24"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dp"
-            />
+            android:src="@drawable/baseline_image_24" />
 
         <TextView
             android:id="@+id/tv_userEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="main Title"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/gangwon"
             android:gravity="right"
+            android:paddingRight="20dp"
+            android:text="main Title"
             android:textColor="@color/black"
             android:textSize="20sp"
-            android:fontFamily="@font/gangwon"
-            android:textStyle="bold"
-            android:layout_marginTop="10dp"
-            android:paddingRight="20dp"
-            />
+            android:textStyle="bold" />
 
     </LinearLayout>
 

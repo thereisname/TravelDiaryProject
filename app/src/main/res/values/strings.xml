@@ -7,10 +7,13 @@
     <string name="loginActivity_loginBtn">로그인</string>
     <string name="loginActivity_registerBtn">회원가입</string>
 
-
     <string name="register_rePw">비밀번호 확인</string>
     <string name="register_nickname">닉네임</string>
     <string name="register_ConfirmBtn">가입하기</string>
+    <string name="register_con_successful_membership">Your membership has been successful.</string>
+    <string name="register_con_failed_membership">The membership registration failed.</string>
+    <string name="register_con_notMath">Password does not match</string>
+    <string name="register_con_enter_contents">Please enter the contents</string>
 
     <!-- MyPage -->
     <string name="mypage_logoutBtn">로그아웃</string>

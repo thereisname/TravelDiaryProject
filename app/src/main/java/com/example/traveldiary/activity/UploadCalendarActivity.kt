@@ -55,7 +55,7 @@ class UploadCalendarActivity : AppCompatActivity() {
                 val cursor = contentResolver.query(
                     it.data?.data as Uri,
                     arrayOf<String>(MediaStore.Images.Media.DATA), null, null, null
-                );
+                )
                 cursor?.moveToFirst().let {
                     filePath = cursor?.getString(0) as String
                 }
@@ -106,14 +106,15 @@ class UploadCalendarActivity : AppCompatActivity() {
         if (binding.chip3.isChecked) arr = "$arr#친구와 여행 "
         if (binding.chip4.isChecked) arr = "$arr#가족 여행 "
 
-        val style =
-            arrayOf("#게획적인 ", "#자유로운 ", "#휴가 ", "#추억 ", "#힐링 ", "#엑티비티 ", "#맛집투어 ", "#낭만 ", "#감성 ")
-        for (checkId in binding.chipGroup2.checkedChipIds) {
-            var check = checkId
-            while (check > 10)
-                check %= 10
-            arr += style[check - 1]
-        }
+        if (binding.chip10.isChecked) arr = "$arr#계획적인 "
+        if (binding.chip11.isChecked) arr = "$arr#자유로운 "
+        if (binding.chip12.isChecked) arr = "$arr#휴가 "
+        if (binding.chip13.isChecked) arr = "$arr#추억 "
+        if (binding.chip14.isChecked) arr = "$arr#힐링 "
+        if (binding.chip15.isChecked) arr = "$arr#엑티비티 "
+        if (binding.chip16.isChecked) arr = "$arr#맛집투어 "
+        if (binding.chip17.isChecked) arr = "$arr#낭만 "
+        if (binding.chip18.isChecked) arr = "$arr#감성 "
         return arr
     }
 
@@ -126,9 +127,6 @@ class UploadCalendarActivity : AppCompatActivity() {
         } catch (e: Exception) {
             info["mainImg"] = R.drawable.baseline_image_24.toString()
         }
-
-
-
         info["hashTag"] = HashTagCustom()
 
         intent.putExtra("info", info)

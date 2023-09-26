@@ -1,9 +1,6 @@
 package com.example.traveldiary.adapter;
 
-
-
 import android.content.Context;
-import android.net.Uri;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,15 +12,9 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.example.traveldiary.value.MyPageValue;
 import com.example.traveldiary.OnItemClickListener;
 import com.example.traveldiary.R;
 import com.example.traveldiary.value.MyPageValue;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
@@ -102,7 +93,5 @@ public class BoardValueAdapter extends RecyclerView.Adapter<BoardValueAdapter.Vi
             image.setImageResource(R.drawable.baseline_image_24);
             hashTag.setText(item.getHashTag());
         }
-
-
     }
 }

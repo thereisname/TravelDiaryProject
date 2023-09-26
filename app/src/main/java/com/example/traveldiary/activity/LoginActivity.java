@@ -18,7 +18,6 @@ import java.security.NoSuchAlgorithmException;
 
 public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
-    private PermissionSupport permission;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

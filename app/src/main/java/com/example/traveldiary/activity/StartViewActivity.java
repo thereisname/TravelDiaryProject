@@ -32,7 +32,7 @@ public class StartViewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_view);
-
+        getWindow().setWindowAnimations(0);
         mAuth = FirebaseAuth.getInstance();
 
         Button startlogin_btn = findViewById(R.id.startlogin_btn);

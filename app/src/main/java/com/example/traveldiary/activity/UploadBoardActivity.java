@@ -117,6 +117,42 @@ public class UploadBoardActivity extends AppCompatActivity {
         });
     }
 
+    public void save() {
+        Map<String, Object> item = itemCustom();
+
+        db.collection("data").add(item).addOnSuccessListener(documentReference -> {
+            String getID = documentReference.getId();
+            documentReference.update("boardID", getID);
+
+            if (filePath != null) uploadImage(filePath, getID, item.get("mainImg"));
+            String changeText = changeText();
+            documentReference.update("con", changeText);
+
+            Intent intent = new Intent(this, MainViewActivity.class);
+            intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            finish();
+            Toast.makeText(this, "Upload successful", Toast.LENGTH_SHORT).show();
+        }).addOnFailureListener(e -> Toast.makeText(UploadBoardActivity.this, "Upload failed.", Toast.LENGTH_SHORT).show());
+    }
+
+    private Map<String, Object> itemCustom() {
+        Map<String, Object> info = (Map<String, Object>) getIntent().getSerializableExtra("info");
+        EditText title = findViewById(R.id.title);
+        LocalDateTime now = LocalDateTime.now();
+        String formatNow = now.format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm:ss"));
+
+        Map<String, Object> item = new HashMap<>();
+        item.put("uploadDate", formatNow);
+        item.put("title", title.getText().toString());
+        item.put("date", info.get("date"));
+        item.put("mainImg", info.get("mainImg"));
+        item.put("hashTag", info.get("hashTag"));
+        item.put("userToken", FirebaseAuth.getInstance().getUid());
+
+        return item;
+    }
+
     private String changeText() {
         String str = mEditor.getHtml();
         ArrayList<Integer> strImgStartIndex = new ArrayList<>();
@@ -140,47 +176,9 @@ public class UploadBoardActivity extends AppCompatActivity {
         return str;
     }
 
-    public void save() {
-        Map<String, Object> item = itemCustom();
-
-        db.collection("data").add(item).addOnSuccessListener(documentReference -> {
-            String getID = documentReference.getId();
-            documentReference.update("boardID", getID);
-
-            if (filePath != null) uploadImage(filePath, getID);
-            String changeText = changeText();
-            documentReference.update("con", changeText);
-
-            Intent intent = new Intent(this, MainViewActivity.class);
-            intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
-            finish();
-            Toast.makeText(this, "Upload successful", Toast.LENGTH_SHORT).show();
-        }).addOnFailureListener(e -> Toast.makeText(UploadBoardActivity.this, "Upload failed.", Toast.LENGTH_SHORT).show());
-    }
-
-
-    private Map<String, Object> itemCustom() {
-        Map<String, Object> info = (Map<String, Object>) getIntent().getSerializableExtra("info");
-        EditText title = findViewById(R.id.title);
-        LocalDateTime now = LocalDateTime.now();
-        String formatNow = now.format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm:ss"));
-
-        Map<String, Object> item = new HashMap<>();
-        item.put("uploadDate", formatNow);
-        item.put("title", title.getText().toString());
-        item.put("date", info.get("date"));
-        item.put("mainImg", info.get("mainImg"));
-        item.put("hashTag", info.get("hashTag"));
-        item.put("userToken", FirebaseAuth.getInstance().getUid());
-
-        return item;
-    }
-
     // 이미지 올리는 곳
-    public void uploadImage(Uri uri, String getID) {
+    public void uploadImage(Uri uri, String getID, Object mainImg) {
         //MAIN 이미지 넣는 곳
-        // uriArrayList.add(uri);
         StorageReference storageRef = FirebaseStorage.getInstance().getReference();
         // 다수의 이미지를 넣기 위해 for문 사용
         for (int index = 0; index < uriArrayList.size(); index++) {
