@@ -126,7 +126,6 @@ public class FragmentClient extends Fragment {
     private void createImageView() {
         imageView = new ImageView(getContext());
         imageView.setId(imageId);
-        int b = imageView.getId();
         Glide.with(getContext()).load(R.drawable.baseline_image_24).into(imageView);
 
         LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
