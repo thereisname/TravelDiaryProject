@@ -5,12 +5,14 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -18,6 +20,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.traveldiary.OnItemClickListener;
 import com.example.traveldiary.R;
 import com.example.traveldiary.adapter.BoardValueAdapter;
@@ -26,12 +29,21 @@ import com.example.traveldiary.value.MyPageValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
 public class FragmentBoard extends Fragment implements OnItemClickListener {
     private RecyclerView recyclerView;
     private BoardValueAdapter adapter;
+    ImageView imageView;
+
+    private  ArrayList<Integer> arrayStartIndex = new ArrayList<Integer>();
+    private  ArrayList<Integer> arrayEndIndex = new ArrayList<Integer>();
+    private LinearLayout listView;
+    private ArrayList<View> arrayimage = new ArrayList();
+    String TAG  = "로그";
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -44,6 +56,7 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
         adapter = new BoardValueAdapter(v.getContext(), this);
         recyclerView.setAdapter(adapter);
         loadDate();
+
 
         return v;
     }
@@ -84,22 +97,114 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
         TextView title, hashTag, content, uploadDate, date;
         ImageView mainImg;
 
+
         title = dialog.findViewById(R.id.title);
         uploadDate = dialog.findViewById(R.id.uploadDate);
         date = dialog.findViewById(R.id.date);
         hashTag = dialog.findViewById(R.id.hashTag);
-        content = dialog.findViewById(R.id.content);
-        mainImg = dialog.findViewById(R.id.mainImg);
 
+
+        listView = dialog.findViewById(R.id.listView);
+
+        checkText(item);
         title.setText(item.getTitle());
         hashTag.setText(item.getHashTag());
-        content.setText(Html.fromHtml(item.getCon(), Html.FROM_HTML_MODE_LEGACY));
+
         uploadDate.setText(getString(R.string.uploadBoard_uploadDate, item.getUploadDate()));
         date.setText(getString(R.string.uploadBoard_date, item.getDate()));
-        mainImg.setImageResource(R.drawable.baseline_image_24);
+
 
         dialog.show();
         ImageView closeButton = dialog.findViewById(R.id.closeButton);
-        closeButton.setOnClickListener(v -> dialog.dismiss());
+        closeButton.setOnClickListener(v -> {
+            dialog.dismiss();
+            arrayimage.clear();
+            arrayStartIndex.clear();
+            arrayEndIndex.clear();
+        });
+
+    }
+
+    private void checkText(MyPageValue mp) {
+        String str = mp.getCon();
+
+        for (int index = 0; index < str.length(); index++) {
+            if (str.charAt(index) == '<' && str.charAt(index + 1) == 'i' && str.charAt(index + 2) == 'm') {
+                arrayStartIndex.add(index);
+            }
+            if (str.charAt(index) == '>' && str.charAt(index - 1) == '"' && str.charAt(index - 2) == '0') {
+                arrayEndIndex.add(index);
+            }
+        }
+        if (arrayStartIndex.size() == 0) {
+            createTextView(mp.getCon());
+        } else {
+            if (arrayStartIndex.get(0) != 0) {
+                String str0 = mp.getCon().substring(0, arrayStartIndex.get(0));
+                createTextView(str0);
+                for (int i = 0; i < arrayStartIndex.size(); i++) {
+                    createImageView();
+                    if (i == arrayStartIndex.size() - 1) {
+                        String str1 = mp.getCon().substring(arrayEndIndex.get(i) + 1, mp.getCon().length());
+                        createTextView(str1);
+                    } else {
+                        String str1 = mp.getCon().substring(arrayEndIndex.get(i) + 1, arrayStartIndex.get(i + 1));
+                        createTextView(str1);
+                    }
+                }
+            } else {
+                for (int i = 0; i < arrayStartIndex.size(); i++) {
+                    createImageView();
+                    if (i == arrayStartIndex.size() - 1) {
+                        String str2 = mp.getCon().substring(arrayEndIndex.get(i) + 1, mp.getCon().length());
+                        createTextView(str2);
+                    } else {
+                        String str3 = mp.getCon().substring(arrayEndIndex.get(i) + 1, arrayStartIndex.get(i + 1));
+                        createTextView(str3);
+                    }
+                }
+            }
+        }
+        Imagedown(mp.getBoardID());
+
+
+    }
+    int imageId = 10000;
+
+    private void createImageView() {
+        imageView = new ImageView(getContext());
+        imageView.setId(imageId);
+        int b = imageView.getId();
+        Glide.with(getContext()).load(R.drawable.baseline_image_24).into(imageView);
+        LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        imageView.setLayoutParams(param);
+        arrayimage.add(imageView);
+        listView.addView(imageView);
+        imageId++;
+    }
+
+    private void createTextView(String str) {
+        TextView textViewNm = new TextView(getContext());
+        textViewNm.setText(Html.fromHtml(str, Html.FROM_HTML_MODE_LEGACY).toString());
+        textViewNm.setTextSize(15);
+        textViewNm.setTextColor(Color.rgb(0, 0, 0));
+        textViewNm.setBackgroundColor(Color.rgb(184, 236, 184));
+        LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        textViewNm.setLayoutParams(param);
+        listView.addView(textViewNm);
+    }
+    private void Imagedown(String boardID) {
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+        storageReference.child("/Image/" + boardID).listAll().addOnSuccessListener(listResult -> {
+            int a = listResult.getItems().size();
+            for (int i = 0; i < listResult.getItems().size(); i++) {
+                StorageReference item = listResult.getItems().get(i);
+                int finalI = i;
+                item.getDownloadUrl().addOnSuccessListener(command -> {
+                    Glide.with(getContext()).load(command).into(((ImageView) arrayimage.get(finalI)));
+                });
+            }
+
+        }).addOnFailureListener(command -> Log.d("error", "불러오기 실패."));
     }
 }
