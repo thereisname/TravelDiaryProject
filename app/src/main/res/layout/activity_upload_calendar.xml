@@ -10,7 +10,7 @@
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:fillViewport="true"
         android:scrollbars="vertical"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
@@ -123,7 +123,7 @@
                 android:id="@+id/chipGroup2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="60dp"
+                android:layout_marginTop="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/chipGroup"
@@ -173,22 +173,21 @@
                     android:id="@+id/chip18"
                     style="@style/uploadCalender_CustomChipStyle"
                     android:text="@string/uploadCalender_chip_style_emotional" />
-
             </com.google.android.material.chip.ChipGroup>
-
 
             <Button
                 android:id="@+id/addLoad"
                 android:layout_width="wrap_content"
-                android:layout_height="48dp"
-
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
                 android:text="경로 추가"
+                app:layout_constraintBottom_toTopOf="@+id/listView"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/textView3" />
 
             <TextView
                 android:id="@+id/textView3"
-                android:layout_width="wrap_content"
+                android:layout_width="76dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
                 android:fontFamily="@font/gangwon"
@@ -196,9 +195,7 @@
                 android:textColor="@color/blue2"
                 android:textSize="24sp"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toStartOf="@+id/addLoad"
-                app:layout_constraintHorizontal_bias="0.08"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/chipGroup2"
                 app:layout_constraintTop_toBottomOf="@+id/chipGroup2" />
 
             <LinearLayout
@@ -220,14 +217,24 @@
                     android:hint="경로1"
                     android:textColor="@color/blue2"
                     android:textColorHint="@color/blue2"
-                    android:textStyle="bold"
-
-
-                    />
-
-
+                    android:textStyle="bold" />
             </LinearLayout>
 
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/next"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="30dp"
+                android:background="@drawable/border"
+                android:fontFamily="@font/gangwon"
+                android:paddingHorizontal="40dp"
+                android:text="@string/uploadCalender_boardBtn"
+                android:textColor="@color/blue2"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/listView" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 
@@ -258,20 +265,4 @@
             android:id="@+id/myPage"
             style="@style/all_toolbar_imageView.myPage" />
     </LinearLayout>
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/next"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/border"
-        android:fontFamily="@font/gangwon"
-        android:paddingHorizontal="40dp"
-        android:text="@string/uploadCalender_boardBtn"
-        android:textColor="@color/blue2"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nestedScrollView" />
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>
