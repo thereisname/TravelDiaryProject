@@ -50,7 +50,7 @@
         android:layout_marginBottom="131dp"
         android:background="@drawable/custom_button2"
         android:fontFamily="@font/gangwon"
-        android:text="@string/loginActivity_loginBtn"
+        android:text="@string/login"
         android:textColor="@color/black"
         android:textSize="25sp"
         android:transitionName="startTran"
@@ -72,7 +72,7 @@
             android:id="@+id/textView6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="계정이 없으신가요?"
+            android:text="@string/loginActivity_is"
             android:textColor="@color/text_gray" />
 
         <Button

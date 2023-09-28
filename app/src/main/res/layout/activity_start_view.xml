@@ -23,7 +23,7 @@
         android:layout_height="0dp"
         android:layout_marginTop="50dp"
         android:fontFamily="@font/gangwon"
-        android:text="나만의 여행 일기를 만들어 보세요!"
+        android:text="@string/startView_message"
         android:textColor="@color/black"
         android:textSize="25sp"
         android:transitionName="conTran"
@@ -41,7 +41,7 @@
         android:layout_marginBottom="131dp"
         android:background="@drawable/custom_button2"
         android:fontFamily="@font/gangwon"
-        android:text="시작하기"
+        android:text="@string/startView_start"
         android:textColor="@color/black"
         android:textSize="25sp"
         android:transitionName="startTran"
@@ -54,9 +54,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        android:layout_marginBottom="73dp"
         android:gravity="center_horizontal"
         android:orientation="horizontal"
         android:transitionName="registerTran"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/start_btn">
@@ -65,7 +67,7 @@
             android:id="@+id/textView6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="이미 계정이 있나요?"
+            android:text="@string/startView_is"
             android:textColor="@color/text_gray" />
 
         <Button
@@ -73,7 +75,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="#00ff0000"
-            android:text="로그인"
+            android:text="@string/login"
             android:textColor="@color/icon" />
     </LinearLayout>
 

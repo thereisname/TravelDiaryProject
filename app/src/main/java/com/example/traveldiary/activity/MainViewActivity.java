@@ -17,12 +17,11 @@ import com.example.traveldiary.value.MyPageValue;
 import java.util.ArrayList;
 
 public class MainViewActivity extends AppCompatActivity {
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_view);
 
-        RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.rv_maineRcyclerView);
+        RecyclerView mRecyclerView = findViewById(R.id.rv_maineRcyclerView);
         MainValueAdapter mainValueAdapter = new MainValueAdapter();
 
         mRecyclerView.setAdapter(mainValueAdapter);
@@ -33,12 +32,10 @@ public class MainViewActivity extends AppCompatActivity {
 
         mainValueAdapter.setAdapterList(item);
 
-        ImageView myPage = findViewById(R.id.myPage);
-
         FragmentClient fragmentClient = new FragmentClient();
-
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_view, fragmentClient).commit();
 
+        ImageView myPage = findViewById(R.id.myPage);
         myPage.setOnClickListener(v -> {
             startActivity(new Intent(this, MypageActivity.class));
             finish();
@@ -49,8 +46,5 @@ public class MainViewActivity extends AppCompatActivity {
             startActivity(new Intent(this, UploadCalendarActivity.class));
             finish();
         });
-
     }
-
-
 }

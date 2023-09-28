@@ -40,7 +40,8 @@ public class LoginActivity extends AppCompatActivity {
                 throw new RuntimeException(e);
             }
             if (email.equals("") || password.equals(""))
-                Toast.makeText(this, "Please enter email, password.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.login, Toast.LENGTH_SHORT).show();
+
             else
                 mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(LoginActivity.this, task -> {
                     if (task.isSuccessful()) {
@@ -51,7 +52,7 @@ public class LoginActivity extends AppCompatActivity {
                         finish();
                     } else {
                         // If sign in fails, display a message to the user.
-                        Toast.makeText(LoginActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, R.string.login_fail, Toast.LENGTH_SHORT).show();
                     }
                 });
         });

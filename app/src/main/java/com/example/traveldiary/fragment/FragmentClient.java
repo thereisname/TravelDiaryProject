@@ -115,7 +115,6 @@ public class FragmentClient extends Fragment {
             for (int i = 0; i < listResult.getItems().size(); i++) {
                 StorageReference item = listResult.getItems().get(i);
                 int finalI = i;
-
                 item.getDownloadUrl().addOnSuccessListener(command -> Glide.with(getContext()).load(command).into(((ImageView) arrayimage.get(finalI))));
             }
         });

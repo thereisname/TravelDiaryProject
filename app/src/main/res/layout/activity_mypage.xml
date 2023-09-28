@@ -22,7 +22,6 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="45dp"
         android:fontFamily="@font/gangwon"
-        android:text="사용자 이름"
         android:textColor="@color/icon"
         android:textSize="30sp"
         android:textStyle="bold"
@@ -75,8 +74,8 @@
             android:elevation="1dp"
             app:tabGravity="fill"
             app:tabMode="fixed"
-            app:tabSelectedTextColor="@color/text_gray"
-            app:tabTextColor="#78AFF3" />
+            app:tabSelectedTextColor="#78AFF3"
+            app:tabTextColor="@color/gray" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <FrameLayout
