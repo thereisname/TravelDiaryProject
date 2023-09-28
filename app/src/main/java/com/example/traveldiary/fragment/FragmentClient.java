@@ -1,7 +1,5 @@
 package com.example.traveldiary.fragment;
 
-import static java.lang.Thread.sleep;
-
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Html;
@@ -12,7 +10,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
@@ -32,14 +29,16 @@ public class FragmentClient extends Fragment {
     private MyPageValue mp;
     private LinearLayout listView;
     ImageView imageView;
+    FirebaseFirestore db;
     ArrayList<Integer> arrayStartIndex = new ArrayList<Integer>();
     ArrayList<Integer> arrayEndIndex = new ArrayList<Integer>();
     ArrayList<View> arrayimage = new ArrayList();
 
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState) {
         isAttBookmark = 0;
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db = FirebaseFirestore.getInstance();
         View view = inflater.inflate(R.layout.fragment_client, container, false);
 
         ImageButton bookmark = view.findViewById(R.id.bookMarkBtn);
@@ -47,20 +46,23 @@ public class FragmentClient extends Fragment {
         TextView fragment_hashtag = view.findViewById(R.id.fragment_hashtag);
 
         listView = view.findViewById(R.id.listView);
-        db.collection("data").whereNotEqualTo("userToken", FirebaseAuth.getInstance().getUid()).limit(1).get().addOnSuccessListener(queryDocumentSnapshots -> {
-            for (QueryDocumentSnapshot queryDocumentSnapshot : queryDocumentSnapshots) {
-                mp = queryDocumentSnapshot.toObject(MyPageValue.class);
-                checkText(mp);
-                fragment_title.setText(mp.getTitle());
-                fragment_hashtag.setText(mp.getHashTag());
-            }
-        });
+        db.collection("data").whereNotEqualTo("userToken", FirebaseAuth.getInstance().getUid()).limit(1).get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    Log.d(TAG, "db 확인하는중");
+                    for (QueryDocumentSnapshot queryDocumentSnapshot : queryDocumentSnapshots) {
+                        mp = queryDocumentSnapshot.toObject(MyPageValue.class);
+                        checkText(mp);
+                        fragment_title.setText(mp.getTitle());
+                        fragment_hashtag.setText(mp.getHashTag());
+                    }
+                });
         return view;
     }
 
-    // 문자에서 이미지  시작과 끝을 가져오기
+    // 문자에서 이미지 시작과 끝을 가져오기
     private void checkText(MyPageValue mp) {
         String str = mp.getCon();
+
         for (int index = 0; index < str.length(); index++) {
             if (str.charAt(index) == '<' && str.charAt(index + 1) == 'i' && str.charAt(index + 2) == 'm') {
                 arrayStartIndex.add(index);
@@ -115,7 +117,8 @@ public class FragmentClient extends Fragment {
             for (int i = 0; i < listResult.getItems().size(); i++) {
                 StorageReference item = listResult.getItems().get(i);
                 int finalI = i;
-                item.getDownloadUrl().addOnSuccessListener(command -> Glide.with(getContext()).load(command).into(((ImageView) arrayimage.get(finalI))));
+                item.getDownloadUrl().addOnSuccessListener(
+                        command -> Glide.with(getContext()).load(command).into(((ImageView) arrayimage.get(finalI))));
             }
         });
     }
@@ -127,7 +130,8 @@ public class FragmentClient extends Fragment {
         imageView.setId(imageId);
         Glide.with(getContext()).load(R.drawable.baseline_image_24).into(imageView);
 
-        LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
         imageView.setLayoutParams(param);
         arrayimage.add(imageView);
         listView.addView(imageView);
@@ -139,7 +143,8 @@ public class FragmentClient extends Fragment {
         textViewNm.setText(Html.fromHtml(str, Html.FROM_HTML_MODE_LEGACY).toString());
         textViewNm.setTextSize(15);
         textViewNm.setTextColor(Color.rgb(0, 0, 0));
-        LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
         textViewNm.setLayoutParams(param);
         listView.addView(textViewNm);
     }

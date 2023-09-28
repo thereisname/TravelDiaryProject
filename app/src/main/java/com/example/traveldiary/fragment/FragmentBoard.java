@@ -40,15 +40,17 @@ import java.util.ArrayList;
 public class FragmentBoard extends Fragment implements OnItemClickListener {
     private RecyclerView recyclerView;
     private BoardValueAdapter adapter;
-    private FirebaseFirestore db;
-    LinearLayout content;
     ImageView imageView;
-    ArrayList<Integer> arrayStartIndex;
-    ArrayList<Integer> arrayEndIndex;
-    ArrayList<View> arrayimage;
+
+    private ArrayList<Integer> arrayStartIndex = new ArrayList<Integer>();
+    private ArrayList<Integer> arrayEndIndex = new ArrayList<Integer>();
+    private LinearLayout listView;
+    private ArrayList<View> arrayimage = new ArrayList();
+    String TAG = "로그";
 
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_board, container, false);
         recyclerView = v.findViewById(R.id.boardRecyclerView);
 
@@ -66,31 +68,34 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
     }
 
     public void loadDate() {
-        db.collection("data").whereEqualTo("userToken", FirebaseAuth.getInstance().getUid()).get().addOnSuccessListener(queryDocumentSnapshots -> {
-            for (QueryDocumentSnapshot queryDocumentSnapshot : queryDocumentSnapshots) {
-                MyPageValue mp = queryDocumentSnapshot.toObject(MyPageValue.class);
-                adapter.addItem(mp);
-            }
-            recyclerView.setAdapter(adapter);
-        });
+        db.collection("data").whereEqualTo("userToken", FirebaseAuth.getInstance().getUid()).get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    for (QueryDocumentSnapshot queryDocumentSnapshot : queryDocumentSnapshots) {
+                        MyPageValue mp = queryDocumentSnapshot.toObject(MyPageValue.class);
+                        adapter.addItem(mp);
+                    }
+                    recyclerView.setAdapter(adapter);
+                });
     }
 
     public void loadDate(int position) {
-        db.collection("data").whereEqualTo("userToken", FirebaseAuth.getInstance().getUid()).get().addOnSuccessListener(queryDocumentSnapshots -> adapter.notifyItemRemoved(position));
+        db.collection("data").whereEqualTo("userToken", FirebaseAuth.getInstance().getUid()).get()
+                .addOnSuccessListener(queryDocumentSnapshots -> adapter.notifyItemRemoved(position));
     }
 
     public void onItemSelected(View view, int position, ArrayList<MyPageValue> items) {
-        //Save the clicked position value among the ArrayList values as a resultValue type in the variable item.
+        // Save the clicked position value among the ArrayList values as a resultValue
+        // type in the variable item.
         MyPageValue item = items.get(position);
-        //Create a Dialog class to define a custom dialog.
+        // Create a Dialog class to define a custom dialog.
         final Dialog dialog = new Dialog(getActivity());
-        //Custom Dialog Corner Radius Processing
+        // Custom Dialog Corner Radius Processing
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        //Hide the title bar of the activity.
+        // Hide the title bar of the activity.
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        //Set the layout of the custom dialog.
+        // Set the layout of the custom dialog.
         dialog.setContentView(R.layout.dialog_board_detail);
-        //Adjust the screen size.
+        // Adjust the screen size.
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
         lp.copyFrom(dialog.getWindow().getAttributes());
         lp.width = WindowManager.LayoutParams.MATCH_PARENT;
@@ -101,15 +106,16 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
         arrayEndIndex = new ArrayList<Integer>();
         arrayimage = new ArrayList();
 
-        //Create variables and find in layout.
+        // Create variables and find in layout.
         TextView title, hashTag, uploadDate, date;
-
         title = dialog.findViewById(R.id.title);
         uploadDate = dialog.findViewById(R.id.uploadDate);
         date = dialog.findViewById(R.id.date);
         hashTag = dialog.findViewById(R.id.hashTag);
         content = dialog.findViewById(R.id.content);
+        listView = dialog.findViewById(R.id.listView);
 
+        checkText(item);
         title.setText(item.getTitle());
         hashTag.setText(item.getHashTag());
         uploadDate.setText(getString(R.string.uploadBoard_uploadDate, item.getUploadDate()));
@@ -117,13 +123,18 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
         checkText(item.getCon(), item.getBoardID());
         dialog.show();
         ImageView closeButton = dialog.findViewById(R.id.closeButton);
-        closeButton.setOnClickListener(v -> dialog.dismiss());
+        closeButton.setOnClickListener(v -> {
+            dialog.dismiss();
+            arrayimage.clear();
+            arrayStartIndex.clear();
+            arrayEndIndex.clear();
+        });
 
         ImageButton deleteButton = dialog.findViewById(R.id.deleteButton);
         deleteButton.setOnClickListener(v -> deleteBoard(item.getBoardID(), dialog, position));
     }
 
-    // 문자에서 이미지  시작과 끝을 가져오기
+    // 문자에서 이미지 시작과 끝을 가져오기
     private void checkText(String con, String boardID) {
         for (int index = 0; index < con.length(); index++) {
             if (con.charAt(index) == '<' && con.charAt(index + 1) == 'i' && con.charAt(index + 2) == 'm') {
@@ -180,7 +191,8 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
             for (int i = 0; i < listResult.getItems().size(); i++) {
                 StorageReference item = listResult.getItems().get(i);
                 int finalI = i;
-                item.getDownloadUrl().addOnSuccessListener(command -> Glide.with(getContext()).load(command).into(((ImageView) arrayimage.get(finalI))));
+                item.getDownloadUrl().addOnSuccessListener(
+                        command -> Glide.with(getContext()).load(command).into(((ImageView) arrayimage.get(finalI))));
             }
         });
     }
@@ -192,7 +204,8 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
         imageView.setId(imageId);
         Glide.with(getContext()).load(R.drawable.baseline_image_24).into(imageView);
 
-        LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
         imageView.setLayoutParams(param);
         arrayimage.add(imageView);
         content.addView(imageView);
@@ -204,7 +217,8 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
         textViewNm.setText(Html.fromHtml(str, Html.FROM_HTML_MODE_LEGACY).toString());
         textViewNm.setTextSize(15);
         textViewNm.setTextColor(Color.rgb(0, 0, 0));
-        LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
         textViewNm.setLayoutParams(param);
         content.addView(textViewNm);
     }
@@ -215,6 +229,7 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
             loadDate(position);
             Log.d("deleteBoard", "load");
             dialog.dismiss();
-        }).addOnFailureListener(command -> Toast.makeText(getActivity().getApplicationContext(), "삭제 실패!", Toast.LENGTH_SHORT).show());
+        }).addOnFailureListener(
+                command -> Toast.makeText(getActivity().getApplicationContext(), "삭제 실패!", Toast.LENGTH_SHORT).show());
     }
 }

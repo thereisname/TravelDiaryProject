@@ -1,9 +1,15 @@
 package com.example.traveldiary.activity
 
 import android.content.Intent
+import android.content.res.ColorStateList
+import android.graphics.Typeface
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
+import android.view.ViewGroup
+import android.widget.EditText
+import android.widget.LinearLayout
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.util.Pair
@@ -17,12 +23,14 @@ import java.util.*
 
 class UploadCalendarActivity : AppCompatActivity() {
     lateinit var binding: ActivityUploadCalendarBinding
-    lateinit var filePath: String
+    lateinit var listView : LinearLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityUploadCalendarBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        listView = findViewById(R.id.listView)
 
         calendarPick()  // 여행일 선택창 output.
 
@@ -40,35 +48,6 @@ class UploadCalendarActivity : AppCompatActivity() {
             finish()
         }
 
-        // 대표 이미지 가져오는 곳
-        val requestLauncher = registerForActivityResult(
-            ActivityResultContracts.StartActivityForResult()
-        ) {
-            if (it.resultCode === android.app.Activity.RESULT_OK) {
-                Glide
-                    .with(getApplicationContext())
-                    .load(it.data?.data)
-                    .apply(RequestOptions().override(250, 200))
-                    .centerCrop()
-                    .into(binding.imageButton)
-
-                val cursor = contentResolver.query(
-                    it.data?.data as Uri,
-                    arrayOf<String>(MediaStore.Images.Media.DATA), null, null, null
-                )
-                cursor?.moveToFirst().let {
-                    filePath = cursor?.getString(0) as String
-                }
-            }
-        }
-
-        binding.imageButton.setOnClickListener {
-            val intent = Intent(Intent.ACTION_PICK)
-            intent.setDataAndType(
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*"
-            )
-            requestLauncher.launch(intent)
-        }
     }
 
     private fun calendarPick() {
@@ -97,6 +76,33 @@ class UploadCalendarActivity : AppCompatActivity() {
                 }
             }
         }
+
+        binding.addLoad.setOnClickListener {
+            addEditor();
+        }
+    }
+
+    var count = 2
+    private fun addEditor() {
+        // xml 300dp 숫자 만드는 방법
+        var dpValue = 300
+        var density = resources.displayMetrics.density
+        var pixelValue = dpValue*density
+
+        var editText : EditText = EditText(applicationContext)
+        editText.setHintTextColor(getColor(R.color.blue2))
+        editText.setTextColor(getColor(R.color.blue2))
+        editText.id = count
+        editText.setHint("경로"+ count)
+        editText.textSize = 12f
+        editText.setLinkTextColor(getColor(R.color.blue2))
+        editText.width = pixelValue.toInt()
+        editText.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.blue2))
+
+        val param: LinearLayout.LayoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        editText.layoutParams = param
+        listView.addView(editText)
+        count++
     }
 
     private fun HashTagCustom(): String {
@@ -122,13 +128,7 @@ class UploadCalendarActivity : AppCompatActivity() {
         val intent = Intent(this, UploadBoardActivity::class.java)
         val info = HashMap<String, Any>()
         info["date"] = binding.dataPickerText.text.toString()
-        try {
-            info["mainImg"] = filePath
-        } catch (e: Exception) {
-            info["mainImg"] = R.drawable.baseline_image_24.toString()
-        }
         info["hashTag"] = HashTagCustom()
-
         intent.putExtra("info", info)
         startActivity(intent)
     }
