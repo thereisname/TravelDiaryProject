@@ -1,5 +1,7 @@
 package com.example.traveldiary.fragment;
 
+import static java.lang.Thread.sleep;
+
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -11,9 +13,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -24,10 +28,9 @@ import com.bumptech.glide.Glide;
 import com.example.traveldiary.OnItemClickListener;
 import com.example.traveldiary.R;
 import com.example.traveldiary.adapter.BoardValueAdapter;
-
 import com.example.traveldiary.value.MyPageValue;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
-
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -39,14 +42,15 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
     private BoardValueAdapter adapter;
     ImageView imageView;
 
-    private  ArrayList<Integer> arrayStartIndex = new ArrayList<Integer>();
-    private  ArrayList<Integer> arrayEndIndex = new ArrayList<Integer>();
+    private ArrayList<Integer> arrayStartIndex = new ArrayList<Integer>();
+    private ArrayList<Integer> arrayEndIndex = new ArrayList<Integer>();
     private LinearLayout listView;
     private ArrayList<View> arrayimage = new ArrayList();
-    String TAG  = "로그";
+    String TAG = "로그";
 
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_board, container, false);
         recyclerView = v.findViewById(R.id.boardRecyclerView);
 
@@ -55,65 +59,68 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
 
         adapter = new BoardValueAdapter(v.getContext(), this);
         recyclerView.setAdapter(adapter);
-        loadDate();
 
+        db = FirebaseFirestore.getInstance();
+
+        loadDate();
 
         return v;
     }
 
     public void loadDate() {
-        Bundle bundle = getArguments();
-        String userToken = bundle.getString("userToken");
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("data").whereEqualTo("userToken", userToken).get().addOnSuccessListener(queryDocumentSnapshots -> {
-            for (QueryDocumentSnapshot queryDocumentSnapshot : queryDocumentSnapshots) {
-                MyPageValue mp = queryDocumentSnapshot.toObject(MyPageValue.class);
-                adapter.addItem(mp);
-            }
-            recyclerView.setAdapter(adapter);
-        });
+        db.collection("data").whereEqualTo("userToken", FirebaseAuth.getInstance().getUid()).get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    for (QueryDocumentSnapshot queryDocumentSnapshot : queryDocumentSnapshots) {
+                        MyPageValue mp = queryDocumentSnapshot.toObject(MyPageValue.class);
+                        adapter.addItem(mp);
+                    }
+                    recyclerView.setAdapter(adapter);
+                });
+    }
+
+    public void loadDate(int position) {
+        db.collection("data").whereEqualTo("userToken", FirebaseAuth.getInstance().getUid()).get()
+                .addOnSuccessListener(queryDocumentSnapshots -> adapter.notifyItemRemoved(position));
     }
 
     public void onItemSelected(View view, int position, ArrayList<MyPageValue> items) {
-        //Save the clicked position value among the ArrayList values as a resultValue type in the variable item.
+        // Save the clicked position value among the ArrayList values as a resultValue
+        // type in the variable item.
         MyPageValue item = items.get(position);
-        //Create a Dialog class to define a custom dialog.
+        // Create a Dialog class to define a custom dialog.
         final Dialog dialog = new Dialog(getActivity());
-        //Custom Dialog Corner Radius Processing
+        // Custom Dialog Corner Radius Processing
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        //Hide the title bar of the activity.
+        // Hide the title bar of the activity.
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        //Set the layout of the custom dialog.
+        // Set the layout of the custom dialog.
         dialog.setContentView(R.layout.dialog_board_detail);
-        //Adjust the screen size.
+        // Adjust the screen size.
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
         lp.copyFrom(dialog.getWindow().getAttributes());
         lp.width = WindowManager.LayoutParams.MATCH_PARENT;
         lp.height = WindowManager.LayoutParams.MATCH_PARENT;
         Window window = dialog.getWindow();
         window.setAttributes(lp);
+        arrayStartIndex = new ArrayList<Integer>();
+        arrayEndIndex = new ArrayList<Integer>();
+        arrayimage = new ArrayList();
 
-        //Create variables and find in layout.
-        TextView title, hashTag, content, uploadDate, date;
-        ImageView mainImg;
-
-
+        // Create variables and find in layout.
+        TextView title, hashTag, uploadDate, date;
         title = dialog.findViewById(R.id.title);
         uploadDate = dialog.findViewById(R.id.uploadDate);
         date = dialog.findViewById(R.id.date);
         hashTag = dialog.findViewById(R.id.hashTag);
-
-
+        content = dialog.findViewById(R.id.content);
         listView = dialog.findViewById(R.id.listView);
 
         checkText(item);
         title.setText(item.getTitle());
         hashTag.setText(item.getHashTag());
-
         uploadDate.setText(getString(R.string.uploadBoard_uploadDate, item.getUploadDate()));
         date.setText(getString(R.string.uploadBoard_date, item.getDate()));
-
-
+        checkText(item.getCon(), item.getBoardID());
         dialog.show();
         ImageView closeButton = dialog.findViewById(R.id.closeButton);
         closeButton.setOnClickListener(v -> {
@@ -123,32 +130,35 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
             arrayEndIndex.clear();
         });
 
+        ImageButton deleteButton = dialog.findViewById(R.id.deleteButton);
+        deleteButton.setOnClickListener(v -> deleteBoard(item.getBoardID(), dialog, position));
     }
 
-    private void checkText(MyPageValue mp) {
-        String str = mp.getCon();
-
-        for (int index = 0; index < str.length(); index++) {
-            if (str.charAt(index) == '<' && str.charAt(index + 1) == 'i' && str.charAt(index + 2) == 'm') {
+    // 문자에서 이미지 시작과 끝을 가져오기
+    private void checkText(String con, String boardID) {
+        for (int index = 0; index < con.length(); index++) {
+            if (con.charAt(index) == '<' && con.charAt(index + 1) == 'i' && con.charAt(index + 2) == 'm') {
                 arrayStartIndex.add(index);
             }
-            if (str.charAt(index) == '>' && str.charAt(index - 1) == '"' && str.charAt(index - 2) == '0') {
+            if (con.charAt(index) == '>' && con.charAt(index - 1) == '"' && con.charAt(index - 2) == '0') {
                 arrayEndIndex.add(index);
             }
         }
+        // 이미지 가져오기
         if (arrayStartIndex.size() == 0) {
-            createTextView(mp.getCon());
+            createTextView(con);
         } else {
             if (arrayStartIndex.get(0) != 0) {
-                String str0 = mp.getCon().substring(0, arrayStartIndex.get(0));
+                String str0 = con.substring(0, arrayStartIndex.get(0));
                 createTextView(str0);
                 for (int i = 0; i < arrayStartIndex.size(); i++) {
                     createImageView();
                     if (i == arrayStartIndex.size() - 1) {
-                        String str1 = mp.getCon().substring(arrayEndIndex.get(i) + 1, mp.getCon().length());
+                        String str1 = con.substring(arrayEndIndex.get(i) + 1, con.length());
                         createTextView(str1);
+
                     } else {
-                        String str1 = mp.getCon().substring(arrayEndIndex.get(i) + 1, arrayStartIndex.get(i + 1));
+                        String str1 = con.substring(arrayEndIndex.get(i) + 1, arrayStartIndex.get(i + 1));
                         createTextView(str1);
                     }
                 }
@@ -156,55 +166,70 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
                 for (int i = 0; i < arrayStartIndex.size(); i++) {
                     createImageView();
                     if (i == arrayStartIndex.size() - 1) {
-                        String str2 = mp.getCon().substring(arrayEndIndex.get(i) + 1, mp.getCon().length());
+                        String str2 = con.substring(arrayEndIndex.get(i) + 1, con.length());
                         createTextView(str2);
+
                     } else {
-                        String str3 = mp.getCon().substring(arrayEndIndex.get(i) + 1, arrayStartIndex.get(i + 1));
+                        String str3 = con.substring(arrayEndIndex.get(i) + 1, arrayStartIndex.get(i + 1));
                         createTextView(str3);
                     }
                 }
             }
         }
-        Imagedown(mp.getBoardID());
+        try {
+            sleep(1000);
+            Imagedown(boardID);
+        } catch (Exception e) {
 
-
+        }
     }
+
+    // Image 다운로드 함수
+    private void Imagedown(String boardID) {
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+        storageReference.child("/Image/" + boardID).listAll().addOnSuccessListener(listResult -> {
+            for (int i = 0; i < listResult.getItems().size(); i++) {
+                StorageReference item = listResult.getItems().get(i);
+                int finalI = i;
+                item.getDownloadUrl().addOnSuccessListener(
+                        command -> Glide.with(getContext()).load(command).into(((ImageView) arrayimage.get(finalI))));
+            }
+        });
+    }
+
     int imageId = 10000;
 
     private void createImageView() {
         imageView = new ImageView(getContext());
         imageView.setId(imageId);
-        int b = imageView.getId();
         Glide.with(getContext()).load(R.drawable.baseline_image_24).into(imageView);
-        LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+        LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
         imageView.setLayoutParams(param);
         arrayimage.add(imageView);
-        listView.addView(imageView);
+        content.addView(imageView);
         imageId++;
     }
 
     private void createTextView(String str) {
-        TextView textViewNm = new TextView(getContext());
+        TextView textViewNm = new TextView(getActivity());
         textViewNm.setText(Html.fromHtml(str, Html.FROM_HTML_MODE_LEGACY).toString());
         textViewNm.setTextSize(15);
         textViewNm.setTextColor(Color.rgb(0, 0, 0));
-        textViewNm.setBackgroundColor(Color.rgb(184, 236, 184));
-        LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
         textViewNm.setLayoutParams(param);
-        listView.addView(textViewNm);
+        content.addView(textViewNm);
     }
-    private void Imagedown(String boardID) {
-        StorageReference storageReference = FirebaseStorage.getInstance().getReference();
-        storageReference.child("/Image/" + boardID).listAll().addOnSuccessListener(listResult -> {
-            int a = listResult.getItems().size();
-            for (int i = 0; i < listResult.getItems().size(); i++) {
-                StorageReference item = listResult.getItems().get(i);
-                int finalI = i;
-                item.getDownloadUrl().addOnSuccessListener(command -> {
-                    Glide.with(getContext()).load(command).into(((ImageView) arrayimage.get(finalI)));
-                });
-            }
 
-        }).addOnFailureListener(command -> Log.d("error", "불러오기 실패."));
+    public void deleteBoard(String docID, Dialog dialog, int position) {
+        db.collection("data").document(docID).delete().addOnSuccessListener(unused -> {
+            Toast.makeText(getActivity().getApplicationContext(), "정상적으로 삭제가 완료되었습니다.", Toast.LENGTH_SHORT).show();
+            loadDate(position);
+            Log.d("deleteBoard", "load");
+            dialog.dismiss();
+        }).addOnFailureListener(
+                command -> Toast.makeText(getActivity().getApplicationContext(), "삭제 실패!", Toast.LENGTH_SHORT).show());
     }
 }

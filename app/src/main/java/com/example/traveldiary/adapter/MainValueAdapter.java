@@ -14,10 +14,10 @@ import com.example.traveldiary.value.MyPageValue;
 
 import java.util.ArrayList;
 
-
 public class MainValueAdapter extends RecyclerView.Adapter<MainValueAdapter.ViewHolder> {
 
     private ArrayList<MyPageValue> items = new ArrayList<>();
+
     @NonNull
     @Override
     public MainValueAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -31,7 +31,7 @@ public class MainValueAdapter extends RecyclerView.Adapter<MainValueAdapter.View
 
     }
 
-    public void setAdapterList(ArrayList<MyPageValue> list){
+    public void setAdapterList(ArrayList<MyPageValue> list) {
         this.items = list;
         notifyDataSetChanged();
     }
@@ -41,7 +41,7 @@ public class MainValueAdapter extends RecyclerView.Adapter<MainValueAdapter.View
         return items.size();
     }
 
-    public class ViewHolder  extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         TextView mainTitle;
         TextView userEmail;
         ImageView mainImage;
@@ -54,7 +54,7 @@ public class MainValueAdapter extends RecyclerView.Adapter<MainValueAdapter.View
             userEmail = (TextView) itemView.findViewById(R.id.tv_userEmail);
         }
 
-        void onBind(MyPageValue item){
+        void onBind(MyPageValue item) {
 
         }
     }

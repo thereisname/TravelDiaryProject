@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -42,7 +43,7 @@
         android:background="@drawable/border"
         android:fontFamily="@font/gangwon"
         android:text="@string/uploadBoard_uploadBtn"
-        android:textColor="@color/blue2"
+        android:textColor="@color/icon"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -58,7 +59,7 @@
         android:hint="@string/uploadBoard_hint_title"
         android:inputType="text"
         android:textColor="@color/text_gray"
-        android:textColorHint="@color/blue2"
+        android:textColorHint="@color/icon"
         android:textSize="32sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -117,15 +118,15 @@
                     style="@style/uploadBoard_RichEditorBtn"
                     android:src="@drawable/baseline_format_underlined_24" />
 
-                <ImageButton
-                    android:id="@+id/action_indent"
-                    style="@style/uploadBoard_RichEditorBtn"
-                    android:src="@drawable/baseline_format_indent_increase_24" />
+<!--                <ImageButton-->
+<!--                    android:id="@+id/action_outdent"-->
+<!--                    style="@style/uploadBoard_RichEditorBtn"-->
+<!--                    android:src="@drawable/baseline_format_indent_decrease_24" />-->
 
-                <ImageButton
-                    android:id="@+id/action_outdent"
-                    style="@style/uploadBoard_RichEditorBtn"
-                    android:src="@drawable/baseline_format_indent_decrease_24" />
+<!--                <ImageButton-->
+<!--                    android:id="@+id/action_indent"-->
+<!--                    style="@style/uploadBoard_RichEditorBtn"-->
+<!--                    android:src="@drawable/baseline_format_indent_increase_24" />-->
 
                 <ImageButton
                     android:id="@+id/action_insert_image"
