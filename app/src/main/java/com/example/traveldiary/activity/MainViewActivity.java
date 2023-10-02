@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,6 +13,11 @@ import com.example.traveldiary.R;
 import com.example.traveldiary.adapter.MainValueAdapter;
 import com.example.traveldiary.fragment.FragmentClient;
 import com.example.traveldiary.value.MyPageValue;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.ktx.Firebase;
 
 import java.util.ArrayList;
 
@@ -19,23 +25,11 @@ public class MainViewActivity extends AppCompatActivity {
 
     private RecyclerView mRecyclerView;
     private MainValueAdapter mainValueAdapter;
-    private ArrayList<MyPageValue> item;
+    private ArrayList<MyPageValue> itemList;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_view);
-
-        mRecyclerView = (RecyclerView) findViewById(R.id.rv_maineRcyclerView);
-        mainValueAdapter = new MainValueAdapter();
-
-        mRecyclerView.setAdapter(mainValueAdapter);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
-
-        item = new ArrayList<>();
-
-
-        mainValueAdapter.setAdapterList(item);
 
 
 

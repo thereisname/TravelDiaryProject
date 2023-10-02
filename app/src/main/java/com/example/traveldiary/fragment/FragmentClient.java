@@ -139,7 +139,6 @@ public class FragmentClient extends Fragment {
 
         StorageReference storageReference = FirebaseStorage.getInstance().getReference();
         storageReference.child("/Image/" + boardID).listAll().addOnSuccessListener(listResult -> {
-
             int a = listResult.getItems().size();
             Log.d(TAG, "우리확인 하자" + a);
 
