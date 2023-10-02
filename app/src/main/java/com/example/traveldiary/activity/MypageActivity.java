@@ -4,7 +4,6 @@ import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -57,7 +56,7 @@ public class MypageActivity extends AppCompatActivity {
             Intent intent = new Intent(this, StartViewActivity.class);
             intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
-            Toast.makeText(getApplicationContext(), "Logout successful.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), R.string.logout, Toast.LENGTH_SHORT).show();
             FirebaseAuth.getInstance().signOut();
             finish();
         });
@@ -72,7 +71,6 @@ public class MypageActivity extends AppCompatActivity {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 int position = tab.getPosition();
-                Log.d("position", String.valueOf(position));
                 Fragment selected = null;
                 if (position == 0) {
                     selected = fragmentBoard;

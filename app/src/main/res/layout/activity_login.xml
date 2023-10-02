@@ -1,66 +1,148 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:gravity="center_horizontal"
-    android:orientation="vertical"
-    android:weightSum="5">
+    android:orientation="vertical">
 
     <ImageView
-        android:layout_width="200dp"
+        android:id="@+id/imageView3"
+        android:layout_width="154dp"
+        android:layout_height="240dp"
+        android:layout_marginTop="80dp"
+        android:background="@drawable/start"
+        android:transitionName="imageTran"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/login_email"
+        style="@style/inputEdit_style"
+        android:layout_height="wrap_content"
+        android:hint="@string/all_hint_email"
+        android:inputType="textEmailAddress"
+        app:layout_constraintBottom_toTopOf="@+id/loginBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.505"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView3"
+        app:layout_constraintVertical_bias="0.3" />
+
+    <EditText
+        android:id="@+id/login_pw"
+        style="@style/inputEdit_style"
+        android:layout_marginTop="28dp"
+        android:hint="@string/all_hint_pw"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="@+id/login_email"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/login_email"
+        app:layout_constraintTop_toBottomOf="@+id/login_email" />
+
+    <Button
+        android:id="@+id/loginBtn"
+        android:layout_width="350dp"
         android:layout_height="0dp"
-        android:layout_weight="2"
-        android:background="@drawable/start" />
+        android:layout_marginStart="159dp"
+        android:layout_marginEnd="164dp"
+        android:layout_marginBottom="131dp"
+        android:background="@drawable/custom_button2"
+        android:fontFamily="@font/gangwon"
+        android:text="@string/login"
+        android:textColor="@color/black"
+        android:textSize="25sp"
+        android:transitionName="startTran"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="100dp"
-        android:layout_weight="3"
-        android:gravity="center|top"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/loginBtn">
 
-        <EditText
-            android:id="@+id/login_email"
-            style="@style/inputEdit_style"
-            android:layout_marginTop="20dp"
-            android:hint="@string/all_hint_email"
-            android:inputType="textEmailAddress" />
-
-        <EditText
-            android:id="@+id/login_pw"
-            style="@style/inputEdit_style"
-            android:layout_marginTop="20dp"
-            android:hint="@string/all_hint_pw"
-            android:inputType="textPassword" />
-
-
-        <CheckBox
-            android:id="@+id/login_cb"
-            style="@style/login_cb"
-            android:text="자동 로그인" />
-
-        <LinearLayout
-            android:layout_width="350dp"
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:orientation="horizontal">
+            android:text="@string/loginActivity_is"
+            android:textColor="@color/text_gray" />
 
-            <Button
-                android:id="@+id/loginBtn"
-                style="@style/login_btn2"
-                android:layout_marginEnd="20dp"
-                android:text="@string/loginActivity_loginBtn" />
-
-            <Button
-                android:id="@+id/registerBtn"
-                style="@style/login_btn2"
-                android:layout_marginStart="20dp"
-                android:text="@string/loginActivity_registerBtn" />
-
-        </LinearLayout>
+        <Button
+            android:id="@+id/registerBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#00ff0000"
+            android:text="@string/loginActivity_registerBtn"
+            android:textColor="@color/icon" />
     </LinearLayout>
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout><!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--    android:layout_width="match_parent"-->
+    <!--    android:layout_height="match_parent"-->
+    <!--    android:background="@color/white"-->
+    <!--    android:gravity="center"-->
+    <!--    android:orientation="vertical"-->
+    <!--    android:weightSum="5">-->
+
+    <!--    <ImageView-->
+    <!--        android:layout_width="200dp"-->
+    <!--        android:layout_height="0dp"-->
+    <!--        android:layout_marginTop="30dp"-->
+    <!--        android:layout_weight="2"-->
+    <!--        android:background="@drawable/start"-->
+    <!--        android:transitionName="imageTran" />-->
+
+    <!--    <LinearLayout-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="0dp"-->
+    <!--        android:layout_marginTop="100dp"-->
+    <!--        android:layout_weight="3"-->
+    <!--        android:gravity="center|top"-->
+    <!--        android:orientation="vertical">-->
+
+    <!--        <EditText-->
+    <!--            android:id="@+id/login_email"-->
+    <!--            style="@style/inputEdit_style"-->
+    <!--            android:layout_marginTop="20dp"-->
+    <!--            android:hint="@string/all_hint_email"-->
+    <!--            android:inputType="textEmailAddress"-->
+    <!--            android:text="b@email.com" />-->
+
+    <!--        <EditText-->
+    <!--            android:id="@+id/login_pw"-->
+    <!--            style="@style/inputEdit_style"-->
+    <!--            android:layout_marginTop="20dp"-->
+    <!--            android:hint="@string/all_hint_pw"-->
+    <!--            android:inputType="textPassword"-->
+    <!--            android:text="111111" />-->
+
+    <!--        <LinearLayout-->
+    <!--            android:layout_width="350dp"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:layout_marginTop="20dp"-->
+    <!--            android:orientation="horizontal">-->
+
+    <!--            <Button-->
+    <!--                android:id="@+id/loginBtn"-->
+    <!--                style="@style/login_btn2"-->
+    <!--                android:layout_marginEnd="20dp"-->
+    <!--                android:text="@string/loginActivity_loginBtn" />-->
+
+    <!--            <Button-->
+    <!--                android:id="@+id/registerBtn"-->
+    <!--                style="@style/login_btn2"-->
+    <!--                android:layout_marginStart="20dp"-->
+    <!--                android:text="@string/loginActivity_registerBtn" />-->
+
+    <!--        </LinearLayout>-->
+    <!--    </LinearLayout>-->
+
+    <!--</LinearLayout>-->
