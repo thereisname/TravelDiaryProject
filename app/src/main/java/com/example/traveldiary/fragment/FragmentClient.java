@@ -48,7 +48,6 @@ public class FragmentClient extends Fragment {
         listView = view.findViewById(R.id.listView);
         db.collection("data").whereNotEqualTo("userToken", FirebaseAuth.getInstance().getUid()).limit(1).get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
-                    Log.d(TAG, "db 확인하는중");
                     for (QueryDocumentSnapshot queryDocumentSnapshot : queryDocumentSnapshots) {
                         mp = queryDocumentSnapshot.toObject(MyPageValue.class);
                         checkText(mp);
@@ -103,7 +102,6 @@ public class FragmentClient extends Fragment {
         }
 
         try {
-            sleep(1000);
             Imagedown(mp.getBoardID());
         } catch (Exception e) {
 
@@ -130,8 +128,7 @@ public class FragmentClient extends Fragment {
         imageView.setId(imageId);
         Glide.with(getContext()).load(R.drawable.baseline_image_24).into(imageView);
 
-        LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         imageView.setLayoutParams(param);
         arrayimage.add(imageView);
         listView.addView(imageView);
@@ -143,8 +140,7 @@ public class FragmentClient extends Fragment {
         textViewNm.setText(Html.fromHtml(str, Html.FROM_HTML_MODE_LEGACY).toString());
         textViewNm.setTextSize(15);
         textViewNm.setTextColor(Color.rgb(0, 0, 0));
-        LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         textViewNm.setLayoutParams(param);
         listView.addView(textViewNm);
     }
