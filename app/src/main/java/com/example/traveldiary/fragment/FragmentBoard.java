@@ -128,8 +128,8 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
         deleteButton.setOnClickListener(v -> deleteBoard(item.getBoardID(), dialog, position));
     }
 
-    // 문자에서 이미지  시작과 끝을 가져오기
     private void checkText(String con, String boardID) {
+        // 문자에서 이미지  시작과 끝을 가져오기
         for (int index = 0; index < con.length(); index++) {
             if (con.charAt(index) == '<' && con.charAt(index + 1) == 'i' && con.charAt(index + 2) == 'm') {
                 arrayStartIndex.add(index);
@@ -170,21 +170,16 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
                 }
             }
         }
-        try {
-            sleep(1000);
-            Imagedown(boardID);
-        } catch (Exception e) {
-
-        }
+        Imagedown(boardID);
     }
 
     // Image 다운로드 함수
     private void Imagedown(String boardID) {
         StorageReference storageReference = FirebaseStorage.getInstance().getReference();
         storageReference.child("/Image/" + boardID).listAll().addOnSuccessListener(listResult -> {
-            for (int i = 0; i < listResult.getItems().size(); i++) {
+            for (int i = 1; i < listResult.getItems().size(); i++) {
                 StorageReference item = listResult.getItems().get(i);
-                int finalI = i;
+                int finalI = i - 1;
                 item.getDownloadUrl().addOnSuccessListener(command -> Glide.with(getContext()).load(command).into(((ImageView) arrayimage.get(finalI))));
             }
         });
