@@ -1,5 +1,8 @@
 package com.example.traveldiary.activity;
 
+import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -60,16 +63,18 @@ public class RegisterActivity extends AppCompatActivity {
                             account.setUserNickName(strNickName);
 
                             mDatabase.child("users").child(firebaseUser.getUid()).child("info").setValue(account);
-                            Toast.makeText(getApplicationContext(), "회원가입에 성공하였습니다.", Toast.LENGTH_LONG).show();
-                            System.exit(0);
+                            Toast.makeText(getApplicationContext(), R.string.register_con_successful_membership, Toast.LENGTH_LONG).show();
+                            Intent intent = new Intent(this, LoginActivity.class);
+                            intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(intent);
                         } else
-                            Toast.makeText(RegisterActivity.this, "회원가입에 실패하였습니다.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RegisterActivity.this, R.string.register_con_failed_membership, Toast.LENGTH_SHORT).show();
                     });
                 } else {
-                    Toast.makeText(getApplicationContext(), "비밀번호가 일치하지 않습니다.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), R.string.register_con_notMath, Toast.LENGTH_LONG).show();
                 }
             } else {
-                Toast.makeText(this, "내용을 입력해주세요.", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, R.string.register_con_enter_contents, Toast.LENGTH_LONG).show();
             }
         });
     }

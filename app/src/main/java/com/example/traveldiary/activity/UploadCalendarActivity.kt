@@ -23,8 +23,6 @@ import java.util.*
 
 class UploadCalendarActivity : AppCompatActivity() {
     lateinit var binding: ActivityUploadCalendarBinding
-
-
     lateinit var listView : LinearLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,26 +31,20 @@ class UploadCalendarActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         listView = findViewById(R.id.listView)
-        // intent 불러오기.
-        val userToken = intent.getStringExtra("userToken")
 
         calendarPick()  // 여행일 선택창 output.
 
         binding.next.setOnClickListener {
-            nextBtnClickEvent(userToken)
+            nextBtnClickEvent()
         }
 
         // toolbar Btn
         binding.home.setOnClickListener {
-            val intent = Intent(this, MainViewActivity::class.java)
-            intent.putExtra("userToken", userToken)
-            startActivity(intent)
+            startActivity(Intent(this, MainViewActivity::class.java))
             finish()
         }
         binding.myPage.setOnClickListener {
-            val intent = Intent(this, MypageActivity::class.java)
-            intent.putExtra("userToken", userToken)
-            startActivity(intent)
+            startActivity(Intent(this, MypageActivity::class.java))
             finish()
         }
 
@@ -119,22 +111,24 @@ class UploadCalendarActivity : AppCompatActivity() {
         if (binding.chip2.isChecked) arr = "$arr#커플 여행 "
         if (binding.chip3.isChecked) arr = "$arr#친구와 여행 "
         if (binding.chip4.isChecked) arr = "$arr#가족 여행 "
+
+        if (binding.chip10.isChecked) arr = "$arr#계획적인 "
+        if (binding.chip11.isChecked) arr = "$arr#자유로운 "
+        if (binding.chip12.isChecked) arr = "$arr#휴가 "
+        if (binding.chip13.isChecked) arr = "$arr#추억 "
+        if (binding.chip14.isChecked) arr = "$arr#힐링 "
+        if (binding.chip15.isChecked) arr = "$arr#엑티비티 "
+        if (binding.chip16.isChecked) arr = "$arr#맛집투어 "
+        if (binding.chip17.isChecked) arr = "$arr#낭만 "
+        if (binding.chip18.isChecked) arr = "$arr#감성 "
         return arr
     }
 
-    private fun nextBtnClickEvent(userToken: String?) {
+    private fun nextBtnClickEvent() {
         val intent = Intent(this, UploadBoardActivity::class.java)
-        intent.putExtra("userToken", userToken)
         val info = HashMap<String, Any>()
         info["date"] = binding.dataPickerText.text.toString()
-
-        Log.d("로그", getIntent().getParcelableExtra<Uri>("mainImg1").toString());
-
-
-
-
         info["hashTag"] = HashTagCustom()
-
         intent.putExtra("info", info)
         startActivity(intent)
     }

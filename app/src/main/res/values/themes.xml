@@ -21,7 +21,7 @@
     <style name="all_toolbar_view">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">1dp</item>
-        <item name="android:background">@color/blue2</item>
+        <item name="android:background">@color/icon</item>
         <item name="layout_constraintBottom_toTopOf">@id/linearLayout5</item>
     </style>
 
@@ -56,28 +56,52 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:paddingLeft">15dp</item>
         <item name="android:textColor">@color/text_gray</item>
-        <item name="android:textColorHint">@color/blue2</item>
+        <item name="android:textColorHint">@color/icon</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">25sp</item>
-        <item name="android:backgroundTint">@color/blue2</item>
+        <item name="android:backgroundTint">@color/icon</item>
         <item name="android:fontFamily">@font/gangwon</item>
         <item name="android:lines">1</item>
     </style>
     <style name="inputEdit_style.register">
         <item name="android:layout_alignParentStart">true</item>
-        <item name="android:textColor">@color/blue2</item>
+        <item name="android:textColor">@color/icon</item>
         <item name="android:layout_alignParentEnd">true</item>
         <item name="android:layout_marginHorizontal">30dp</item>
     </style>
+
+    <style name="login_cb">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:fontFamily">@font/gangwon</item>
+        <item name="android:textColor">@color/icon</item>
+        <item name="android:textSize">25sp</item>
+        <item name="android:buttonTint">@color/icon</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
 
     <style name="login_btn">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginTop">40dp</item>
         <item name="android:layout_weight">1</item>
-        <item name="android:background">@drawable/custom_button</item>
+        <item name="android:background">@drawable/custom_button2</item>
         <item name="android:fontFamily">@font/gangwon</item>
-        <item name="android:textColor">@color/blue2</item>
+        <item name="android:textColor">@color/icon</item>
+        <item name="android:textSize">25sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="login_btn2">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">40dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">@drawable/custom_button2</item>
+        <item name="android:fontFamily">@font/gangwon</item>
+        <item name="android:textColor">@color/icon</item>
         <item name="android:textSize">25sp</item>
         <item name="android:textStyle">bold</item>
     </style>
@@ -85,10 +109,10 @@
     <style name="confirmBtn">
         <item name="android:layout_width">250dp</item>
         <item name="android:layout_height">55dp</item>
-        <item name="android:background">@drawable/custom_button</item>
+        <item name="android:background">@drawable/custom_button2</item>
         <item name="android:layout_marginHorizontal">80dp</item>
         <item name="android:fontFamily">@font/gangwon</item>
-        <item name="android:textColor">@color/blue2</item>
+        <item name="android:textColor">@color/icon</item>
         <item name="android:textSize">25sp</item>
         <item name="android:textStyle">bold</item>
     </style>
@@ -127,7 +151,7 @@
         <item name="android:fontFamily">@font/gangwon</item>
         <item name="android:paddingHorizontal">10dp</item>
         <item name="android:paddingVertical">5dp</item>
-        <item name="android:textColor">@color/blue2</item>
+        <item name="android:textColor">@color/icon</item>
         <item name="android:textSize">24sp</item>
     </style>
 

@@ -1,22 +1,32 @@
 <resources>
-    <string name="app_name">여행 일기1</string>
+    <string name="app_name">여행 일기</string>
+    <string name="login">로그인</string>
+
+    <!-- StartView   -->
+    <string name="startView_message">나만의 여행 일기를 만들어 보세요!</string>
+    <string name="startView_start">시작하기</string>
+    <string name="startView_is">이미 계정이 있나요?</string>
 
     <!-- Login & Register -->
-    <string name="all_hint_email">Email</string>
-    <string name="all_hint_pw">Password</string>
-    <string name="loginActivity_loginBtn">로그인</string>
+    <string name="all_hint_email">이메일</string>
+    <string name="all_hint_pw">비밀번호</string>
     <string name="loginActivity_registerBtn">회원가입</string>
+    <string name="loginActivity_is">계정이 없으신가요?</string>
 
-    <string name="register_rePw">Re-Password</string>
-    <string name="register_nickname">Nickname</string>
+    <string name="register_rePw">비밀번호 확인</string>
+    <string name="register_nickname">닉네임</string>
     <string name="register_ConfirmBtn">가입하기</string>
+    <string name="register_con_successful_membership">Your membership has been successful.</string>
+    <string name="register_con_failed_membership">The membership registration failed.</string>
+    <string name="register_con_notMath">Password does not match</string>
+    <string name="register_con_enter_contents">Please enter the contents</string>
 
     <!-- MyPage -->
     <string name="mypage_logoutBtn">로그아웃</string>
+    <string name="mypage_boarder">게시물</string>
+    <string name="mypage_bookmark">북마크</string>
 
     <!-- mainView -->
-    <string name="all_title">Title</string>
-    <string name="all_hashtag">#봄 #친구랑 #식도락</string>
     <string name="all_hint_search">검색</string>
 
     <!--Main -->
@@ -55,4 +65,9 @@
     <string name="uploadBoard_hint_title">제목</string>
     <string name="uploadBoard_uploadDate">Upload Date: %s</string>
     <string name="uploadBoard_date">여행일: %s</string>
+
+    <!-- Toast -->
+    <string name="login_fail">Authentication failed.</string>
+    <string name="login_enter">Please enter email, password.</string>
+    <string name="logout">Logout Successful.</string>
 </resources>
