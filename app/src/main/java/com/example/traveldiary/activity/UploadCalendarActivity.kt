@@ -10,6 +10,7 @@ import android.util.Log
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.util.Pair
@@ -18,12 +19,15 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.traveldiary.R
 import com.example.traveldiary.databinding.ActivityUploadCalendarBinding
 import com.google.android.material.datepicker.MaterialDatePicker
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 class UploadCalendarActivity : AppCompatActivity() {
     lateinit var binding: ActivityUploadCalendarBinding
-    lateinit var listView : LinearLayout
+    lateinit var listView: LinearLayout
+    lateinit var filePath: Uri
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +50,36 @@ class UploadCalendarActivity : AppCompatActivity() {
         binding.myPage.setOnClickListener {
             startActivity(Intent(this, MypageActivity::class.java))
             finish()
+        }
+
+        // 대표 이미지 가져오는 곳
+        val requestLauncher = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) {
+            if (it.resultCode === android.app.Activity.RESULT_OK) {
+                Glide
+                    .with(getApplicationContext())
+                    .load(it.data?.data)
+                    .apply(RequestOptions().override(250, 200))
+                    .centerCrop()
+                    .into(binding.imageButton)
+
+                val cursor = contentResolver.query(
+                    it.data?.data as Uri,
+                    arrayOf<String>(MediaStore.Images.Media.DATA), null, null, null
+                )
+                cursor?.moveToFirst().let {
+                    filePath = Uri.fromFile(File(cursor?.getString(0) as String));
+                }
+            }
+        }
+
+        binding.imageButton.setOnClickListener {
+            val intent = Intent(Intent.ACTION_PICK)
+            intent.setDataAndType(
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*"
+            )
+            requestLauncher.launch(intent)
         }
 
     }
@@ -87,19 +121,22 @@ class UploadCalendarActivity : AppCompatActivity() {
         // xml 300dp 숫자 만드는 방법
         var dpValue = 300
         var density = resources.displayMetrics.density
-        var pixelValue = dpValue*density
+        var pixelValue = dpValue * density
 
-        var editText : EditText = EditText(applicationContext)
+        var editText: EditText = EditText(applicationContext)
         editText.setHintTextColor(getColor(R.color.blue2))
         editText.setTextColor(getColor(R.color.blue2))
         editText.id = count
-        editText.setHint("경로"+ count)
+        editText.setHint("경로" + count)
         editText.textSize = 12f
         editText.setLinkTextColor(getColor(R.color.blue2))
         editText.width = pixelValue.toInt()
         editText.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.blue2))
 
-        val param: LinearLayout.LayoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        val param: LinearLayout.LayoutParams = LinearLayout.LayoutParams(
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
         editText.layoutParams = param
         listView.addView(editText)
         count++
@@ -129,6 +166,7 @@ class UploadCalendarActivity : AppCompatActivity() {
         val info = HashMap<String, Any>()
         info["date"] = binding.dataPickerText.text.toString()
         info["hashTag"] = HashTagCustom()
+        info["mainImage"] = filePath
         intent.putExtra("info", info)
         startActivity(intent)
     }

@@ -39,16 +39,13 @@ public class UploadBoardActivity extends AppCompatActivity {
     private ArrayList<Uri> uriArrayList = new ArrayList<>();
     private RichEditor mEditor;
     private TextView mPreview;
-    private ImageButton imgBtn;
-    private Uri filePath, mainFilePath;
-    FirebaseFirestore db;
-    private int ckeck = 0;
+    private Uri filePath;
+    private FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload_board);
-        imgBtn = findViewById(R.id.imgbtn);
         db = FirebaseFirestore.getInstance();
 
         // Create a storage reference from our app
@@ -91,26 +88,12 @@ public class UploadBoardActivity extends AppCompatActivity {
                                 .override(320, 240);
                         // 이미지 크기를 4:3으로 저장
                         filePath = result.getData().getData();
-                        if (ckeck == 0) {
-                            mEditor.insertImage(String.valueOf(result.getData().getData()), " ", 320);
-                            uriArrayList.add(filePath);
-                        } else {
-                            mainFilePath = filePath;
-                            Glide.with(getApplicationContext()).load(filePath).into(imgBtn);
-                        }
+                        mEditor.insertImage(String.valueOf(result.getData().getData()), " ", 320);
+                        uriArrayList.add(filePath);
                     }
                 });
 
-        imgBtn.setOnClickListener(v -> {
-            ckeck = 1;
-            Intent intent = new Intent(Intent.ACTION_PICK);
-            intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
-            intent.setAction(Intent.ACTION_PICK);
-            activityResultLauncher.launch(intent);
-        });
-
         findViewById(R.id.action_insert_image).setOnClickListener(v -> {
-            ckeck = 0;
             Intent intent = new Intent(Intent.ACTION_PICK);
             intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
             intent.setAction(Intent.ACTION_PICK);
@@ -135,13 +118,13 @@ public class UploadBoardActivity extends AppCompatActivity {
     }
 
     public void save() {
-        Map<String, Object> item = itemCustom();
+        Map<String, Object> info = (Map<String, Object>) getIntent().getSerializableExtra("info");
+        Map<String, Object> item = itemCustom(info);
 
         db.collection("data").add(item).addOnSuccessListener(documentReference -> {
             String getID = documentReference.getId();
             documentReference.update("boardID", getID);
-
-            if (filePath != null) uploadImage(filePath, getID);
+            if (filePath != null) uploadImage(filePath, getID, (Uri) info.get("mainImage"));
             String changeText = changeText();
             documentReference.update("con", changeText);
 
@@ -153,8 +136,7 @@ public class UploadBoardActivity extends AppCompatActivity {
         }).addOnFailureListener(e -> Toast.makeText(UploadBoardActivity.this, "Upload failed.", Toast.LENGTH_SHORT).show());
     }
 
-    private Map<String, Object> itemCustom() {
-        Map<String, Object> info = (Map<String, Object>) getIntent().getSerializableExtra("info");
+    private Map<String, Object> itemCustom(Map<String, Object> info) {
         EditText title = findViewById(R.id.title);
         LocalDateTime now = LocalDateTime.now();
         String formatNow = now.format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm:ss"));
@@ -193,7 +175,7 @@ public class UploadBoardActivity extends AppCompatActivity {
     }
 
     // 이미지 올리는 곳
-    public void uploadImage(Uri uri, String getID) {
+    public void uploadImage(Uri uri, String getID, Uri mainImage) {
         StorageReference storageRef = FirebaseStorage.getInstance().getReference();
         // 다수의 이미지를 넣기 위해 for문 사용
         for (int index = 0; index < uriArrayList.size(); index++) {
@@ -205,7 +187,7 @@ public class UploadBoardActivity extends AppCompatActivity {
         }
         // mainImage DB에 올리기.
         StorageReference mImgRef = storageRef.child("Image").child(getID).child("MainImage" + "." + getFileExtension(uri));
-        mImgRef.putFile(mainFilePath).addOnSuccessListener(taskSnapshot -> mImgRef.getDownloadUrl()
+        mImgRef.putFile(mainImage).addOnSuccessListener(taskSnapshot -> mImgRef.getDownloadUrl()
                         .addOnSuccessListener(uri1 -> Toast.makeText(getApplicationContext(), "Image Upload Successful", Toast.LENGTH_SHORT).show()))
                 .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Image upload failed", Toast.LENGTH_SHORT).show());
     }

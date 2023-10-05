@@ -112,11 +112,10 @@ public class FragmentClient extends Fragment {
     private void Imagedown(String boardID) {
         StorageReference storageReference = FirebaseStorage.getInstance().getReference();
         storageReference.child("/Image/" + boardID).listAll().addOnSuccessListener(listResult -> {
-            for (int i = 0; i < listResult.getItems().size(); i++) {
+            for (int i = 1; i < listResult.getItems().size(); i++) {
                 StorageReference item = listResult.getItems().get(i);
-                int finalI = i;
-                item.getDownloadUrl().addOnSuccessListener(
-                        command -> Glide.with(getContext()).load(command).into(((ImageView) arrayimage.get(finalI))));
+                int finalI = i - 1;
+                item.getDownloadUrl().addOnSuccessListener(command -> Glide.with(getContext()).load(command).into(((ImageView) arrayimage.get(finalI))));
             }
         });
     }
