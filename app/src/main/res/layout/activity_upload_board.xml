@@ -92,15 +92,15 @@
                     style="@style/uploadBoard_RichEditorBtn"
                     android:src="@drawable/baseline_format_underlined_24" />
 
-<!--                <ImageButton-->
-<!--                    android:id="@+id/action_outdent"-->
-<!--                    style="@style/uploadBoard_RichEditorBtn"-->
-<!--                    android:src="@drawable/baseline_format_indent_decrease_24" />-->
+                <ImageButton
+                    android:id="@+id/action_indent"
+                    style="@style/uploadBoard_RichEditorBtn"
+                    android:src="@drawable/baseline_format_indent_increase_24" />
 
-<!--                <ImageButton-->
-<!--                    android:id="@+id/action_indent"-->
-<!--                    style="@style/uploadBoard_RichEditorBtn"-->
-<!--                    android:src="@drawable/baseline_format_indent_increase_24" />-->
+                <ImageButton
+                    android:id="@+id/action_outdent"
+                    style="@style/uploadBoard_RichEditorBtn"
+                    android:src="@drawable/baseline_format_indent_decrease_24" />
 
                 <ImageButton
                     android:id="@+id/action_insert_image"

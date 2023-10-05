@@ -12,7 +12,7 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
-        <item name="android:textColor">@color/blue2</item>
+        <item name="android:textColor">@color/icon</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:fontFamily">@font/gangwon</item>
@@ -177,7 +177,7 @@
         <item name="android:fontFamily">@font/gangwon</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:textColorHint">@color/icon</item>
-        <item name="android:textSize">20sp</item>
-        <item name="backgroundTint">@color/blue2</item>
+        <item name="android:textSize">24sp</item>
+        <item name="backgroundTint">@color/icon</item>
     </style>
 </resources>
