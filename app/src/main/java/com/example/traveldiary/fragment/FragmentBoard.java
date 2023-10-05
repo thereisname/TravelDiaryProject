@@ -38,6 +38,7 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
     private RecyclerView recyclerView;
     private BoardValueAdapter adapter;
     private FirebaseFirestore db;
+    private StorageReference storageReference;
     LinearLayout content;
     ImageView imageView;
     ArrayList<Integer> arrayStartIndex;
@@ -48,6 +49,8 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_board, container, false);
         recyclerView = v.findViewById(R.id.boardRecyclerView);
+
+        storageReference = FirebaseStorage.getInstance().getReference();
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
@@ -172,7 +175,6 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
 
     // Image 다운로드 함수
     private void Imagedown(String boardID) {
-        StorageReference storageReference = FirebaseStorage.getInstance().getReference();
         storageReference.child("/Image/" + boardID).listAll().addOnSuccessListener(listResult -> {
             for (int i = 1; i < listResult.getItems().size(); i++) {
                 StorageReference item = listResult.getItems().get(i);
@@ -208,9 +210,14 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
     public void deleteBoard(String docID, Dialog dialog, int position) {
         db.collection("data").document(docID).delete().addOnSuccessListener(unused -> {
             Toast.makeText(getActivity().getApplicationContext(), "정상적으로 삭제가 완료되었습니다.", Toast.LENGTH_SHORT).show();
-            loadDate(position);
-            Log.d("deleteBoard", "load");
+            for (int i = 0; i < arrayimage.size(); i++) {
+                StorageReference desertRef = storageReference.child("Image/" + docID + "/").child("contentImage" + i +".jpg");
+                desertRef.delete();
+            }
+            StorageReference desertRef = storageReference.child("Image/" + docID + "/").child("MainImage.jpg");
+            desertRef.delete();
             dialog.dismiss();
+            loadDate(position);
         }).addOnFailureListener(command -> Toast.makeText(getActivity().getApplicationContext(), "삭제 실패!", Toast.LENGTH_SHORT).show());
     }
 }
