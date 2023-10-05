@@ -1,10 +1,10 @@
 package com.example.traveldiary.adapter;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -36,7 +36,6 @@ public class MainValueAdapter extends RecyclerView.Adapter<MainValueAdapter.View
     public void onBindViewHolder(@NonNull MainValueAdapter.ViewHolder viewHolder, int position) {
         MyPageValue item = items.get(position);
         viewHolder.setItem(item);
-
     }
 
     public void setAdapterList(ArrayList<MyPageValue> list) {
@@ -66,7 +65,6 @@ public class MainValueAdapter extends RecyclerView.Adapter<MainValueAdapter.View
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-
             mainImage = (ImageView) itemView.findViewById(R.id.iv_mainImage);
             mainTitle = (TextView) itemView.findViewById(R.id.tv_mainTitle);
             userEmail = (TextView) itemView.findViewById(R.id.tv_userEmail);

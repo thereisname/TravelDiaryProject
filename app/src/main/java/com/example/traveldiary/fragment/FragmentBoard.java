@@ -1,13 +1,10 @@
 package com.example.traveldiary.fragment;
 
-import static java.lang.Thread.sleep;
-
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -191,7 +188,6 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
         imageView = new ImageView(getContext());
         imageView.setId(imageId);
         Glide.with(getContext()).load(R.drawable.baseline_image_24).into(imageView);
-
         LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         imageView.setLayoutParams(param);
         arrayimage.add(imageView);

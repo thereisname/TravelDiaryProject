@@ -20,7 +20,6 @@ import com.google.android.material.datepicker.MaterialDatePicker
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
-import java.util.concurrent.TimeUnit
 
 class UploadCalendarActivity : AppCompatActivity() {
     lateinit var binding: ActivityUploadCalendarBinding
@@ -84,7 +83,6 @@ class UploadCalendarActivity : AppCompatActivity() {
             )
             requestLauncher.launch(intent)
         }
-
     }
 
     private fun calendarPick() {
