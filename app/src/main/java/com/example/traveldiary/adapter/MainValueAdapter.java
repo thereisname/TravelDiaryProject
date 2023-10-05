@@ -20,14 +20,17 @@ public class MainValueAdapter extends RecyclerView.Adapter<MainValueAdapter.View
 
     @NonNull
     @Override
-    public MainValueAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_mainrecyclerview, parent, false);
-        return new ViewHolder(view);
+    public MainValueAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
+        context = viewGroup.getContext();
+        LayoutInflater minflater = LayoutInflater.from(viewGroup.getContext());
+        View itemView = minflater.inflate(R.layout.item_mainrecyclerview, viewGroup, false);
+        return new ViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MainValueAdapter.ViewHolder holder, int position) {
-        holder.onBind(items.get(position));
+    public void onBindViewHolder(@NonNull MainValueAdapter.ViewHolder viewHolder, int position) {
+        MyPageValue item = items.get(position);
+        viewHolder.setItem(item);
 
     }
 
@@ -41,9 +44,19 @@ public class MainValueAdapter extends RecyclerView.Adapter<MainValueAdapter.View
         return items.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView mainTitle;
-        TextView userEmail;
+    public void addItem(MyPageValue item) {
+        items.add(item);
+    }
+
+    public void setItem(ArrayList<MyPageValue> items) {
+        this.items = items;
+    }
+
+    public MyPageValue getItem(int position, MyPageValue item) {
+        return items.set(position, item);
+    }
+
+    class ViewHolder extends RecyclerView.ViewHolder {
         ImageView mainImage;
 
         public ViewHolder(@NonNull View itemView) {
@@ -54,8 +67,12 @@ public class MainValueAdapter extends RecyclerView.Adapter<MainValueAdapter.View
             userEmail = (TextView) itemView.findViewById(R.id.tv_userEmail);
         }
 
-        void onBind(MyPageValue item) {
-
+        public void setItem(MyPageValue item) {
+            StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+            storageReference.child("/Image/" + item.getBoardID() + "/MainImage.jpg").getDownloadUrl().addOnSuccessListener(command ->
+                    Glide.with(context)
+                            .load(command)
+                            .into(mainImage));
         }
     }
 }

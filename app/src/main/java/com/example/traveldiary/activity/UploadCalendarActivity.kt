@@ -2,15 +2,12 @@ package com.example.traveldiary.activity
 
 import android.content.Intent
 import android.content.res.ColorStateList
-import android.graphics.Typeface
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.util.Pair
@@ -95,7 +92,6 @@ class UploadCalendarActivity : AppCompatActivity() {
                 )
             )
             .build()
-
         binding.dataRangeBtn.setOnClickListener {
             dateRangePicker.show(supportFragmentManager, "Material Date Range Picker")
             dateRangePicker.addOnPositiveButtonClickListener { datePicked ->
@@ -132,6 +128,7 @@ class UploadCalendarActivity : AppCompatActivity() {
         editText.setLinkTextColor(getColor(R.color.blue2))
         editText.width = pixelValue.toInt()
         editText.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.blue2))
+        editText.setTextAppearance(R.style.uploadCalender_rote)
 
         val param: LinearLayout.LayoutParams = LinearLayout.LayoutParams(
             ViewGroup.LayoutParams.WRAP_CONTENT,
