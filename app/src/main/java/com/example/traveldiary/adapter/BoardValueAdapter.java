@@ -66,6 +66,11 @@ public class BoardValueAdapter extends RecyclerView.Adapter<BoardValueAdapter.Vi
         items.set(position, item);
     }
 
+    public void removeDate(int position) {
+        items.remove(position);
+        notifyItemRemoved(position);
+    }
+
     class ViewHolder extends RecyclerView.ViewHolder {
         TextView content;
         ImageView image;

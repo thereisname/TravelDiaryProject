@@ -75,10 +75,6 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
         });
     }
 
-    public void loadDate(int position) {
-        db.collection("data").whereEqualTo("userToken", FirebaseAuth.getInstance().getUid()).get().addOnSuccessListener(queryDocumentSnapshots -> adapter.notifyItemRemoved(position));
-    }
-
     public void onItemSelected(View view, int position, ArrayList<MyPageValue> items) {
         //Save the clicked position value among the ArrayList values as a resultValue type in the variable item.
         MyPageValue item = items.get(position);
@@ -217,7 +213,7 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
             StorageReference desertRef = storageReference.child("Image/" + docID + "/").child("MainImage.jpg");
             desertRef.delete();
             dialog.dismiss();
-            loadDate(position);
+            adapter.removeDate(position);
         }).addOnFailureListener(command -> Toast.makeText(getActivity().getApplicationContext(), "삭제 실패!", Toast.LENGTH_SHORT).show());
     }
 }
