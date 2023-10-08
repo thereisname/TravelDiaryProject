@@ -10,7 +10,6 @@ import android.provider.MediaStore;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -71,11 +70,11 @@ public class UploadBoardActivity extends AppCompatActivity {
 
         findViewById(R.id.action_underline).setOnClickListener(v -> mEditor.setUnderline());
 
-        // findViewById(R.id.action_indent).setOnClickListener(v ->
-        // mEditor.setIndent());
+         findViewById(R.id.action_indent).setOnClickListener(v ->
+         mEditor.setIndent());
 
-        // findViewById(R.id.action_outdent).setOnClickListener(v ->
-        // mEditor.setOutdent());
+         findViewById(R.id.action_outdent).setOnClickListener(v ->
+         mEditor.setOutdent());
 
         ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),

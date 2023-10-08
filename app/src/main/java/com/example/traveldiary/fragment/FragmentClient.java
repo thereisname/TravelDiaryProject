@@ -136,7 +136,7 @@ public class FragmentClient extends Fragment {
 
     private void createTextView(String str) {
         TextView textViewNm = new TextView(getActivity());
-        textViewNm.setText(Html.fromHtml(str, Html.FROM_HTML_MODE_LEGACY).toString());
+        textViewNm.setText(Html.fromHtml(str, Html.FROM_HTML_MODE_LEGACY));
         textViewNm.setTextSize(15);
         textViewNm.setTextColor(Color.rgb(0, 0, 0));
         LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
