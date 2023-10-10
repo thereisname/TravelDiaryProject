@@ -35,11 +35,19 @@ class UploadCalendarActivity : AppCompatActivity() {
 
         listView = findViewById(R.id.listView)
 
-        calendarPick()  // 여행일 선택창 output.
+        binding.dataRangeBtn.setOnClickListener { calendarPick() }
 
         binding.next.setOnClickListener {
-            if(!isDataPickerText) Toast.makeText(applicationContext, "여행 기간을 선택해주세요.", Toast.LENGTH_SHORT).show()
-            else if(!isMainImage) Toast.makeText(applicationContext, "대표 이미지를 선택해주세요.", Toast.LENGTH_SHORT).show()
+            if (!isDataPickerText) Toast.makeText(
+                applicationContext,
+                "여행 기간을 선택해주세요.",
+                Toast.LENGTH_SHORT
+            ).show()
+            else if (!isMainImage) Toast.makeText(
+                applicationContext,
+                "대표 이미지를 선택해주세요.",
+                Toast.LENGTH_SHORT
+            ).show()
             else nextBtnClickEvent()
         }
 
@@ -83,6 +91,10 @@ class UploadCalendarActivity : AppCompatActivity() {
             )
             requestLauncher.launch(intent)
         }
+
+        binding.addLoad.setOnClickListener {
+            addEditor();
+        }
     }
 
     private fun calendarPick() {
@@ -96,24 +108,31 @@ class UploadCalendarActivity : AppCompatActivity() {
                 )
             )
             .build()
-        binding.dataRangeBtn.setOnClickListener {
-            dateRangePicker.show(supportFragmentManager, "Material Date Range Picker")
-            dateRangePicker.addOnPositiveButtonClickListener { datePicked ->
-                val startDate = datePicked.first
-                val endDate = datePicked.second
-                if (startDate != null && endDate != null) {
-                    binding.dataPickerText.text = getString(
-                        R.string.uploadCalender_calendar,
-                        convertLongToDate(startDate),
-                        convertLongToDate(endDate)
-                    )
-                    isDataPickerText = true
-                }
+        dateRangePicker.show(supportFragmentManager, "Material Date Range Picker")
+        dateRangePicker.addOnPositiveButtonClickListener { datePicked ->
+            val startDate = datePicked.first
+            val endDate = datePicked.second
+            if (startDate != null && endDate != null) {
+                binding.dataPickerText.text = getString(
+                    R.string.uploadCalender_calendar,
+                    convertLongToDate(startDate),
+                    convertLongToDate(endDate)
+                )
+                isDataPickerText = true
             }
-        }
-
-        binding.addLoad.setOnClickListener {
-            addEditor();
+//                val dayCount: Int = (TimeUnit.MILLISECONDS.toDays(endDate - startDate) + 1).toInt()
+//                for (i in 1..dayCount) {
+//                    var textView = TextView(applicationContext)
+//                    textView.setText("Day$i")
+//                    textView.setTextAppearance(R.style.uploadCalender_rote)
+//                    val param: LinearLayout.LayoutParams = LinearLayout.LayoutParams(
+//                        ViewGroup.LayoutParams.WRAP_CONTENT,
+//                        ViewGroup.LayoutParams.WRAP_CONTENT
+//                    )
+//                    textView.layoutParams = param
+//                    listView.addView(textView)
+//                    addEditor()
+//                }
         }
     }
 
