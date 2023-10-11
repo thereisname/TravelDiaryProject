@@ -39,7 +39,7 @@
                 android:paddingHorizontal="10dp"
                 android:paddingVertical="7dp"
                 android:textColor="@color/text_gray"
-                android:textColorHint="@color/blue2"
+                android:textColorHint="@color/icon"
                 android:textSize="25sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"

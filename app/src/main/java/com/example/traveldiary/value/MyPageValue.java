@@ -48,4 +48,12 @@ public class MyPageValue {
     public String getUserToken() {
         return userToken;
     }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setCon(String con) {
+        this.con = con;
+    }
 }
