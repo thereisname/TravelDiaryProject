@@ -1,6 +1,7 @@
 package com.example.traveldiary.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +32,7 @@ public class MainValueAdapter extends RecyclerView.Adapter<MainValueAdapter.View
     public MainValueAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
         LayoutInflater minflater = LayoutInflater.from(viewGroup.getContext());
         View itemView = minflater.inflate(R.layout.item_mainrecyclerview, viewGroup, false);
+        context = viewGroup.getContext();
         return new ViewHolder(itemView);
     }
 
@@ -60,7 +62,7 @@ public class MainValueAdapter extends RecyclerView.Adapter<MainValueAdapter.View
 
     class ViewHolder extends RecyclerView.ViewHolder {
         TextView mainTitle;
-        TextView userEmail;
+        TextView date;
         ImageView mainImage;
 
         public ViewHolder(@NonNull View itemView) {
@@ -68,19 +70,27 @@ public class MainValueAdapter extends RecyclerView.Adapter<MainValueAdapter.View
 
             mainImage = (ImageView) itemView.findViewById(R.id.iv_mainImage);
             mainTitle = (TextView) itemView.findViewById(R.id.tv_mainTitle);
-            userEmail = (TextView) itemView.findViewById(R.id.tv_userEmail);
+            date = (TextView) itemView.findViewById(R.id.tv_userEmail);
 
 
         }
 
         public void setItem(MyPageValue item) {
             mainTitle.setText(item.getTitle());
+            date.setText(item.getDate());
 
-//            StorageReference storageReference = FirebaseStorage.getInstance().getReference();
-//            storageReference.child("/Image/" + item.getBoardID() + "/MainImage.jpg").getDownloadUrl().addOnSuccessListener(command ->
-//                    Glide.with(context)
-//                            .load(command)
-//                            .into(mainImage));
+            mainImage.setImageResource(R.drawable.baseline_image_24);
+            StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+
+            storageReference.child("/Image/" + item.getBoardID() + "/MainImage.jpg").getDownloadUrl().addOnSuccessListener(command ->
+                    Glide.with(context)
+                            .load(command)
+                            .into(mainImage)
+            ).addOnFailureListener( command -> {
+                Log.d("로그", "불러오기 실패");
+            }
+
+            );
 
         }
     }

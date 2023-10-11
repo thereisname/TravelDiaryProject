@@ -66,7 +66,7 @@ public class MainViewActivity extends AppCompatActivity {
     }
 
     public void loadDate() {
-        db.collection("data").whereEqualTo("userToken", FirebaseAuth.getInstance().getUid()).get().addOnSuccessListener(queryDocumentSnapshots -> {
+        db.collection("data").whereNotEqualTo("userToken", FirebaseAuth.getInstance().getUid()).get().addOnSuccessListener(queryDocumentSnapshots -> {
             for (QueryDocumentSnapshot queryDocumentSnapshot : queryDocumentSnapshots) {
                 MyPageValue mp = queryDocumentSnapshot.toObject(MyPageValue.class);
                 adapter.addItem(mp);
