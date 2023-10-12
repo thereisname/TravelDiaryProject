@@ -1,4 +1,4 @@
-package com.example.traveldiary;
+package com.example.traveldiary.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.traveldiary.R;
 import com.example.traveldiary.value.MyPageValue;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -76,7 +77,7 @@ public class ContentDownloadAdapter {
         }
         ImageDown(mp.getBoardID());
 
-        return  arrayStartIndex.size();
+        return arrayStartIndex.size();
     }
 
     // Image 다운로드 함수

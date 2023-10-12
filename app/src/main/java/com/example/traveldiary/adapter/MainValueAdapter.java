@@ -5,12 +5,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.traveldiary.OnItemClickListener;
 import com.example.traveldiary.R;
 import com.example.traveldiary.value.MyPageValue;
 import com.google.firebase.storage.FirebaseStorage;
@@ -30,7 +30,6 @@ public class MainValueAdapter extends RecyclerView.Adapter<MainValueAdapter.View
         context = viewGroup.getContext();
         LayoutInflater minflater = LayoutInflater.from(viewGroup.getContext());
         View itemView = minflater.inflate(R.layout.item_mainrecyclerview, viewGroup, false);
-      
         return new ViewHolder(itemView);
     }
 
@@ -38,6 +37,11 @@ public class MainValueAdapter extends RecyclerView.Adapter<MainValueAdapter.View
     public void onBindViewHolder(@NonNull MainValueAdapter.ViewHolder viewHolder, int position) {
         MyPageValue item = items.get(position);
         viewHolder.setItem(item);
+    }
+
+    public void setAdapterList(ArrayList<MyPageValue> list) {
+        this.items = list;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -72,15 +76,12 @@ public class MainValueAdapter extends RecyclerView.Adapter<MainValueAdapter.View
         public void setItem(MyPageValue item) {
             mainTitle.setText(item.getTitle());
             date.setText(item.getDate());
-
             mainImage.setImageResource(R.drawable.baseline_image_24);
             StorageReference storageReference = FirebaseStorage.getInstance().getReference();
-
             storageReference.child("/Image/" + item.getBoardID() + "/MainImage.jpg").getDownloadUrl().addOnSuccessListener(command ->
                     Glide.with(context)
                             .load(command)
-                            .into(mainImage)
-            );
+                            .into(mainImage));
         }
     }
 }
