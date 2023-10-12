@@ -60,8 +60,6 @@ public class FragmentClient extends Fragment {
         isAttBookmark = 0;
         db = FirebaseFirestore.getInstance();
 
-
-        ImageButton bookmark = view.findViewById(R.id.bookMarkBtn);
         listView = view.findViewById(R.id.listView);
         if (getArguments() != null) {
             mp = getArguments().getParcelable("myPageValue");

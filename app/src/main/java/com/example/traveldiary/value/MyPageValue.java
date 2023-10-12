@@ -42,6 +42,11 @@ public class MyPageValue implements Parcelable {
     };
 
     @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(con);
         dest.writeString(mainImg);

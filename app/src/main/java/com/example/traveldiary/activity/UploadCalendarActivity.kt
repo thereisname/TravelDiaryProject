@@ -206,7 +206,6 @@ class UploadCalendarActivity : AppCompatActivity() {
                 arrayRoad.add(edit1.text.toString())
             }
         }
-        Log.d("로그", arrayRoad.toString())
         // uploadBoardActivity로 넘어가기
         val intent = Intent(this, UploadBoardActivity::class.java)
         val info = HashMap<String, Any>()
