@@ -1,5 +1,6 @@
 package com.example.traveldiary.activity
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.net.Uri
@@ -15,15 +16,18 @@ import androidx.core.util.Pair
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.traveldiary.R
+import com.example.traveldiary.activity.MypageActivity
 import com.example.traveldiary.databinding.ActivityUploadCalendarBinding
 import com.google.android.material.datepicker.MaterialDatePicker
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 class UploadCalendarActivity : AppCompatActivity() {
     lateinit var binding: ActivityUploadCalendarBinding
-    lateinit var listView: LinearLayout
+    lateinit var listView : LinearLayout
+    lateinit var editIdList:ArrayList<Int>
     lateinit var filePath: Uri
     var isMainImage: Boolean = false
     var isDataPickerText: Boolean = false
@@ -92,6 +96,10 @@ class UploadCalendarActivity : AppCompatActivity() {
             requestLauncher.launch(intent)
         }
 
+        // 경로 사전 작업
+        editIdList = ArrayList()
+        editIdList.add(1)
+        // 경로 Edit 추가하기
         binding.addLoad.setOnClickListener {
             addEditor();
         }
@@ -142,8 +150,8 @@ class UploadCalendarActivity : AppCompatActivity() {
         var dpValue = 300
         var density = resources.displayMetrics.density
         var pixelValue = dpValue * density
-
         var editText: EditText = EditText(applicationContext)
+        
         editText.setHintTextColor(getColor(R.color.icon))
         editText.setTextColor(getColor(R.color.text_gray))
         editText.id = count
@@ -160,7 +168,10 @@ class UploadCalendarActivity : AppCompatActivity() {
         )
         editText.layoutParams = param
         listView.addView(editText)
+        editIdList.add(editText.id)
+
         count++
+
     }
 
     private fun HashTagCustom(): String {
@@ -182,13 +193,29 @@ class UploadCalendarActivity : AppCompatActivity() {
         return arr
     }
 
+
+
     private fun nextBtnClickEvent() {
+        // 경로 넣기 위한 코딩
+        var arrayRoad : ArrayList<String> = ArrayList()
+        for(i in editIdList){
+            if(i == 1){
+                arrayRoad.add(binding.etLoad1.text.toString())
+            }else{
+                val edit1 :EditText =  findViewById(i)
+                arrayRoad.add(edit1.text.toString())
+            }
+        }
+        Log.d("로그", arrayRoad.toString())
+        // uploadBoardActivity로 넘어가기
         val intent = Intent(this, UploadBoardActivity::class.java)
         val info = HashMap<String, Any>()
         info["date"] = binding.dataPickerText.text.toString()
         info["hashTag"] = HashTagCustom()
+//      info["load"] = arrayRoad
         info["mainImage"] = filePath
         intent.putExtra("info", info)
+
         startActivity(intent)
     }
 
