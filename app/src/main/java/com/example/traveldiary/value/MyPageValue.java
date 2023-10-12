@@ -1,5 +1,7 @@
 package com.example.traveldiary.value;
 
+import java.util.ArrayList;
+
 public class MyPageValue {
     private String con;
     private String title;
@@ -7,7 +9,7 @@ public class MyPageValue {
     private String date;
     private String uploadDate;
     private String boardID;
-    private String userToken;
+    private ArrayList<String> route;
 
     public MyPageValue() {
     }
@@ -45,8 +47,8 @@ public class MyPageValue {
         return boardID;
     }
 
-    public String getUserToken() {
-        return userToken;
+    public ArrayList<String> getRoute() {
+        return route;
     }
 
     public void setTitle(String title) {
