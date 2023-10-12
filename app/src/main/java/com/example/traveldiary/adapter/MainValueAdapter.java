@@ -37,19 +37,17 @@ public class MainValueAdapter extends RecyclerView.Adapter<MainValueAdapter.View
     @NonNull
     @Override
     public MainValueAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
+        context = viewGroup.getContext();
         LayoutInflater minflater = LayoutInflater.from(viewGroup.getContext());
         View itemView = minflater.inflate(R.layout.item_mainrecyclerview, viewGroup, false);
-        context = viewGroup.getContext();
+
         return new ViewHolder(itemView);
     }
-
-
 
     @Override
     public void onBindViewHolder(@NonNull MainValueAdapter.ViewHolder viewHolder, int position) {
         MyPageValue item = items.get(position);
         viewHolder.setItem(item);
-
     }
 
     @Override
@@ -108,12 +106,7 @@ public class MainValueAdapter extends RecyclerView.Adapter<MainValueAdapter.View
                     Glide.with(context)
                             .load(command)
                             .into(mainImage)
-            ).addOnFailureListener(command -> {
-                        Log.d("로그", "불러오기 실패");
-                    }
-
             );
-
         }
     }
 }

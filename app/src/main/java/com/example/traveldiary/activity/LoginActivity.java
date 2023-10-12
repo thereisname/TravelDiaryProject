@@ -9,7 +9,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.traveldiary.R;
 import com.example.traveldiary.SHA256;
 import com.google.firebase.auth.FirebaseAuth;

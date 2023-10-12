@@ -53,17 +53,17 @@ public class MyPageValue implements Parcelable {
         dest.writeString(userToken);
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
+    public MyPageValue(String con, String title, String hashTag, String date, String uploadDate, String boardID, String userToken) {
+        this.con = con;
+        this.title = title;
+        this.hashTag = hashTag;
+        this.date = date;
+        this.uploadDate = uploadDate;
+        this.boardID = boardID;
     }
 
     public String getCon() {
         return con;
-    }
-
-    public String getMainImg() {
-        return mainImg;
     }
 
     public String getTitle() {
@@ -88,5 +88,13 @@ public class MyPageValue implements Parcelable {
 
     public String getUserToken() {
         return userToken;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setCon(String con) {
+        this.con = con;
     }
 }

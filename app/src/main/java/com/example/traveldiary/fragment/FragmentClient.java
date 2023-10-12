@@ -12,7 +12,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
@@ -54,6 +53,8 @@ public class FragmentClient extends Fragment {
                              @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_client, container, false);
+
+        ImageButton bookmark = view.findViewById(R.id.bookMarkBtn);
         TextView fragment_title = view.findViewById(R.id.fragment_title);
         TextView fragment_hashtag = view.findViewById(R.id.fragment_hashtag);
         isAttBookmark = 0;

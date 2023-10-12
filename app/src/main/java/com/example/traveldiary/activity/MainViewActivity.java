@@ -21,12 +21,10 @@ import com.example.traveldiary.OnItemClickListener;
 import com.example.traveldiary.R;
 import com.example.traveldiary.adapter.MainValueAdapter;
 import com.example.traveldiary.fragment.FragmentClient;
-
 import com.example.traveldiary.value.MyPageValue;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-
 import java.util.ArrayList;
 
 public class MainViewActivity extends AppCompatActivity implements OnItemClickListener {
@@ -34,7 +32,6 @@ public class MainViewActivity extends AppCompatActivity implements OnItemClickLi
     private RecyclerView recyclerView;
     private MainValueAdapter adapter;
     private FirebaseFirestore db;
-
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +45,6 @@ public class MainViewActivity extends AppCompatActivity implements OnItemClickLi
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
-
 
         SnapHelper snapHelper = new PagerSnapHelper();
         snapHelper.attachToRecyclerView(recyclerView);
