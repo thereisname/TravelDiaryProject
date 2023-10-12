@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -62,6 +63,8 @@ public class MainValueAdapter extends RecyclerView.Adapter<MainValueAdapter.View
 
     class ViewHolder extends RecyclerView.ViewHolder {
         ImageView mainImage;
+        TextView mainTitle;
+        TextView userEmail;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
