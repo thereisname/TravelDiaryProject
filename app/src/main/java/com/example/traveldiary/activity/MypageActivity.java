@@ -95,14 +95,17 @@ public class MypageActivity extends AppCompatActivity {
 
         ImageView home = findViewById(R.id.home);
         home.setOnClickListener(v -> {
-            startActivity(new Intent(this, MainViewActivity.class));
             finish();
+            startActivity(new Intent(this, MainViewActivity.class));
+
         });
 
         ImageView upload = findViewById(R.id.upload);
         upload.setOnClickListener(v -> {
-            startActivity(new Intent(this, UploadCalendarActivity.class));
-            finish();
+            finish();startActivity(new Intent(this, UploadCalendarActivity.class));
+
         });
     }
+
+
 }

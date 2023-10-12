@@ -1,9 +1,8 @@
-package com.example.traveldiary;
+package com.example.traveldiary.adapter;
 
 import android.content.ContentResolver;
 import android.content.Context;
 import android.net.Uri;
-import android.util.Log;
 import android.webkit.MimeTypeMap;
 import android.widget.Toast;
 
@@ -46,18 +45,18 @@ public class ContentUploadAdapter {
         return str;
     }
 
-    public void uploadImage(String getID, Uri mainImage) {
+    public void uploadImage(String docID, Uri mainImage) {
         StorageReference storageRef = FirebaseStorage.getInstance().getReference();
         // 다수의 이미지를 넣기 위해 for문 사용
         for (int index = 0; index < uriArrayList.size(); index++) {
             // content 이미지들 DB에 올리기.
-            StorageReference imgRef = storageRef.child("Image").child(getID).child("contentImage" + index + "." + getFileExtension(uriArrayList.get(index)));
+            StorageReference imgRef = storageRef.child("Image").child(docID).child("contentImage" + index + "." + getFileExtension(uriArrayList.get(index)));
             imgRef.putFile(uriArrayList.get(index)).addOnSuccessListener(taskSnapshot -> imgRef.getDownloadUrl()
                             .addOnSuccessListener(uri1 -> Toast.makeText(context, "Image Upload Successful", Toast.LENGTH_SHORT).show()))
                     .addOnFailureListener(e -> Toast.makeText(context, "Image upload failed", Toast.LENGTH_SHORT).show());
         }
         // mainImage DB에 올리기.
-        StorageReference mImgRef = storageRef.child("Image").child(getID).child("MainImage" + "." + getOnlyExtension(String.valueOf(mainImage)));
+        StorageReference mImgRef = storageRef.child("Image").child(docID).child("MainImage" + "." + getOnlyExtension(String.valueOf(mainImage)));
         mImgRef.putFile(mainImage).addOnSuccessListener(taskSnapshot -> mImgRef.getDownloadUrl()
                         .addOnSuccessListener(uri1 -> Toast.makeText(context, "Image Upload Successful", Toast.LENGTH_SHORT).show()))
                 .addOnFailureListener(e -> Toast.makeText(context, "Image upload failed", Toast.LENGTH_SHORT).show());
@@ -67,7 +66,6 @@ public class ContentUploadAdapter {
     private String getFileExtension(Uri uri) {
         ContentResolver cr = context.getContentResolver();
         MimeTypeMap mime = MimeTypeMap.getSingleton();
-        Log.d("getType", mime.getExtensionFromMimeType(cr.getType(uri)));
         return mime.getExtensionFromMimeType(cr.getType(uri));
     }
 

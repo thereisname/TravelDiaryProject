@@ -24,6 +24,7 @@ import java.util.*
 class UploadCalendarActivity : AppCompatActivity() {
     lateinit var binding: ActivityUploadCalendarBinding
     lateinit var listView: LinearLayout
+    lateinit var editIdList: ArrayList<Int>
     lateinit var filePath: Uri
     var isMainImage: Boolean = false
     var isDataPickerText: Boolean = false
@@ -92,6 +93,10 @@ class UploadCalendarActivity : AppCompatActivity() {
             requestLauncher.launch(intent)
         }
 
+        // 경로 사전 작업
+        editIdList = ArrayList()
+        editIdList.add(1)
+        // 경로 Edit 추가하기
         binding.addLoad.setOnClickListener {
             addEditor();
         }
@@ -142,8 +147,8 @@ class UploadCalendarActivity : AppCompatActivity() {
         var dpValue = 300
         var density = resources.displayMetrics.density
         var pixelValue = dpValue * density
-
         var editText: EditText = EditText(applicationContext)
+
         editText.setHintTextColor(getColor(R.color.icon))
         editText.setTextColor(getColor(R.color.text_gray))
         editText.id = count
@@ -160,7 +165,10 @@ class UploadCalendarActivity : AppCompatActivity() {
         )
         editText.layoutParams = param
         listView.addView(editText)
+        editIdList.add(editText.id)
+
         count++
+
     }
 
     private fun HashTagCustom(): String {
@@ -182,13 +190,27 @@ class UploadCalendarActivity : AppCompatActivity() {
         return arr
     }
 
+
     private fun nextBtnClickEvent() {
+        // 경로 넣기 위한 코딩
+        var arrayRoad: ArrayList<String> = ArrayList()
+        for (i in editIdList) {
+            if (i == 1) {
+                arrayRoad.add(binding.etLoad1.text.toString())
+            } else {
+                val edit1: EditText = findViewById(i)
+                arrayRoad.add(edit1.text.toString())
+            }
+        }
+        // uploadBoardActivity로 넘어가기
         val intent = Intent(this, UploadBoardActivity::class.java)
         val info = HashMap<String, Any>()
         info["date"] = binding.dataPickerText.text.toString()
         info["hashTag"] = HashTagCustom()
+        info["route"] = arrayRoad
         info["mainImage"] = filePath
         intent.putExtra("info", info)
+
         startActivity(intent)
     }
 

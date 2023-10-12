@@ -11,7 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.traveldiary.ContentDownloadAdapter;
+import com.example.traveldiary.adapter.ContentDownloadAdapter;
 import com.example.traveldiary.R;
 import com.example.traveldiary.value.MyPageValue;
 import com.google.firebase.auth.FirebaseAuth;
@@ -26,7 +26,7 @@ public class FragmentClient extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-            @Nullable Bundle savedInstanceState) {
+                             @Nullable Bundle savedInstanceState) {
         isAttBookmark = 0;
         db = FirebaseFirestore.getInstance();
         View view = inflater.inflate(R.layout.fragment_client, container, false);
