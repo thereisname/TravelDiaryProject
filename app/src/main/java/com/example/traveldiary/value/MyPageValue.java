@@ -2,7 +2,6 @@ package com.example.traveldiary.value;
 
 public class MyPageValue {
     private String con;
-    private String mainImg;
     private String title;
     private String hashTag;
     private String date;
@@ -13,9 +12,8 @@ public class MyPageValue {
     public MyPageValue() {
     }
 
-    public MyPageValue(String con, String mainImg, String title, String hashTag, String date, String uploadDate, String boardID, String userToken) {
+    public MyPageValue(String con, String title, String hashTag, String date, String uploadDate, String boardID, String userToken) {
         this.con = con;
-        this.mainImg = mainImg;
         this.title = title;
         this.hashTag = hashTag;
         this.date = date;
@@ -25,10 +23,6 @@ public class MyPageValue {
 
     public String getCon() {
         return con;
-    }
-
-    public String getMainImg() {
-        return mainImg;
     }
 
     public String getTitle() {
@@ -53,5 +47,13 @@ public class MyPageValue {
 
     public String getUserToken() {
         return userToken;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setCon(String con) {
+        this.con = con;
     }
 }

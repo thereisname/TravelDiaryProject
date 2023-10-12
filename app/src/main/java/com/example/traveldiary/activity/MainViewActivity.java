@@ -15,16 +15,13 @@ import com.example.traveldiary.OnItemClickListener;
 import com.example.traveldiary.R;
 import com.example.traveldiary.adapter.MainValueAdapter;
 import com.example.traveldiary.fragment.FragmentClient;
-
 import com.example.traveldiary.value.MyPageValue;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-
 import java.util.ArrayList;
 
 public class MainViewActivity extends AppCompatActivity {
-
     private RecyclerView recyclerView;
     private MainValueAdapter adapter;
     private FirebaseFirestore db;
@@ -46,7 +43,6 @@ public class MainViewActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
 
         loadDate();
-
 
         //---------------------------------------------------------------------------------------
         FragmentClient fragmentClient = new FragmentClient();

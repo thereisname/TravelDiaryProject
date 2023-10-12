@@ -3,14 +3,13 @@ package com.example.traveldiary.activity
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.res.ColorStateList
-import android.graphics.Typeface
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.util.Pair
@@ -20,6 +19,7 @@ import com.example.traveldiary.R
 import com.example.traveldiary.activity.MypageActivity
 import com.example.traveldiary.databinding.ActivityUploadCalendarBinding
 import com.google.android.material.datepicker.MaterialDatePicker
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -28,8 +28,9 @@ class UploadCalendarActivity : AppCompatActivity() {
     lateinit var binding: ActivityUploadCalendarBinding
     lateinit var listView : LinearLayout
     lateinit var editIdList:ArrayList<Int>
-
-
+    lateinit var filePath: Uri
+    var isMainImage: Boolean = false
+    var isDataPickerText: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,10 +39,20 @@ class UploadCalendarActivity : AppCompatActivity() {
 
         listView = findViewById(R.id.listView)
 
-        calendarPick()  // 여행일 선택창 output.
+        binding.dataRangeBtn.setOnClickListener { calendarPick() }
 
         binding.next.setOnClickListener {
-            nextBtnClickEvent()
+            if (!isDataPickerText) Toast.makeText(
+                applicationContext,
+                "여행 기간을 선택해주세요.",
+                Toast.LENGTH_SHORT
+            ).show()
+            else if (!isMainImage) Toast.makeText(
+                applicationContext,
+                "대표 이미지를 선택해주세요.",
+                Toast.LENGTH_SHORT
+            ).show()
+            else nextBtnClickEvent()
         }
 
         // toolbar Btn
@@ -54,12 +65,43 @@ class UploadCalendarActivity : AppCompatActivity() {
             finish()
         }
 
+        // 대표 이미지 가져오는 곳
+        val requestLauncher = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) {
+            if (it.resultCode === android.app.Activity.RESULT_OK) {
+                Glide
+                    .with(getApplicationContext())
+                    .load(it.data?.data)
+                    .apply(RequestOptions().override(250, 200))
+                    .centerCrop()
+                    .into(binding.imageButton)
+
+                val cursor = contentResolver.query(
+                    it.data?.data as Uri,
+                    arrayOf<String>(MediaStore.Images.Media.DATA), null, null, null
+                )
+                cursor?.moveToFirst().let {
+                    filePath = Uri.fromFile(File(cursor?.getString(0) as String))
+                    isMainImage = true
+                }
+            }
+        }
+
+        binding.imageButton.setOnClickListener {
+            val intent = Intent(Intent.ACTION_PICK)
+            intent.setDataAndType(
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*"
+            )
+            requestLauncher.launch(intent)
+        }
+
         // 경로 사전 작업
         editIdList = ArrayList()
         editIdList.add(1)
         // 경로 Edit 추가하기
         binding.addLoad.setOnClickListener {
-            addEditor()
+            addEditor();
         }
     }
 
@@ -74,20 +116,31 @@ class UploadCalendarActivity : AppCompatActivity() {
                 )
             )
             .build()
-
-        binding.dataRangeBtn.setOnClickListener {
-            dateRangePicker.show(supportFragmentManager, "Material Date Range Picker")
-            dateRangePicker.addOnPositiveButtonClickListener { datePicked ->
-                val startDate = datePicked.first
-                val endDate = datePicked.second
-                if (startDate != null && endDate != null) {
-                    binding.dataPickerText.text = getString(
-                        R.string.uploadCalender_calendar,
-                        convertLongToDate(startDate),
-                        convertLongToDate(endDate)
-                    )
-                }
+        dateRangePicker.show(supportFragmentManager, "Material Date Range Picker")
+        dateRangePicker.addOnPositiveButtonClickListener { datePicked ->
+            val startDate = datePicked.first
+            val endDate = datePicked.second
+            if (startDate != null && endDate != null) {
+                binding.dataPickerText.text = getString(
+                    R.string.uploadCalender_calendar,
+                    convertLongToDate(startDate),
+                    convertLongToDate(endDate)
+                )
+                isDataPickerText = true
             }
+//                val dayCount: Int = (TimeUnit.MILLISECONDS.toDays(endDate - startDate) + 1).toInt()
+//                for (i in 1..dayCount) {
+//                    var textView = TextView(applicationContext)
+//                    textView.setText("Day$i")
+//                    textView.setTextAppearance(R.style.uploadCalender_rote)
+//                    val param: LinearLayout.LayoutParams = LinearLayout.LayoutParams(
+//                        ViewGroup.LayoutParams.WRAP_CONTENT,
+//                        ViewGroup.LayoutParams.WRAP_CONTENT
+//                    )
+//                    textView.layoutParams = param
+//                    listView.addView(textView)
+//                    addEditor()
+//                }
         }
     }
 
@@ -96,20 +149,23 @@ class UploadCalendarActivity : AppCompatActivity() {
         // xml 300dp 숫자 만드는 방법
         var dpValue = 300
         var density = resources.displayMetrics.density
-        var pixelValue = dpValue*density
-
-        var editText : EditText = EditText(applicationContext)
-        editText.setHintTextColor(getColor(R.color.blue2))
-        editText.setTextColor(getColor(R.color.blue2))
-        editText.id=count
-
-        editText.setHint("경로"+ count)
+        var pixelValue = dpValue * density
+        var editText: EditText = EditText(applicationContext)
+        
+        editText.setHintTextColor(getColor(R.color.icon))
+        editText.setTextColor(getColor(R.color.text_gray))
+        editText.id = count
+        editText.setHint("경로" + count)
         editText.textSize = 12f
-        editText.setLinkTextColor(getColor(R.color.blue2))
+        editText.setLinkTextColor(getColor(R.color.icon))
         editText.width = pixelValue.toInt()
-        editText.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.blue2))
+        editText.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.icon))
+        editText.setTextAppearance(R.style.uploadCalender_rote)
 
-        val param: LinearLayout.LayoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        val param: LinearLayout.LayoutParams = LinearLayout.LayoutParams(
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
         editText.layoutParams = param
         listView.addView(editText)
         editIdList.add(editText.id)
@@ -156,9 +212,9 @@ class UploadCalendarActivity : AppCompatActivity() {
         val info = HashMap<String, Any>()
         info["date"] = binding.dataPickerText.text.toString()
         info["hashTag"] = HashTagCustom()
-// 이건 창민이가 결정        info["load"] = arrayRoad
+//      info["load"] = arrayRoad
+        info["mainImage"] = filePath
         intent.putExtra("info", info)
-
 
         startActivity(intent)
     }

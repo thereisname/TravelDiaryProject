@@ -1,12 +1,10 @@
 package com.example.traveldiary.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,13 +24,13 @@ public class MainValueAdapter extends RecyclerView.Adapter<MainValueAdapter.View
 
     private Context context;
 
-
     @NonNull
     @Override
     public MainValueAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
+        context = viewGroup.getContext();
         LayoutInflater minflater = LayoutInflater.from(viewGroup.getContext());
         View itemView = minflater.inflate(R.layout.item_mainrecyclerview, viewGroup, false);
-        context = viewGroup.getContext();
+      
         return new ViewHolder(itemView);
     }
 
@@ -40,7 +38,6 @@ public class MainValueAdapter extends RecyclerView.Adapter<MainValueAdapter.View
     public void onBindViewHolder(@NonNull MainValueAdapter.ViewHolder viewHolder, int position) {
         MyPageValue item = items.get(position);
         viewHolder.setItem(item);
-
     }
 
     @Override
@@ -67,12 +64,9 @@ public class MainValueAdapter extends RecyclerView.Adapter<MainValueAdapter.View
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-
             mainImage = (ImageView) itemView.findViewById(R.id.iv_mainImage);
             mainTitle = (TextView) itemView.findViewById(R.id.tv_mainTitle);
             date = (TextView) itemView.findViewById(R.id.tv_userEmail);
-
-
         }
 
         public void setItem(MyPageValue item) {
@@ -86,12 +80,7 @@ public class MainValueAdapter extends RecyclerView.Adapter<MainValueAdapter.View
                     Glide.with(context)
                             .load(command)
                             .into(mainImage)
-            ).addOnFailureListener( command -> {
-                Log.d("로그", "불러오기 실패");
-            }
-
             );
-
         }
     }
 }
