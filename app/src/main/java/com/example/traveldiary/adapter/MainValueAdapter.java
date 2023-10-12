@@ -1,11 +1,13 @@
 package com.example.traveldiary.adapter;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -24,6 +26,7 @@ public class MainValueAdapter extends RecyclerView.Adapter<MainValueAdapter.View
 
     private ArrayList<MyPageValue> items = new ArrayList<>();
 
+    private OnItemClickListener itemClickListener;
     private Context context;
 
 
@@ -65,6 +68,7 @@ public class MainValueAdapter extends RecyclerView.Adapter<MainValueAdapter.View
         TextView date;
         ImageView mainImage;
 
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -86,9 +90,9 @@ public class MainValueAdapter extends RecyclerView.Adapter<MainValueAdapter.View
                     Glide.with(context)
                             .load(command)
                             .into(mainImage)
-            ).addOnFailureListener( command -> {
-                Log.d("로그", "불러오기 실패");
-            }
+            ).addOnFailureListener(command -> {
+                        Log.d("로그", "불러오기 실패");
+                    }
 
             );
 
