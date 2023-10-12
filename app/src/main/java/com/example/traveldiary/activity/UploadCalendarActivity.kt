@@ -1,5 +1,6 @@
 package com.example.traveldiary.activity
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Typeface
@@ -21,10 +22,14 @@ import com.example.traveldiary.databinding.ActivityUploadCalendarBinding
 import com.google.android.material.datepicker.MaterialDatePicker
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 class UploadCalendarActivity : AppCompatActivity() {
     lateinit var binding: ActivityUploadCalendarBinding
     lateinit var listView : LinearLayout
+    lateinit var editIdList:ArrayList<Int>
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,6 +54,13 @@ class UploadCalendarActivity : AppCompatActivity() {
             finish()
         }
 
+        // 경로 사전 작업
+        editIdList = ArrayList()
+        editIdList.add(1)
+        // 경로 Edit 추가하기
+        binding.addLoad.setOnClickListener {
+            addEditor()
+        }
     }
 
     private fun calendarPick() {
@@ -77,10 +89,6 @@ class UploadCalendarActivity : AppCompatActivity() {
                 }
             }
         }
-
-        binding.addLoad.setOnClickListener {
-            addEditor();
-        }
     }
 
     var count = 2
@@ -93,7 +101,8 @@ class UploadCalendarActivity : AppCompatActivity() {
         var editText : EditText = EditText(applicationContext)
         editText.setHintTextColor(getColor(R.color.blue2))
         editText.setTextColor(getColor(R.color.blue2))
-        editText.id = count
+        editText.id=count
+
         editText.setHint("경로"+ count)
         editText.textSize = 12f
         editText.setLinkTextColor(getColor(R.color.blue2))
@@ -103,7 +112,10 @@ class UploadCalendarActivity : AppCompatActivity() {
         val param: LinearLayout.LayoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
         editText.layoutParams = param
         listView.addView(editText)
+        editIdList.add(editText.id)
+
         count++
+
     }
 
     private fun HashTagCustom(): String {
@@ -125,12 +137,29 @@ class UploadCalendarActivity : AppCompatActivity() {
         return arr
     }
 
+
+
     private fun nextBtnClickEvent() {
+        // 경로 넣기 위한 코딩
+        var arrayRoad : ArrayList<String> = ArrayList()
+        for(i in editIdList){
+            if(i == 1){
+                arrayRoad.add(binding.etLoad1.text.toString())
+            }else{
+                val edit1 :EditText =  findViewById(i)
+                arrayRoad.add(edit1.text.toString())
+            }
+        }
+        Log.d("로그", arrayRoad.toString())
+        // uploadBoardActivity로 넘어가기
         val intent = Intent(this, UploadBoardActivity::class.java)
         val info = HashMap<String, Any>()
         info["date"] = binding.dataPickerText.text.toString()
         info["hashTag"] = HashTagCustom()
+// 이건 창민이가 결정        info["load"] = arrayRoad
         intent.putExtra("info", info)
+
+
         startActivity(intent)
     }
 

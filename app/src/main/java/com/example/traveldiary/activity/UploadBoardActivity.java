@@ -165,6 +165,7 @@ public class UploadBoardActivity extends AppCompatActivity {
         item.put("date", info.get("date"));
         item.put("hashTag", info.get("hashTag"));
         item.put("userToken", FirebaseAuth.getInstance().getUid());
+//  이건 창민이가 결정      item.put("load", info.get("load"));
 
         return item;
     }
