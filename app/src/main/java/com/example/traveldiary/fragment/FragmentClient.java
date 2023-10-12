@@ -2,7 +2,9 @@ package com.example.traveldiary.fragment;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +12,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
@@ -26,7 +29,7 @@ import java.util.ArrayList;
 
 public class FragmentClient extends Fragment {
     private int isAttBookmark; // 0: 북마크 비활성화 상태, 1: 북마크 활성화 상태
-    private MyPageValue mp;
+    private static MyPageValue mp;
     private LinearLayout listView;
     ImageView imageView;
     FirebaseFirestore db;
@@ -34,27 +37,51 @@ public class FragmentClient extends Fragment {
     ArrayList<Integer> arrayEndIndex = new ArrayList<Integer>();
     ArrayList<View> arrayimage = new ArrayList();
 
+    public FragmentClient() {
+        //빈 생성자
+    }
+
+    public static FragmentClient newInstance(MyPageValue myPageValue) {
+        FragmentClient fragment = new FragmentClient();
+        Bundle args = new Bundle();
+        args.putParcelable("myPageValue", (Parcelable) myPageValue);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-            @Nullable Bundle savedInstanceState) {
-        isAttBookmark = 0;
-        db = FirebaseFirestore.getInstance();
-        View view = inflater.inflate(R.layout.fragment_client, container, false);
+                             @Nullable Bundle savedInstanceState) {
 
-        ImageButton bookmark = view.findViewById(R.id.bookMarkBtn);
+        View view = inflater.inflate(R.layout.fragment_client, container, false);
         TextView fragment_title = view.findViewById(R.id.fragment_title);
         TextView fragment_hashtag = view.findViewById(R.id.fragment_hashtag);
+        isAttBookmark = 0;
+        db = FirebaseFirestore.getInstance();
 
+
+        ImageButton bookmark = view.findViewById(R.id.bookMarkBtn);
         listView = view.findViewById(R.id.listView);
-        db.collection("data").whereNotEqualTo("userToken", FirebaseAuth.getInstance().getUid()).limit(1).get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    for (QueryDocumentSnapshot queryDocumentSnapshot : queryDocumentSnapshots) {
-                        mp = queryDocumentSnapshot.toObject(MyPageValue.class);
-                        checkText(mp);
-                        fragment_title.setText(mp.getTitle());
-                        fragment_hashtag.setText(mp.getHashTag());
-                    }
-                });
+        if (getArguments() != null) {
+            mp = getArguments().getParcelable("myPageValue");
+            Log.d("로그", mp.getTitle());
+            fragment_title.setText(mp.getTitle());
+            fragment_hashtag.setText(mp.getHashTag());
+            checkText(mp);
+        } else {
+            db.collection("data").whereNotEqualTo("userToken", FirebaseAuth.getInstance().getUid()).limit(1).get()
+                    .addOnSuccessListener(queryDocumentSnapshots -> {
+                                for (QueryDocumentSnapshot queryDocumentSnapshot : queryDocumentSnapshots) {
+                                    mp = queryDocumentSnapshot.toObject(MyPageValue.class);
+                                    checkText(mp);
+                                    fragment_title.setText(mp.getTitle());
+                                    fragment_hashtag.setText(mp.getHashTag());
+                                }
+                            }
+                    );
+        }
+
+
         return view;
     }
 
@@ -114,7 +141,7 @@ public class FragmentClient extends Fragment {
         storageReference.child("/Image/" + boardID).listAll().addOnSuccessListener(listResult -> {
             for (int i = 1; i < listResult.getItems().size(); i++) {
                 StorageReference item = listResult.getItems().get(i);
-                int finalI = i-1;
+                int finalI = i - 1;
                 item.getDownloadUrl().addOnSuccessListener(
                         command -> Glide.with(getContext()).load(command).into(((ImageView) arrayimage.get(finalI))));
             }
