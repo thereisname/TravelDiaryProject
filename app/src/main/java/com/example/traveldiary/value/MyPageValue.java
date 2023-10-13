@@ -7,7 +7,7 @@ public class MyPageValue implements Parcelable {
     private String con;
     private String mainImg;
     private String title;
-    private String hashTag;
+    private ArrayList<String> hashTag;
     private String date;
     private String uploadDate;
     private String boardID;
@@ -20,7 +20,7 @@ public class MyPageValue implements Parcelable {
         con = in.readString();
         mainImg = in.readString();
         title = in.readString();
-        hashTag = in.readString();
+        hashTag = in.readArrayList(null);
         date = in.readString();
         uploadDate = in.readString();
         boardID = in.readString();
@@ -49,19 +49,20 @@ public class MyPageValue implements Parcelable {
         dest.writeString(con);
         dest.writeString(mainImg);
         dest.writeString(title);
-        dest.writeString(hashTag);
+        dest.writeList(hashTag);
         dest.writeString(date);
         dest.writeString(uploadDate);
         dest.writeString(boardID);
     }
 
-    public MyPageValue(String con, String title, String hashTag, String date, String uploadDate, String boardID, String userToken) {
+    public MyPageValue(String con, String title, ArrayList<String> hashTag, String date, String uploadDate, String boardID, ArrayList<String> route) {
         this.con = con;
         this.title = title;
         this.hashTag = hashTag;
         this.date = date;
         this.uploadDate = uploadDate;
         this.boardID = boardID;
+        this.route = route;
     }
 
     public String getCon() {
@@ -73,7 +74,11 @@ public class MyPageValue implements Parcelable {
     }
 
     public String getHashTag() {
-        return hashTag;
+        StringBuilder arr = new StringBuilder();
+        for (String hash : hashTag) {
+            arr.append(hash);
+        }
+        return arr.toString();
     }
 
     public String getDate() {
