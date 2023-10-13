@@ -1,6 +1,7 @@
 package com.example.traveldiary.value;
 import android.os.Parcel;
 import android.os.Parcelable;
+import java.util.ArrayList;
 
 public class MyPageValue implements Parcelable {
     private String con;
@@ -10,11 +11,9 @@ public class MyPageValue implements Parcelable {
     private String date;
     private String uploadDate;
     private String boardID;
-    private String userToken;
+    private ArrayList<String> route;
 
-    public MyPageValue() {
-        // 기본 생성자
-    }
+    public MyPageValue() {}
 
     // Parcelable 객체를 생성하는 생성자
     protected MyPageValue(Parcel in) {
@@ -91,8 +90,8 @@ public class MyPageValue implements Parcelable {
         return boardID;
     }
 
-    public String getUserToken() {
-        return userToken;
+    public ArrayList<String> getRoute() {
+        return route;
     }
 
     public void setTitle(String title) {

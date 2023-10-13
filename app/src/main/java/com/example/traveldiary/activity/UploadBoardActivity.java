@@ -18,7 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.example.traveldiary.ContentUploadAdapter;
+import com.example.traveldiary.adapter.ContentUploadAdapter;
 import com.example.traveldiary.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -144,7 +144,7 @@ public class UploadBoardActivity extends AppCompatActivity {
         item.put("date", info.get("date"));
         item.put("hashTag", info.get("hashTag"));
         item.put("userToken", FirebaseAuth.getInstance().getUid());
-//  이건 창민이가 결정      item.put("load", info.get("load"));
+        item.put("route", info.get("route"));
 
         return item;
     }

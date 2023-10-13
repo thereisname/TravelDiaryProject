@@ -4,7 +4,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
+import com.example.traveldiary.adapter.ContentDownloadAdapter;
 import com.example.traveldiary.R;
 import com.example.traveldiary.value.MyPageValue;
 import com.google.firebase.auth.FirebaseAuth;
@@ -36,9 +36,7 @@ public class FragmentClient extends Fragment {
     ArrayList<Integer> arrayEndIndex = new ArrayList<Integer>();
     ArrayList<View> arrayimage = new ArrayList();
 
-    public FragmentClient() {
-        //빈 생성자
-    }
+    public FragmentClient() {}
 
     public static FragmentClient newInstance(MyPageValue myPageValue) {
         FragmentClient fragment = new FragmentClient();
@@ -51,19 +49,17 @@ public class FragmentClient extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-
+        isAttBookmark = 0;
+        db = FirebaseFirestore.getInstance();
         View view = inflater.inflate(R.layout.fragment_client, container, false);
 
         ImageButton bookmark = view.findViewById(R.id.bookMarkBtn);
         TextView fragment_title = view.findViewById(R.id.fragment_title);
         TextView fragment_hashtag = view.findViewById(R.id.fragment_hashtag);
-        isAttBookmark = 0;
-        db = FirebaseFirestore.getInstance();
 
         listView = view.findViewById(R.id.listView);
         if (getArguments() != null) {
             mp = getArguments().getParcelable("myPageValue");
-            Log.d("로그", mp.getTitle());
             fragment_title.setText(mp.getTitle());
             fragment_hashtag.setText(mp.getHashTag());
             checkText(mp);
