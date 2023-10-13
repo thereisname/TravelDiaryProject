@@ -190,7 +190,6 @@ class UploadCalendarActivity : AppCompatActivity() {
         return arr
     }
 
-
     private fun nextBtnClickEvent() {
         // 경로 넣기 위한 코딩
         var arrayRoad: ArrayList<String> = ArrayList()

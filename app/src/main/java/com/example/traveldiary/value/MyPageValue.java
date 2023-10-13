@@ -24,7 +24,6 @@ public class MyPageValue implements Parcelable {
         date = in.readString();
         uploadDate = in.readString();
         boardID = in.readString();
-        userToken = in.readString();
     }
 
     // Parcelable 객체를 생성하는 메서드
@@ -54,7 +53,6 @@ public class MyPageValue implements Parcelable {
         dest.writeString(date);
         dest.writeString(uploadDate);
         dest.writeString(boardID);
-        dest.writeString(userToken);
     }
 
     public MyPageValue(String con, String title, String hashTag, String date, String uploadDate, String boardID, String userToken) {
