@@ -65,8 +65,6 @@ public class MainValueAdapter extends RecyclerView.Adapter<MainValueAdapter.View
         TextView mainTitle;
         TextView date;
         ImageView mainImage;
-        TextView mainTitle;
-        TextView userEmail;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
