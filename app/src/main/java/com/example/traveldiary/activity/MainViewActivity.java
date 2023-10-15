@@ -2,22 +2,14 @@ package com.example.traveldiary.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.util.Log;
-import android.view.MotionEvent;
-import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
-
-import com.example.traveldiary.OnItemClickListener;
 import com.example.traveldiary.R;
 import com.example.traveldiary.adapter.MainValueAdapter;
 import com.example.traveldiary.fragment.FragmentClient;
@@ -25,14 +17,17 @@ import com.example.traveldiary.value.MyPageValue;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import java.util.ArrayList;
+import android.os.Handler;
+import android.widget.Toast;
 
 public class MainViewActivity extends AppCompatActivity {
-//implements OnItemClickListener
     private RecyclerView recyclerView;
     private MainValueAdapter adapter;
     private FirebaseFirestore db;
     private int currentPosition = 0;
+    private boolean doubleBackToExitPressedOnce = false;
+    private static final int BACK_PRESS_INTERVAL = 2000; // 2 seconds
+
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,6 +101,20 @@ public class MainViewActivity extends AppCompatActivity {
                 .beginTransaction()
                 .replace(R.id.fragment_view, fragmentClient)
                 .commit();
+    }
+
+    // 뒤로가기 두번하면 종료되는 코드
+    @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            finishAffinity();
+        } else {
+            this.doubleBackToExitPressedOnce = true;
+            Toast.makeText(this, "뒤로 가기 버튼을 한 번 더 누르면 앱이 종료됩니다.", Toast.LENGTH_SHORT).show();
+
+            new Handler().postDelayed(() -> doubleBackToExitPressedOnce = false, BACK_PRESS_INTERVAL);
+        }
     }
 
 }

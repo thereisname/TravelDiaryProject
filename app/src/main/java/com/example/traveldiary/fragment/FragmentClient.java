@@ -137,14 +137,14 @@ public class FragmentClient extends Fragment {
             for (int i = 1; i < listResult.getItems().size(); i++) {
                 StorageReference item = listResult.getItems().get(i);
                 int finalI = i - 1;
-                item.getDownloadUrl().addOnSuccessListener(
-                        command ->{
+                item.getDownloadUrl().addOnSuccessListener(command ->{
                             if(arrayimage.size() > finalI){
-                                Glide.with(getActivity()).load(command).into(((ImageView) arrayimage.get(finalI)));
+                                //Glide를 onActiviytyCreated 내에서 사용
+                                if(getActivity() != null){
+                                    Glide.with(getActivity()).load(command).into(((ImageView) arrayimage.get(finalI)));
+                                }
                             }
-                        }
-                );
-
+                });
             }
         });
     }
