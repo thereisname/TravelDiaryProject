@@ -27,11 +27,12 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
 
-public class MainViewActivity extends AppCompatActivity implements OnItemClickListener {
-
+public class MainViewActivity extends AppCompatActivity {
+//implements OnItemClickListener
     private RecyclerView recyclerView;
     private MainValueAdapter adapter;
     private FirebaseFirestore db;
+    private int currentPosition = 0;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,21 +40,34 @@ public class MainViewActivity extends AppCompatActivity implements OnItemClickLi
         setContentView(R.layout.activity_main_view);
 
         recyclerView = findViewById(R.id.rv_maineRcyclerView);
-
-        adapter = new MainValueAdapter( getApplicationContext(),this);
-
+        adapter = new MainValueAdapter( this);
         recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
 
         SnapHelper snapHelper = new PagerSnapHelper();
         snapHelper.attachToRecyclerView(recyclerView);
+
+        // 스크롤 상태 감지
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+                    if (layoutManager != null) {
+                        currentPosition = layoutManager.findFirstVisibleItemPosition();
+                        // 현재 아이템 데이터를 가져와서 Fragment로 전달
+                        MyPageValue currentItem = adapter.getItem(currentPosition);
+                        onItemSelected(currentItem);
+                    }
+                }
+            }
+        });
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
         db = FirebaseFirestore.getInstance();
 
         loadDate();
 
-
-        //---------------------------------------------------------------------------------------
         FragmentClient fragmentClient = new FragmentClient();
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_view, fragmentClient).commit();
 
@@ -80,14 +94,18 @@ public class MainViewActivity extends AppCompatActivity implements OnItemClickLi
         });
     }
 
-    @Override
-    public void onItemSelected(View view, int position, ArrayList<MyPageValue> items) {
-        MyPageValue item = items.get(position);
+    // PagerSnapHelper로 스와이프된 경우 호출되는 메서드
+    public void onItemSelected(MyPageValue item) {
+        // 현재 아이템 위치에 해당하는 아이템 데이터를 Fragment로 전달
+        FragmentClient fragmentClient = new FragmentClient();
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("myPageValue", item);
+        fragmentClient.setArguments(bundle);
 
-        Log.d("로그1", item.getTitle());
-
-        FragmentClient fragmentClient = FragmentClient.newInstance(item);
-
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_view, fragmentClient).commit();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_view, fragmentClient)
+                .commit();
     }
+
 }

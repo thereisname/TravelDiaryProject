@@ -138,7 +138,13 @@ public class FragmentClient extends Fragment {
                 StorageReference item = listResult.getItems().get(i);
                 int finalI = i - 1;
                 item.getDownloadUrl().addOnSuccessListener(
-                        command -> Glide.with(getContext()).load(command).into(((ImageView) arrayimage.get(finalI))));
+                        command ->{
+                            if(arrayimage.size() > finalI){
+                                Glide.with(getActivity()).load(command).into(((ImageView) arrayimage.get(finalI)));
+                            }
+                        }
+                );
+
             }
         });
     }
