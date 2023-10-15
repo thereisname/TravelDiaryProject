@@ -2,6 +2,7 @@ package com.example.traveldiary.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 
+import com.example.traveldiary.OnItemClickListener;
 import com.example.traveldiary.R;
 import com.example.traveldiary.adapter.MainValueAdapter;
 import com.example.traveldiary.fragment.FragmentClient;
@@ -18,7 +20,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
-public class MainViewActivity extends AppCompatActivity {
+import java.util.ArrayList;
+
+public class MainViewActivity extends AppCompatActivity implements OnItemClickListener {
+
     private RecyclerView recyclerView;
     private MainValueAdapter adapter;
     private FirebaseFirestore db;
@@ -29,7 +34,7 @@ public class MainViewActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.rv_maineRcyclerView);
 
-        adapter = new MainValueAdapter();
+        adapter = new MainValueAdapter(getApplicationContext(), this);
 
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -66,5 +71,12 @@ public class MainViewActivity extends AppCompatActivity {
             }
             recyclerView.setAdapter(adapter);
         });
+    }
+
+    @Override
+    public void onItemSelected(View view, int position, ArrayList<MyPageValue> items) {
+        MyPageValue item = items.get(position);
+        FragmentClient fragmentClient = FragmentClient.newInstance(item);
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_view, fragmentClient).commit();
     }
 }

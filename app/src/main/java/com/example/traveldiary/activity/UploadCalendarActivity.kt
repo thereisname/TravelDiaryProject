@@ -20,10 +20,12 @@ import com.google.android.material.datepicker.MaterialDatePicker
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 class UploadCalendarActivity : AppCompatActivity() {
     lateinit var binding: ActivityUploadCalendarBinding
     lateinit var listView: LinearLayout
+    lateinit var editIdList: ArrayList<Int>
     lateinit var filePath: Uri
     var isMainImage: Boolean = false
     var isDataPickerText: Boolean = false
@@ -35,11 +37,19 @@ class UploadCalendarActivity : AppCompatActivity() {
 
         listView = findViewById(R.id.listView)
 
-        calendarPick()  // 여행일 선택창 output.
+        binding.dataRangeBtn.setOnClickListener { calendarPick() }
 
         binding.next.setOnClickListener {
-            if(!isDataPickerText) Toast.makeText(applicationContext, "여행 기간을 선택해주세요.", Toast.LENGTH_SHORT).show()
-            else if(!isMainImage) Toast.makeText(applicationContext, "대표 이미지를 선택해주세요.", Toast.LENGTH_SHORT).show()
+            if (!isDataPickerText) Toast.makeText(
+                applicationContext,
+                "여행 기간을 선택해주세요.",
+                Toast.LENGTH_SHORT
+            ).show()
+            else if (!isMainImage) Toast.makeText(
+                applicationContext,
+                "대표 이미지를 선택해주세요.",
+                Toast.LENGTH_SHORT
+            ).show()
             else nextBtnClickEvent()
         }
 
@@ -83,6 +93,14 @@ class UploadCalendarActivity : AppCompatActivity() {
             )
             requestLauncher.launch(intent)
         }
+
+        // 경로 사전 작업
+        editIdList = ArrayList()
+        editIdList.add(1)
+        // 경로 Edit 추가하기
+        binding.addLoad.setOnClickListener {
+            addEditor();
+        }
     }
 
     private fun calendarPick() {
@@ -96,24 +114,31 @@ class UploadCalendarActivity : AppCompatActivity() {
                 )
             )
             .build()
-        binding.dataRangeBtn.setOnClickListener {
-            dateRangePicker.show(supportFragmentManager, "Material Date Range Picker")
-            dateRangePicker.addOnPositiveButtonClickListener { datePicked ->
-                val startDate = datePicked.first
-                val endDate = datePicked.second
-                if (startDate != null && endDate != null) {
-                    binding.dataPickerText.text = getString(
-                        R.string.uploadCalender_calendar,
-                        convertLongToDate(startDate),
-                        convertLongToDate(endDate)
-                    )
-                    isDataPickerText = true
-                }
+        dateRangePicker.show(supportFragmentManager, "Material Date Range Picker")
+        dateRangePicker.addOnPositiveButtonClickListener { datePicked ->
+            val startDate = datePicked.first
+            val endDate = datePicked.second
+            if (startDate != null && endDate != null) {
+                binding.dataPickerText.text = getString(
+                    R.string.uploadCalender_calendar,
+                    convertLongToDate(startDate),
+                    convertLongToDate(endDate)
+                )
+                isDataPickerText = true
             }
-        }
-
-        binding.addLoad.setOnClickListener {
-            addEditor();
+//                val dayCount: Int = (TimeUnit.MILLISECONDS.toDays(endDate - startDate) + 1).toInt()
+//                for (i in 1..dayCount) {
+//                    var textView = TextView(applicationContext)
+//                    textView.setText("Day$i")
+//                    textView.setTextAppearance(R.style.uploadCalender_rote)
+//                    val param: LinearLayout.LayoutParams = LinearLayout.LayoutParams(
+//                        ViewGroup.LayoutParams.WRAP_CONTENT,
+//                        ViewGroup.LayoutParams.WRAP_CONTENT
+//                    )
+//                    textView.layoutParams = param
+//                    listView.addView(textView)
+//                    addEditor()
+//                }
         }
     }
 
@@ -123,8 +148,8 @@ class UploadCalendarActivity : AppCompatActivity() {
         var dpValue = 300
         var density = resources.displayMetrics.density
         var pixelValue = dpValue * density
-
         var editText: EditText = EditText(applicationContext)
+
         editText.setHintTextColor(getColor(R.color.icon))
         editText.setTextColor(getColor(R.color.text_gray))
         editText.id = count
@@ -141,35 +166,52 @@ class UploadCalendarActivity : AppCompatActivity() {
         )
         editText.layoutParams = param
         listView.addView(editText)
+        editIdList.add(editText.id)
+
         count++
+
     }
 
-    private fun HashTagCustom(): String {
-        var arr = " "
-        if (binding.chip1.isChecked) arr = "$arr#혼자 여행 "
-        if (binding.chip2.isChecked) arr = "$arr#커플 여행 "
-        if (binding.chip3.isChecked) arr = "$arr#친구와 여행 "
-        if (binding.chip4.isChecked) arr = "$arr#가족 여행 "
+    private fun HashTagCustom(): ArrayList<String> {
+        var arrayHashTag : ArrayList<String> = ArrayList()
+        if (binding.chip1.isChecked) arrayHashTag.add("#혼자 여행 ")
+        if (binding.chip2.isChecked) arrayHashTag.add("#커플 여행 ")
+        if (binding.chip3.isChecked) arrayHashTag.add("#친구와 여행 ")
+        if (binding.chip4.isChecked) arrayHashTag.add("#가족 여행 ")
 
-        if (binding.chip10.isChecked) arr = "$arr#계획적인 "
-        if (binding.chip11.isChecked) arr = "$arr#자유로운 "
-        if (binding.chip12.isChecked) arr = "$arr#휴가 "
-        if (binding.chip13.isChecked) arr = "$arr#추억 "
-        if (binding.chip14.isChecked) arr = "$arr#힐링 "
-        if (binding.chip15.isChecked) arr = "$arr#엑티비티 "
-        if (binding.chip16.isChecked) arr = "$arr#맛집투어 "
-        if (binding.chip17.isChecked) arr = "$arr#낭만 "
-        if (binding.chip18.isChecked) arr = "$arr#감성 "
-        return arr
+        if (binding.chip10.isChecked) arrayHashTag.add("#계획적인 ")
+        if (binding.chip11.isChecked) arrayHashTag.add("#자유로운 ")
+        if (binding.chip12.isChecked) arrayHashTag.add("#휴가 ")
+        if (binding.chip13.isChecked) arrayHashTag.add("#추억 ")
+        if (binding.chip14.isChecked) arrayHashTag.add("#힐링 ")
+        if (binding.chip15.isChecked) arrayHashTag.add("#엑티비티 ")
+        if (binding.chip16.isChecked) arrayHashTag.add("#맛집투어 ")
+        if (binding.chip17.isChecked) arrayHashTag.add("#낭만 ")
+        if (binding.chip18.isChecked) arrayHashTag.add("#감성 ")
+
+        return arrayHashTag
     }
 
     private fun nextBtnClickEvent() {
+        // 경로 넣기 위한 코딩
+        var arrayRoad: ArrayList<String> = ArrayList()
+        for (i in editIdList) {
+            if (i == 1) {
+                arrayRoad.add(binding.etLoad1.text.toString())
+            } else {
+                val edit1: EditText = findViewById(i)
+                arrayRoad.add(edit1.text.toString())
+            }
+        }
+        // uploadBoardActivity로 넘어가기
         val intent = Intent(this, UploadBoardActivity::class.java)
         val info = HashMap<String, Any>()
         info["date"] = binding.dataPickerText.text.toString()
         info["hashTag"] = HashTagCustom()
+        info["route"] = arrayRoad
         info["mainImage"] = filePath
         intent.putExtra("info", info)
+
         startActivity(intent)
     }
 
