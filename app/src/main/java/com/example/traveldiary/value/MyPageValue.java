@@ -1,4 +1,5 @@
 package com.example.traveldiary.value;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 import java.util.ArrayList;
