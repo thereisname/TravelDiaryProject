@@ -2,9 +2,10 @@ package com.example.traveldiary.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+
+import android.view.View;
 import android.widget.ImageView;
-import androidx.annotation.NonNull;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
@@ -17,6 +18,7 @@ import com.example.traveldiary.value.MyPageValue;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+
 import android.os.Handler;
 import android.widget.Toast;
 
@@ -31,11 +33,12 @@ public class MainViewActivity extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("로그", "화면나옴");
         setContentView(R.layout.activity_main_view);
 
         recyclerView = findViewById(R.id.rv_maineRcyclerView);
+
         adapter = new MainValueAdapter( this);
+
         recyclerView.setAdapter(adapter);
 
         SnapHelper snapHelper = new PagerSnapHelper();
@@ -116,5 +119,4 @@ public class MainViewActivity extends AppCompatActivity {
             new Handler().postDelayed(() -> doubleBackToExitPressedOnce = false, BACK_PRESS_INTERVAL);
         }
     }
-
 }

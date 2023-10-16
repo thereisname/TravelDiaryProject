@@ -31,7 +31,7 @@
         <TextView
             android:id="@+id/fragment_title"
             android:layout_width="0dp"
-            android:layout_height="48dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:fontFamily="@font/gangwon"
             android:paddingLeft="20dp"

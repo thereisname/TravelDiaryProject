@@ -20,6 +20,7 @@ import com.google.android.material.datepicker.MaterialDatePicker
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 class UploadCalendarActivity : AppCompatActivity() {
     lateinit var binding: ActivityUploadCalendarBinding
@@ -171,25 +172,25 @@ class UploadCalendarActivity : AppCompatActivity() {
 
     }
 
-    private fun HashTagCustom(): String {
-        var arr = " "
-        if (binding.chip1.isChecked) arr = "$arr#혼자 여행 "
-        if (binding.chip2.isChecked) arr = "$arr#커플 여행 "
-        if (binding.chip3.isChecked) arr = "$arr#친구와 여행 "
-        if (binding.chip4.isChecked) arr = "$arr#가족 여행 "
+    private fun HashTagCustom(): ArrayList<String> {
+        var arrayHashTag : ArrayList<String> = ArrayList()
+        if (binding.chip1.isChecked) arrayHashTag.add("#혼자 여행 ")
+        if (binding.chip2.isChecked) arrayHashTag.add("#커플 여행 ")
+        if (binding.chip3.isChecked) arrayHashTag.add("#친구와 여행 ")
+        if (binding.chip4.isChecked) arrayHashTag.add("#가족 여행 ")
 
-        if (binding.chip10.isChecked) arr = "$arr#계획적인 "
-        if (binding.chip11.isChecked) arr = "$arr#자유로운 "
-        if (binding.chip12.isChecked) arr = "$arr#휴가 "
-        if (binding.chip13.isChecked) arr = "$arr#추억 "
-        if (binding.chip14.isChecked) arr = "$arr#힐링 "
-        if (binding.chip15.isChecked) arr = "$arr#엑티비티 "
-        if (binding.chip16.isChecked) arr = "$arr#맛집투어 "
-        if (binding.chip17.isChecked) arr = "$arr#낭만 "
-        if (binding.chip18.isChecked) arr = "$arr#감성 "
-        return arr
+        if (binding.chip10.isChecked) arrayHashTag.add("#계획적인 ")
+        if (binding.chip11.isChecked) arrayHashTag.add("#자유로운 ")
+        if (binding.chip12.isChecked) arrayHashTag.add("#휴가 ")
+        if (binding.chip13.isChecked) arrayHashTag.add("#추억 ")
+        if (binding.chip14.isChecked) arrayHashTag.add("#힐링 ")
+        if (binding.chip15.isChecked) arrayHashTag.add("#엑티비티 ")
+        if (binding.chip16.isChecked) arrayHashTag.add("#맛집투어 ")
+        if (binding.chip17.isChecked) arrayHashTag.add("#낭만 ")
+        if (binding.chip18.isChecked) arrayHashTag.add("#감성 ")
+
+        return arrayHashTag
     }
-
 
     private fun nextBtnClickEvent() {
         // 경로 넣기 위한 코딩

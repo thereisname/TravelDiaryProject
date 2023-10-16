@@ -13,20 +13,18 @@ import com.bumptech.glide.Glide;
 import com.example.traveldiary.R;
 import com.example.traveldiary.activity.MainViewActivity;
 import com.example.traveldiary.value.MyPageValue;
+import com.example.traveldiary.OnItemClickListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import java.util.ArrayList;
 
 public class MainValueAdapter extends RecyclerView.Adapter<MainValueAdapter.ViewHolder> {
-
     private ArrayList<MyPageValue> items = new ArrayList<>();
 
     private Context context;
     private long lastClickTime = 0;
     private static final long CLICK_TIME_INTERVAL = 1000; // 클릭 간격을 1초로 설정
-
-    //슬라이드 아이템 체크
-    private int currentVisiblePosition = 0;
+    private int currentVisiblePosition = 0;   //슬라이드 아이템 체크
 
    // OnItemClickListener itemClickListener
     public MainValueAdapter(Context context)  {
@@ -75,7 +73,6 @@ public class MainValueAdapter extends RecyclerView.Adapter<MainValueAdapter.View
         TextView mainTitle;
         TextView date;
         ImageView mainImage;
-
         CardView cardView;
 
         public ViewHolder(@NonNull View itemView) {
@@ -99,7 +96,6 @@ public class MainValueAdapter extends RecyclerView.Adapter<MainValueAdapter.View
                     }
                 }
             });
-
         }
 
         public void setItem(MyPageValue item) {

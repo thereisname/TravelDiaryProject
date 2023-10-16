@@ -103,8 +103,8 @@ public class MypageActivity extends AppCompatActivity {
 
         ImageView upload = findViewById(R.id.upload);
         upload.setOnClickListener(v -> {
-            finish();startActivity(new Intent(this, UploadCalendarActivity.class));
-
+            finish();
+            startActivity(new Intent(this, UploadCalendarActivity.class));
         });
     }
 
