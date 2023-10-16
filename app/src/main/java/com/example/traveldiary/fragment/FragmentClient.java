@@ -35,7 +35,7 @@ public class FragmentClient extends Fragment {
     ArrayList<Integer> arrayStartIndex = new ArrayList<Integer>();
     ArrayList<Integer> arrayEndIndex = new ArrayList<Integer>();
     ArrayList<View> arrayimage = new ArrayList();
-
+    int clickCheck = 0;
     public FragmentClient() {}
 
     public static FragmentClient newInstance(MyPageValue myPageValue) {
