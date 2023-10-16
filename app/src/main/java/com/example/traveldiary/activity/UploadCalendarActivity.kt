@@ -169,11 +169,10 @@ class UploadCalendarActivity : AppCompatActivity() {
         editIdList.add(editText.id)
 
         count++
-
     }
 
     private fun HashTagCustom(): ArrayList<String> {
-        var arrayHashTag : ArrayList<String> = ArrayList()
+        var arrayHashTag: ArrayList<String> = ArrayList()
         if (binding.chip1.isChecked) arrayHashTag.add("#혼자 여행 ")
         if (binding.chip2.isChecked) arrayHashTag.add("#커플 여행 ")
         if (binding.chip3.isChecked) arrayHashTag.add("#친구와 여행 ")

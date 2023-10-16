@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.traveldiary.R;
 import com.example.traveldiary.fragment.FragmentBoard;
 import com.example.traveldiary.fragment.FragmentBookmark;

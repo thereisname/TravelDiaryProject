@@ -2,15 +2,17 @@ package com.example.traveldiary.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import android.view.View;
+import android.os.Handler;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
+
 import com.example.traveldiary.R;
 import com.example.traveldiary.adapter.MainValueAdapter;
 import com.example.traveldiary.fragment.FragmentClient;
@@ -18,9 +20,6 @@ import com.example.traveldiary.value.MyPageValue;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-
-import android.os.Handler;
-import android.widget.Toast;
 
 public class MainViewActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
@@ -37,7 +36,7 @@ public class MainViewActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.rv_maineRcyclerView);
 
-        adapter = new MainValueAdapter( this);
+        adapter = new MainValueAdapter(this);
 
         recyclerView.setAdapter(adapter);
 
@@ -115,7 +114,6 @@ public class MainViewActivity extends AppCompatActivity {
         } else {
             this.doubleBackToExitPressedOnce = true;
             Toast.makeText(this, "뒤로 가기 버튼을 한 번 더 누르면 앱이 종료됩니다.", Toast.LENGTH_SHORT).show();
-
             new Handler().postDelayed(() -> doubleBackToExitPressedOnce = false, BACK_PRESS_INTERVAL);
         }
     }
