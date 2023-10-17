@@ -6,16 +6,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.example.traveldiary.R;
 import com.example.traveldiary.activity.MainViewActivity;
 import com.example.traveldiary.value.MyPageValue;
-import com.example.traveldiary.OnItemClickListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+
 import java.util.ArrayList;
 
 public class MainValueAdapter extends RecyclerView.Adapter<MainValueAdapter.ViewHolder> {
@@ -26,8 +28,8 @@ public class MainValueAdapter extends RecyclerView.Adapter<MainValueAdapter.View
     private static final long CLICK_TIME_INTERVAL = 1000; // 클릭 간격을 1초로 설정
     private int currentVisiblePosition = 0;   //슬라이드 아이템 체크
 
-   // OnItemClickListener itemClickListener
-    public MainValueAdapter(Context context)  {
+    // OnItemClickListener itemClickListener
+    public MainValueAdapter(Context context) {
         this.context = context;
     }
 
@@ -84,14 +86,14 @@ public class MainValueAdapter extends RecyclerView.Adapter<MainValueAdapter.View
             date = itemView.findViewById(R.id.tv_userEmail);
             cardView.setOnClickListener(view -> {
                 long currentTime = System.currentTimeMillis();
-                if(currentTime - lastClickTime > CLICK_TIME_INTERVAL){
+                if (currentTime - lastClickTime > CLICK_TIME_INTERVAL) {
                     lastClickTime = currentTime;
                     int position = getAdapterPosition();
-                    if(position != RecyclerView.NO_POSITION){
+                    if (position != RecyclerView.NO_POSITION) {
                         //itemClickListener.onItemSelected(view, position, items);
                         MyPageValue selectedItem = items.get(position);
                         currentVisiblePosition = position;
-                        ((MainViewActivity)context).onItemSelected(selectedItem);
+                        ((MainViewActivity) context).onItemSelected(selectedItem);
 
                     }
                 }
