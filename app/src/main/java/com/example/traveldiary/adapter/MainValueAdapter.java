@@ -13,8 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.traveldiary.R;
+import com.example.traveldiary.activity.MainViewActivity;
 import com.example.traveldiary.value.MyPageValue;
-import com.example.traveldiary.OnItemClickListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -22,12 +22,15 @@ import java.util.ArrayList;
 
 public class MainValueAdapter extends RecyclerView.Adapter<MainValueAdapter.ViewHolder> {
     private ArrayList<MyPageValue> items = new ArrayList<>();
-    private OnItemClickListener itemClickListener;
-    private Context context;
 
-    public MainValueAdapter(Context context, OnItemClickListener itemClickListener) {
+    private Context context;
+    private long lastClickTime = 0;
+    private static final long CLICK_TIME_INTERVAL = 1000; // 클릭 간격을 1초로 설정
+    private int currentVisiblePosition = 0;   //슬라이드 아이템 체크
+
+    // OnItemClickListener itemClickListener
+    public MainValueAdapter(Context context) {
         this.context = context;
-        this.itemClickListener = itemClickListener;
     }
 
     @NonNull
@@ -36,7 +39,6 @@ public class MainValueAdapter extends RecyclerView.Adapter<MainValueAdapter.View
         context = viewGroup.getContext();
         LayoutInflater minflater = LayoutInflater.from(viewGroup.getContext());
         View itemView = minflater.inflate(R.layout.item_mainrecyclerview, viewGroup, false);
-
         return new ViewHolder(itemView);
     }
 
@@ -64,12 +66,9 @@ public class MainValueAdapter extends RecyclerView.Adapter<MainValueAdapter.View
         this.items = items;
     }
 
-    public MyPageValue getItem(int position, MyPageValue item) {
-        return items.set(position, item);
-    }
 
-    public void setItems(ArrayList<MyPageValue> items) {
-        this.items = items;
+    public MyPageValue getItem(int position) {
+        return items.get(position);
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
@@ -82,14 +81,21 @@ public class MainValueAdapter extends RecyclerView.Adapter<MainValueAdapter.View
             super(itemView);
 
             cardView = itemView.findViewById(R.id.cv_mainView);
-            mainImage = (ImageView) itemView.findViewById(R.id.iv_mainImage);
-            mainTitle = (TextView) itemView.findViewById(R.id.tv_mainTitle);
-            date = (TextView) itemView.findViewById(R.id.tv_userEmail);
-
+            mainImage = itemView.findViewById(R.id.iv_mainImage);
+            mainTitle = itemView.findViewById(R.id.tv_mainTitle);
+            date = itemView.findViewById(R.id.tv_userEmail);
             cardView.setOnClickListener(view -> {
-                int position = getAdapterPosition();
-                if (position != RecyclerView.NO_POSITION) {
-                    itemClickListener.onItemSelected(view, position, items);
+                long currentTime = System.currentTimeMillis();
+                if (currentTime - lastClickTime > CLICK_TIME_INTERVAL) {
+                    lastClickTime = currentTime;
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        //itemClickListener.onItemSelected(view, position, items);
+                        MyPageValue selectedItem = items.get(position);
+                        currentVisiblePosition = position;
+                        ((MainViewActivity) context).onItemSelected(selectedItem);
+
+                    }
                 }
             });
         }

@@ -10,7 +10,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 
 import com.example.traveldiary.R;
 import com.example.traveldiary.fragment.FragmentBoard;
@@ -43,6 +42,8 @@ public class MypageActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError error) {
             }
         });
+        fragmentBoard = new FragmentBoard();
+        fragmentBookmark = new FragmentBookmark();
         getSupportFragmentManager().beginTransaction().replace(R.id.container, fragmentBoard).commit();
     }
 
@@ -71,17 +72,18 @@ public class MypageActivity extends AppCompatActivity {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 int position = tab.getPosition();
-                Fragment selected = null;
                 if (position == 0) {
-                    selected = fragmentBoard;
-                    fragmentBookmark.onDestroy();
-                    fragmentBookmark.onDetach();
+                    //프레그먼트 instance가 종료가 안되어 누수가 일어나 show와 hide로 처리
+                    getSupportFragmentManager().beginTransaction()
+                            .show(fragmentBoard)
+                            .hide(fragmentBookmark)
+                            .commit();
                 } else {
-                    selected = fragmentBookmark;
-                    fragmentBoard.onDestroy();
-                    fragmentBoard.onDetach();
+                    getSupportFragmentManager().beginTransaction()
+                            .show(fragmentBookmark)
+                            .hide(fragmentBoard)
+                            .commit();
                 }
-                getSupportFragmentManager().beginTransaction().replace(R.id.container, selected).commit();
             }
 
             @Override
@@ -107,5 +109,16 @@ public class MypageActivity extends AppCompatActivity {
         });
     }
 
+    //MypageActivity가 종료되었을때 fragment instance를 종료시킴
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (fragmentBoard != null) {
+            fragmentBoard.onDestroy();
+        }
+        if (fragmentBookmark != null) {
+            fragmentBookmark.onDestroy();
+        }
 
+    }
 }
