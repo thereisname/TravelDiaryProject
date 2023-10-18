@@ -86,9 +86,8 @@ public class MainViewActivity extends AppCompatActivity {
         });
 
         //필터 화면 설정.
-        ImageView filterBtn = findViewById(R.id.filterBtn);
         ConstraintLayout filterView = findViewById(R.id.filterView);
-        filterBtn.setOnClickListener(v -> {
+        search.setOnClickListener(v -> {
             if (filterView.getVisibility() == View.GONE) {
                 filterView.setVisibility(View.VISIBLE);
                 recyclerView.setVisibility(View.GONE);
