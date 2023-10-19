@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
     <style name="Theme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Primary brand color. -->
@@ -64,11 +64,28 @@
         <item name="android:fontFamily">@font/gangwon</item>
         <item name="android:lines">1</item>
     </style>
-    <style name="inputEdit_style.register">
-        <item name="android:layout_alignParentStart">true</item>
-        <item name="android:textColor">@color/icon</item>
-        <item name="android:layout_alignParentEnd">true</item>
-        <item name="android:layout_marginHorizontal">30dp</item>
+
+    <style name="register_Layout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">32dp</item>
+        <item name="android:layout_marginTop">64dp</item>
+        <item name="android:layout_marginEnd">32dp</item>
+        <item name="android:textCursorDrawable">@drawable/cursor</item>
+        <item name="android:textSize">25sp</item>
+        <item name="android:theme">@style/AppTheme</item>
+        <item name="boxStrokeColor">@color/icon</item>
+        <item name="endIconMode">clear_text</item>
+        <item name="endIconTint">@color/icon</item>
+        <item name="hintTextColor">@color/icon</item>
+    </style>
+
+    <style name="register_EditText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">@font/gangwon</item>
+        <item name="android:textSize">25sp</item>
+        <item name="android:lines">1</item>
     </style>
 
     <style name="login_cb">
@@ -108,14 +125,14 @@
     </style>
 
     <style name="confirmBtn">
-        <item name="android:layout_width">250dp</item>
-        <item name="android:layout_height">55dp</item>
-        <item name="android:background">@drawable/custom_button2</item>
-        <item name="android:layout_marginHorizontal">80dp</item>
+        <item name="android:layout_width">214dp</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:background">@drawable/custom_button</item>
         <item name="android:fontFamily">@font/gangwon</item>
         <item name="android:textColor">@color/icon</item>
-        <item name="android:textSize">25sp</item>
+        <item name="android:text">@string/register_ConfirmBtn</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:textSize">25sp</item>
     </style>
 
     <style name="myPage_frame_container">
@@ -182,7 +199,6 @@
     </style>
 
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
-
         <item name="android:textCursorDrawable">@drawable/cursor</item>
         <item name="colorControlActivated">@color/icon</item>
         <item name="colorControlNormal">@color/icon</item>

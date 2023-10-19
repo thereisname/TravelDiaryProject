@@ -25,7 +25,8 @@ public class FragmentClient extends Fragment {
     private LinearLayout listView;
     FirebaseFirestore db;
 
-    public FragmentClient() {}
+    public FragmentClient() {
+    }
 
     public static FragmentClient newInstance(MyPageValue myPageValue) {
         FragmentClient fragment = new FragmentClient();

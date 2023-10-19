@@ -91,5 +91,4 @@
                 android:src="@drawable/baseline_image_24" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
-
 </LinearLayout>

@@ -2,6 +2,7 @@ package com.example.traveldiary.value;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+
 import java.util.ArrayList;
 
 public class MyPageValue implements Parcelable {
@@ -14,7 +15,8 @@ public class MyPageValue implements Parcelable {
     private String boardID;
     private ArrayList<String> route;
 
-    public MyPageValue() {}
+    public MyPageValue() {
+    }
 
     // Parcelable 객체를 생성하는 생성자
     protected MyPageValue(Parcel in) {
