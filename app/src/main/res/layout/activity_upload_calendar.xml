@@ -175,69 +175,12 @@
                     android:text="@string/uploadCalender_chip_style_emotional" />
             </com.google.android.material.chip.ChipGroup>
 
-            <Button
-                android:id="@+id/addLoad"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                android:textColor="@color/icon"
-                android:text="경로 추가"
-                android:fontFamily="@font/gangwon"
-                android:textSize="24dp"
-                android:textStyle="bold"
-                android:background="#00ff0000"
-                app:layout_constraintBottom_toTopOf="@+id/listView"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/textView3" />
-
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="86dp"
-                android:layout_height="28dp"
-                android:layout_marginTop="40dp"
-                android:fontFamily="@font/gangwon"
-                android:text="#경로 입력"
-                android:textColor="@color/icon"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="@+id/textView"
-                app:layout_constraintTop_toBottomOf="@+id/chipGroup2" />
-
-            <LinearLayout
-                android:id="@+id/listView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="20dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView3">
-
-                <EditText
-                    android:id="@+id/et_load1"
-                    android:layout_width="300dp"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="@color/icon"
-                    android:fontFamily="@font/gangwon"
-                    android:hint="경로1"
-                    android:textColor="@color/icon"
-                    android:textColorHint="@color/icon"
-                    android:textSize="24sp"
-                    android:textStyle="normal" />
-            </LinearLayout>
-
             <TextView
                 android:id="@+id/textView5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:fontFamily="@font/gangwon"
+                style="@style/uploadCalender_title"
                 android:text="@string/uploadCalender_text_mainImg"
-                android:textColor="@color/icon"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="@+id/textView"
-                app:layout_constraintTop_toBottomOf="@+id/listView" />
+                app:layout_constraintStart_toStartOf="@+id/chipGroup2"
+                app:layout_constraintTop_toBottomOf="@+id/chipGroup2" />
 
             <ImageView
                 android:id="@+id/imageButton"
@@ -249,6 +192,48 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/textView5"
                 app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/addLoad"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:background="#00ff0000"
+                android:padding="1dp"
+                android:text="경로 추가"
+                android:fontFamily="@font/gangwon"
+                android:textSize="24sp"
+                android:textColor="@color/icon"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/listView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/textView3" />
+
+            <TextView
+                android:id="@+id/textView3"
+                style="@style/uploadCalender_title"
+                android:text="@string/uploadCalender_text_route"
+                app:layout_constraintStart_toStartOf="@+id/imageButton"
+                app:layout_constraintTop_toBottomOf="@+id/imageButton" />
+
+            <LinearLayout
+                android:id="@+id/listView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="20dp"
+                android:paddingTop="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView3">
+
+                <EditText
+                    android:id="@+id/et_load1"
+                    style="@style/uploadCalender_rote"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:hint="경로1" />
+            </LinearLayout>
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/next"
@@ -266,7 +251,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageButton" />
+                app:layout_constraintTop_toBottomOf="@+id/listView" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 

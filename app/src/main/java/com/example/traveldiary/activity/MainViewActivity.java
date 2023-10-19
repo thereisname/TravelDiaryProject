@@ -92,16 +92,19 @@ public class MainViewActivity extends AppCompatActivity {
 
         //필터 화면 설정.
         ConstraintLayout filterView = findViewById(R.id.filterView);
+        ConstraintLayout slide_layout = findViewById(R.id.slide_layout);
         search.setOnTouchListener((v, event) -> {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_UP:
                     if (filterView.getVisibility() == View.GONE) {
                         filterView.setVisibility(View.VISIBLE);
                         recyclerView.setVisibility(View.GONE);
+                        slide_layout.setVisibility(View.GONE);
                         focus = true;
                     } else {
                         filterView.setVisibility(View.GONE);
                         recyclerView.setVisibility(View.VISIBLE);
+                        slide_layout.setVisibility(View.VISIBLE);
                         focus = false;
                     }
             }
@@ -114,6 +117,7 @@ public class MainViewActivity extends AppCompatActivity {
             searchLoadData(hashTagCustom());
             filterView.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
+            slide_layout.setVisibility(View.VISIBLE);
         });
 
         findViewById(R.id.home).setOnClickListener(v -> {
