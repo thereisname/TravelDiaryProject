@@ -180,4 +180,14 @@
         <item name="android:textSize">24sp</item>
         <item name="backgroundTint">@color/icon</item>
     </style>
+
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+
+        <item name="android:textCursorDrawable">@drawable/cursor</item>
+        <item name="colorControlActivated">@color/icon</item>
+        <item name="colorControlNormal">@color/icon</item>
+        <item name="android:textSelectHandle">@color/icon</item>
+        <item name="android:textColorHighlight">@color/icon</item>
+    </style>
+
 </resources>

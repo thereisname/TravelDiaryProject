@@ -10,6 +10,7 @@
         android:id="@+id/inputNickName"
         style="@style/inputEdit_style.register"
         android:layout_marginTop="150dp"
+        android:textCursorDrawable="@drawable/cursor"
         android:hint="@string/register_nickname"
         android:inputType="text" />
 
@@ -17,6 +18,7 @@
         android:id="@+id/inputEmail"
         style="@style/inputEdit_style.register"
         android:layout_marginTop="250dp"
+        android:textCursorDrawable="@drawable/cursor"
         android:hint="@string/all_hint_email"
         android:inputType="textEmailAddress" />
 
@@ -24,6 +26,7 @@
         android:id="@+id/inputPw"
         style="@style/inputEdit_style.register"
         android:layout_marginTop="350dp"
+        android:textCursorDrawable="@drawable/cursor"
         android:hint="@string/all_hint_pw"
         android:inputType="textPassword" />
 
@@ -31,6 +34,7 @@
         android:id="@+id/inputRePw"
         style="@style/inputEdit_style.register"
         android:layout_marginTop="450dp"
+        android:textCursorDrawable="@drawable/cursor"
         android:hint="@string/register_rePw"
         android:inputType="textPassword" />
 
