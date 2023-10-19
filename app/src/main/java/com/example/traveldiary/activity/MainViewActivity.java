@@ -1,9 +1,11 @@
 package com.example.traveldiary.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -35,10 +37,13 @@ public class MainViewActivity extends AppCompatActivity {
     private MainValueAdapter adapter;
     private FirebaseFirestore db;
     private int currentPosition = 0;
+    private EditText search;
     private boolean doubleBackToExitPressedOnce = false;
+    private boolean focus = false;
     private static final int BACK_PRESS_INTERVAL = 2000; // 2 seconds
 
 
+    @SuppressLint("ClickableViewAccessibility")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_view);
@@ -77,7 +82,7 @@ public class MainViewActivity extends AppCompatActivity {
         FragmentClient fragmentClient = new FragmentClient();
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_view, fragmentClient).commit();
 
-        EditText search = findViewById(R.id.search);
+        search = findViewById(R.id.search);
         search.setOnKeyListener((v, keyCode, event) -> {
             if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
 //                searchLoadData(Arrays.asList(search.getText().toString()));
@@ -87,14 +92,20 @@ public class MainViewActivity extends AppCompatActivity {
 
         //필터 화면 설정.
         ConstraintLayout filterView = findViewById(R.id.filterView);
-        search.setOnClickListener(v -> {
-            if (filterView.getVisibility() == View.GONE) {
-                filterView.setVisibility(View.VISIBLE);
-                recyclerView.setVisibility(View.GONE);
-            } else {
-                filterView.setVisibility(View.GONE);
-                recyclerView.setVisibility(View.VISIBLE);
+        search.setOnTouchListener((v, event) -> {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_UP:
+                    if (filterView.getVisibility() == View.GONE) {
+                        filterView.setVisibility(View.VISIBLE);
+                        recyclerView.setVisibility(View.GONE);
+                        focus = true;
+                    } else {
+                        filterView.setVisibility(View.GONE);
+                        recyclerView.setVisibility(View.VISIBLE);
+                        focus = false;
+                    }
             }
+            return false;
         });
 
         //필터 적용 하여 output code.
@@ -193,6 +204,10 @@ public class MainViewActivity extends AppCompatActivity {
             this.doubleBackToExitPressedOnce = true;
             Toast.makeText(this, "뒤로 가기 버튼을 한 번 더 누르면 앱이 종료됩니다.", Toast.LENGTH_SHORT).show();
             new Handler().postDelayed(() -> doubleBackToExitPressedOnce = false, BACK_PRESS_INTERVAL);
+        }
+        if (focus) {
+            super.onBackPressed();
+            search.clearFocus();
         }
     }
 }
