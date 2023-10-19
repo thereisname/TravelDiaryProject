@@ -21,10 +21,11 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.traveldiary.adapter.ContentDownloadAdapter;
 import com.example.traveldiary.OnItemClickListener;
 import com.example.traveldiary.R;
+import com.example.traveldiary.activity.MypageActivity;
 import com.example.traveldiary.adapter.BoardValueAdapter;
+import com.example.traveldiary.adapter.ContentDownloadAdapter;
 import com.example.traveldiary.value.MyPageValue;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -66,6 +67,7 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
 
     public void loadDate() {
         db.collection("data").whereEqualTo("userToken", FirebaseAuth.getInstance().getUid()).get().addOnSuccessListener(queryDocumentSnapshots -> {
+            MypageActivity.postCount.setText(String.valueOf(queryDocumentSnapshots.size()));
             for (QueryDocumentSnapshot queryDocumentSnapshot : queryDocumentSnapshots) {
                 MyPageValue mp = queryDocumentSnapshot.toObject(MyPageValue.class);
                 adapter.addItem(mp);

@@ -25,7 +25,8 @@ import com.google.firebase.database.ValueEventListener;
 public class MypageActivity extends AppCompatActivity {
     FragmentBoard fragmentBoard;
     FragmentBookmark fragmentBookmark;
-    public static DatabaseReference mDatabase;
+    private DatabaseReference mDatabase;
+    public static TextView postCount;
 
     @Override
     protected void onStart() {
@@ -51,8 +52,10 @@ public class MypageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mypage);
-        TextView logoutBtn = findViewById(R.id.logoutBtn);
 
+        postCount = findViewById(R.id.postCount);
+
+        TextView logoutBtn = findViewById(R.id.logoutBtn);
         logoutBtn.setOnClickListener(v -> {
             Intent intent = new Intent(this, StartViewActivity.class);
             intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP);

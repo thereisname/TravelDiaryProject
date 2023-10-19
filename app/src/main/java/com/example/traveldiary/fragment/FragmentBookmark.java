@@ -19,12 +19,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.traveldiary.R;
-import com.example.traveldiary.activity.MypageActivity;
 import com.example.traveldiary.adapter.BoardValueAdapter;
 import com.example.traveldiary.value.MyPageValue;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -33,6 +33,7 @@ import java.util.ArrayList;
 public class FragmentBookmark extends Fragment {
     private RecyclerView recyclerView;
     private BoardValueAdapter adapter;
+    private DatabaseReference mDatabase;
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_bookmark, container, false);
@@ -49,7 +50,7 @@ public class FragmentBookmark extends Fragment {
 
     public void loadDate() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        MypageActivity.mDatabase.child("users").child(FirebaseAuth.getInstance().getUid()).child("bookmark").addValueEventListener(new ValueEventListener() {
+        mDatabase.child("users").child(FirebaseAuth.getInstance().getUid()).child("bookmark").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot data : snapshot.getChildren()) {
