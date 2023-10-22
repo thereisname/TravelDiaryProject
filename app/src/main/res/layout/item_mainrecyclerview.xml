@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cv_mainView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:clickable="true"
     android:orientation="vertical"
     android:paddingBottom="10dp"
     app:cardBackgroundColor="@color/white"
@@ -12,15 +14,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="20dp">
+        android:paddingHorizontal="20dp"
+        android:paddingBottom="20dp">
 
         <TextView
             android:id="@+id/tv_mainTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:ellipsize="end"
             android:fontFamily="@font/gangwon"
             android:gravity="center_horizontal"
-            android:text="main Title"
+            android:minLines="2"
+            android:maxLines="2"
             android:textColor="@color/black"
             android:textSize="40sp"
             android:textStyle="bold" />
@@ -35,6 +40,7 @@
 
         <TextView
             android:id="@+id/tv_userEmail"
+            android:maxLines="1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"

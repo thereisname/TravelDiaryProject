@@ -21,10 +21,11 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.traveldiary.adapter.ContentDownloadAdapter;
 import com.example.traveldiary.OnItemClickListener;
 import com.example.traveldiary.R;
+import com.example.traveldiary.activity.MypageActivity;
 import com.example.traveldiary.adapter.BoardValueAdapter;
+import com.example.traveldiary.adapter.ContentDownloadAdapter;
 import com.example.traveldiary.value.MyPageValue;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -66,6 +67,7 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
 
     public void loadDate() {
         db.collection("data").whereEqualTo("userToken", FirebaseAuth.getInstance().getUid()).get().addOnSuccessListener(queryDocumentSnapshots -> {
+            MypageActivity.postCount.setText(String.valueOf(queryDocumentSnapshots.size()));
             for (QueryDocumentSnapshot queryDocumentSnapshot : queryDocumentSnapshots) {
                 MyPageValue mp = queryDocumentSnapshot.toObject(MyPageValue.class);
                 adapter.addItem(mp);
@@ -116,6 +118,59 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
 
         ImageButton deleteButton = dialog.findViewById(R.id.deleteButton);
         deleteButton.setOnClickListener(v -> deleteBoard(item.getBoardID(), dialog, position, imageCount));
+
+        ImageButton editButton = dialog.findViewById(R.id.editButton);
+        editButton.setOnClickListener(v -> {
+            editBoard(position, item);
+            dialog.dismiss();
+        });
+    }
+
+    /**
+     * 게시물 수정 메서드.
+     *
+     * @param position 클릭한 게시물 Position. RecyclerView update시 사용.
+     * @param item     클릭한 게시물의 내용들이 담겨있는.
+     * @Authors thereisname
+     * @since 1.0
+     */
+    private void editBoard(int position, MyPageValue item) {
+        final Dialog dialog = new Dialog(getActivity());
+        //Custom Dialog Corner Radius Processing
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        //Hide the title bar of the activity.
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        //Set the layout of the custom dialog.
+        dialog.setContentView(R.layout.activity_update_board);
+        //Adjust the screen size.
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(dialog.getWindow().getAttributes());
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.height = WindowManager.LayoutParams.MATCH_PARENT;
+        Window window = dialog.getWindow();
+        window.setAttributes(lp);
+
+        EditText title = dialog.findViewById(R.id.title);
+        RichEditor mEditor = dialog.findViewById(R.id.editor);
+
+        mEditor.setEditorHeight(200);
+        mEditor.setEditorFontSize(18);
+        mEditor.setPadding(10, 10, 10, 10);
+
+        title.setText(item.getTitle());
+        mEditor.setHtml(contentDownloadAdapter.checkTextEdit());
+        dialog.show();
+
+        // '수정하기' 버튼 클릭 시 DB 업데이트.
+        dialog.findViewById(R.id.updateBtn).setOnClickListener(v -> {
+            item.setTitle(title.getText().toString());
+            db.collection("data").document(item.getBoardID()).update(
+                    "title", item.getTitle()
+            ).addOnSuccessListener(command -> {
+                adapter.updateData(position);
+                dialog.dismiss();
+            });
+        });
     }
 
     // 게시물 삭제 메서드.

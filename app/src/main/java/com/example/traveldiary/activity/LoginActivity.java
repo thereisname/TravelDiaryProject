@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.traveldiary.R;
 import com.example.traveldiary.SHA256;
 import com.google.firebase.auth.FirebaseAuth;
@@ -39,7 +40,7 @@ public class LoginActivity extends AppCompatActivity {
                 throw new RuntimeException(e);
             }
             if (email.equals("") || password.equals(""))
-                Toast.makeText(this, R.string.login, Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.register_non, Toast.LENGTH_SHORT).show();
 
             else
                 mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(LoginActivity.this, task -> {

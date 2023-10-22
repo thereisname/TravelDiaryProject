@@ -9,13 +9,13 @@
     tools:context=".activity.UploadBoardActivity">
 
     <Button
-        android:id="@+id/uploadBtn"
+        android:id="@+id/updateBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:background="@drawable/border"
         android:fontFamily="@font/gangwon"
-        android:text="@string/uploadBoard_uploadBtn"
+        android:text="@string/update_board_changeBtn"
         android:textColor="@color/icon"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -37,7 +37,7 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/uploadBtn" />
+        app:layout_constraintTop_toBottomOf="@+id/updateBtn" />
 
 
     <LinearLayout
@@ -115,34 +115,6 @@
             android:layout_marginTop="10dp" />
     </LinearLayout>
 
-    <View
-        android:id="@+id/view2"
-        style="@style/all_toolbar_view"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <LinearLayout
-        android:id="@+id/linearLayout5"
-        style="@style/all_toolbar_linearLayout"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <ImageView
-            android:id="@+id/home"
-            style="@style/all_toolbar_imageView.home" />
-
-        <ImageView
-            android:id="@+id/upload"
-            style="@style/all_toolbar_imageView.upload" />
-
-        <ImageView
-            android:id="@+id/myPage"
-            style="@style/all_toolbar_imageView.myPage" />
-    </LinearLayout>
-
     <TextView
         android:id="@+id/preview"
         android:layout_width="0dp"
@@ -150,6 +122,5 @@
         android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
