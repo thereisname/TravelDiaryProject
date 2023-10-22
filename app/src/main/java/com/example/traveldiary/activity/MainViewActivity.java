@@ -17,6 +17,8 @@ import com.example.traveldiary.value.MyPageValue;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
+
 import android.os.Handler;
 import android.widget.Toast;
 
@@ -28,6 +30,7 @@ public class MainViewActivity extends AppCompatActivity {
     private boolean doubleBackToExitPressedOnce = false;
     private static final int BACK_PRESS_INTERVAL = 2000; // 2 seconds
 
+    SlidingUpPanelLayout main_frame;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
