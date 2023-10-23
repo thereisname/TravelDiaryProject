@@ -60,12 +60,12 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
 
         db = FirebaseFirestore.getInstance();
 
-        loadDate();
+        loadData();
 
         return v;
     }
 
-    public void loadDate() {
+    public void loadData() {
         db.collection("data").whereEqualTo("userToken", FirebaseAuth.getInstance().getUid()).get().addOnSuccessListener(queryDocumentSnapshots -> {
             MypageActivity.postCount.setText(String.valueOf(queryDocumentSnapshots.size()));
             for (QueryDocumentSnapshot queryDocumentSnapshot : queryDocumentSnapshots) {

@@ -19,8 +19,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import java.util.List;
+
 public class FragmentClient extends Fragment {
     private int isAttBookmark; // 0: 북마크 비활성화 상태, 1: 북마크 활성화 상태
+    private ImageButton bookmark;
     private static MyPageValue mp;
     private LinearLayout listView;
     FirebaseFirestore db;
@@ -43,7 +46,7 @@ public class FragmentClient extends Fragment {
         db = FirebaseFirestore.getInstance();
         View view = inflater.inflate(R.layout.fragment_client, container, false);
 
-        ImageButton bookmark = view.findViewById(R.id.bookMarkBtn);
+        bookmark = view.findViewById(R.id.bookMarkBtn);
         TextView fragment_title = view.findViewById(R.id.fragment_title);
         TextView fragment_hashtag = view.findViewById(R.id.fragment_hashtag);
         listView = view.findViewById(R.id.listView);
@@ -54,6 +57,10 @@ public class FragmentClient extends Fragment {
             fragment_hashtag.setText(mp.getHashTag());
             ContentDownloadAdapter contentDownloadAdapter = new ContentDownloadAdapter(getActivity(), listView, mp);
             contentDownloadAdapter.checkText();
+            if (mp.getBookmark().contains(FirebaseAuth.getInstance().getUid())) {
+                bookmark.setImageResource(R.drawable.baseline_bookmark_24);
+                isAttBookmark = 1;
+            }
         } else {
             db.collection("data").whereNotEqualTo("userToken", FirebaseAuth.getInstance().getUid()).limit(1).get()
                     .addOnSuccessListener(queryDocumentSnapshots -> {
@@ -63,10 +70,31 @@ public class FragmentClient extends Fragment {
                                     contentDownloadAdapter.checkText();
                                     fragment_title.setText(mp.getTitle());
                                     fragment_hashtag.setText(mp.getHashTag());
+                                    if (mp.getBookmark().contains(FirebaseAuth.getInstance().getUid())) {
+                                        bookmark.setImageResource(R.drawable.baseline_bookmark_24);
+                                        isAttBookmark = 1;
+                                    }
                                 }
                             }
                     );
         }
+
+        bookmark.setOnClickListener(v -> {
+            List<String> bookmarkArray = mp.getBookmark();
+            if (isAttBookmark == 0) {
+                bookmarkArray.add(FirebaseAuth.getInstance().getUid());
+                db.collection("data").document(mp.getBoardID()).update("bookmark", bookmarkArray).addOnSuccessListener(command -> {
+                    isAttBookmark = 1;
+                    bookmark.setImageResource(R.drawable.baseline_bookmark_24);
+                });
+            } else {
+                bookmarkArray.remove(FirebaseAuth.getInstance().getUid());
+                db.collection("data").document(mp.getBoardID()).update("bookmark", bookmarkArray).addOnSuccessListener(command -> {
+                    isAttBookmark = 0;
+                    bookmark.setImageResource(R.drawable.baseline_bookmark_border_24);
+                });
+            }
+        });
         return view;
     }
 }

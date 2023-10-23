@@ -12,9 +12,13 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.traveldiary.OnItemClickListener;
 import com.example.traveldiary.R;
+import com.example.traveldiary.activity.MypageActivity;
 import com.example.traveldiary.value.MyPageValue;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
@@ -63,6 +67,12 @@ public class BookmarkValueAdapter extends RecyclerView.Adapter<BookmarkValueAdap
         items.set(position, item);
     }
 
+    public void removeBookmark(int position) {
+        items.remove(position);
+        notifyItemRemoved(position);
+        MypageActivity.bookmarkCount.setText(String.valueOf(items.size()));
+    }
+
     class ViewHolder extends RecyclerView.ViewHolder {
         TextView content;
         ImageView image;
@@ -90,7 +100,12 @@ public class BookmarkValueAdapter extends RecyclerView.Adapter<BookmarkValueAdap
         public void setItem(MyPageValue item) {
             title.setText(item.getTitle());
             content.setText(Html.fromHtml(item.getCon(), Html.FROM_HTML_MODE_LEGACY));
-            image.setImageResource(R.drawable.baseline_image_24);
+            StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+            storageReference.child("/Image/" + item.getBoardID() + "/MainImage.jpg").getDownloadUrl().addOnSuccessListener(command ->
+                    Glide.with(context)
+                            .load(command)
+                            .into(image));
+            hashTag.setText(item.getHashTag());
         }
     }
 }
