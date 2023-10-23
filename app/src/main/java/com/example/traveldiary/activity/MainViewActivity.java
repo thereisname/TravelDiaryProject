@@ -93,6 +93,9 @@ public class MainViewActivity extends AppCompatActivity {
         //필터 화면 설정.
         ConstraintLayout filterView = findViewById(R.id.filterView);
         ConstraintLayout slide_layout = findViewById(R.id.slide_layout);
+        filterView.setVisibility(View.GONE);  //초기 setting
+        recyclerView.setVisibility(View.VISIBLE);   //초기 setting
+        slide_layout.setVisibility(View.VISIBLE);   //초기 setting
         search.setOnTouchListener((v, event) -> {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_UP:
