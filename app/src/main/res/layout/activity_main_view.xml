@@ -168,7 +168,7 @@
                     android:background="@drawable/border"
                     android:fontFamily="@font/gangwon"
                     android:paddingHorizontal="30dp"
-                    android:text="필터 검색"
+                    android:text="@string/mainView_filter_search"
                     android:textColor="@color/icon"
                     android:textSize="24sp"
                     app:layout_constraintBottom_toBottomOf="parent"

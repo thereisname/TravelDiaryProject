@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.webkit.MimeTypeMap;
 import android.widget.Toast;
 
+import com.example.traveldiary.R;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -52,14 +53,14 @@ public class ContentUploadAdapter {
             // content 이미지들 DB에 올리기.
             StorageReference imgRef = storageRef.child("Image").child(docID).child("contentImage" + index + "." + getFileExtension(uriArrayList.get(index)));
             imgRef.putFile(uriArrayList.get(index)).addOnSuccessListener(taskSnapshot -> imgRef.getDownloadUrl()
-                            .addOnSuccessListener(uri1 -> Toast.makeText(context, "Image Upload Successful", Toast.LENGTH_SHORT).show()))
-                    .addOnFailureListener(e -> Toast.makeText(context, "Image upload failed", Toast.LENGTH_SHORT).show());
+                            .addOnSuccessListener(uri1 -> Toast.makeText(context, R.string.upload_image_successful, Toast.LENGTH_SHORT).show()))
+                    .addOnFailureListener(e -> Toast.makeText(context, R.string.upload_image_fail, Toast.LENGTH_SHORT).show());
         }
         // mainImage DB에 올리기.
         StorageReference mImgRef = storageRef.child("Image").child(docID).child("MainImage" + "." + getOnlyExtension(String.valueOf(mainImage)));
         mImgRef.putFile(mainImage).addOnSuccessListener(taskSnapshot -> mImgRef.getDownloadUrl()
-                        .addOnSuccessListener(uri1 -> Toast.makeText(context, "Image Upload Successful", Toast.LENGTH_SHORT).show()))
-                .addOnFailureListener(e -> Toast.makeText(context, "Image upload failed", Toast.LENGTH_SHORT).show());
+                        .addOnSuccessListener(uri1 -> Toast.makeText(context, R.string.upload_image_successful, Toast.LENGTH_SHORT).show()))
+                .addOnFailureListener(e -> Toast.makeText(context, R.string.upload_image_fail, Toast.LENGTH_SHORT).show());
     }
 
     public void uploadEditImage(String docID, int imageCount) {
@@ -73,8 +74,8 @@ public class ContentUploadAdapter {
             // content 이미지들 DB에 올리기.
             StorageReference imgRef = storageRef.child("Image").child(docID).child("contentImage" + index + "." + getFileExtension(uriArrayList.get(index)));
             imgRef.putFile(uriArrayList.get(index)).addOnSuccessListener(taskSnapshot -> imgRef.getDownloadUrl()
-                            .addOnSuccessListener(uri1 -> Toast.makeText(context, "Image Upload Successful", Toast.LENGTH_SHORT).show()))
-                    .addOnFailureListener(e -> Toast.makeText(context, "Image upload failed", Toast.LENGTH_SHORT).show());
+                            .addOnSuccessListener(uri1 -> Toast.makeText(context, R.string.upload_image_successful, Toast.LENGTH_SHORT).show()))
+                    .addOnFailureListener(e -> Toast.makeText(context, R.string.upload_image_fail, Toast.LENGTH_SHORT).show());
         }
     }
 

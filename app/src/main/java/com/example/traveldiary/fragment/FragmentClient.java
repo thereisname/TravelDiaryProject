@@ -1,7 +1,6 @@
 package com.example.traveldiary.fragment;
 
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +33,7 @@ public class FragmentClient extends Fragment {
     public static FragmentClient newInstance(MyPageValue myPageValue) {
         FragmentClient fragment = new FragmentClient();
         Bundle args = new Bundle();
-        args.putParcelable("myPageValue", (Parcelable) myPageValue);
+        args.putParcelable("myPageValue", myPageValue);
         fragment.setArguments(args);
         return fragment;
     }

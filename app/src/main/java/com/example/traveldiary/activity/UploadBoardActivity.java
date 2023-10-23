@@ -2,6 +2,7 @@ package com.example.traveldiary.activity;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -51,7 +52,7 @@ public class UploadBoardActivity extends AppCompatActivity {
         mEditor.setEditorFontSize(18);
 
         mEditor.setPadding(10, 10, 10, 10);
-        mEditor.setPlaceholder("Insert text here...");
+        mEditor.setPlaceholder(getString(R.string.uploadBoard_placeholder));
         mEditor.setEditorFontColor(getColor(R.color.text_gray));
 
         mPreview = findViewById(R.id.preview);
@@ -74,6 +75,7 @@ public class UploadBoardActivity extends AppCompatActivity {
         findViewById(R.id.action_outdent).setOnClickListener(v ->
                 mEditor.setOutdent());
 
+        @SuppressLint("CheckResult")
         ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
@@ -109,9 +111,7 @@ public class UploadBoardActivity extends AppCompatActivity {
         });
 
         Button uploadBtn = findViewById(R.id.uploadBtn);
-        uploadBtn.setOnClickListener(v -> {
-            save();
-        });
+        uploadBtn.setOnClickListener(v -> save());
     }
 
     public void save() {
@@ -130,8 +130,8 @@ public class UploadBoardActivity extends AppCompatActivity {
             intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
             finish();
-            Toast.makeText(this, "Upload successful", Toast.LENGTH_SHORT).show();
-        }).addOnFailureListener(e -> Toast.makeText(UploadBoardActivity.this, "Upload failed.", Toast.LENGTH_SHORT).show());
+            Toast.makeText(this, getString(R.string.uploadBoard_upload_successful), Toast.LENGTH_SHORT).show();
+        }).addOnFailureListener(e -> Toast.makeText(UploadBoardActivity.this, getString(R.string.uploadBoard_upload_fail), Toast.LENGTH_SHORT).show());
     }
 
     private Map<String, Object> itemCustom(Map<String, Object> info) {

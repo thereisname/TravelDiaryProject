@@ -42,7 +42,6 @@ public class MainViewActivity extends AppCompatActivity {
     private boolean focus = false;
     private static final int BACK_PRESS_INTERVAL = 2000; // 2 seconds
 
-
     @SuppressLint("ClickableViewAccessibility")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,7 +76,7 @@ public class MainViewActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
         db = FirebaseFirestore.getInstance();
 
-        loadData();
+        loadData();     //초기 데이터 값 불러오기.
 
         FragmentClient fragmentClient = new FragmentClient();
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_view, fragmentClient).commit();
@@ -97,19 +96,18 @@ public class MainViewActivity extends AppCompatActivity {
         recyclerView.setVisibility(View.VISIBLE);   //초기 setting
         slide_layout.setVisibility(View.VISIBLE);   //초기 setting
         search.setOnTouchListener((v, event) -> {
-            switch (event.getAction()) {
-                case MotionEvent.ACTION_UP:
-                    if (filterView.getVisibility() == View.GONE) {
-                        filterView.setVisibility(View.VISIBLE);
-                        recyclerView.setVisibility(View.GONE);
-                        slide_layout.setVisibility(View.GONE);
-                        focus = true;
-                    } else {
-                        filterView.setVisibility(View.GONE);
-                        recyclerView.setVisibility(View.VISIBLE);
-                        slide_layout.setVisibility(View.VISIBLE);
-                        focus = false;
-                    }
+            if (event.getAction() == MotionEvent.ACTION_UP) {
+                if (filterView.getVisibility() == View.GONE) {
+                    filterView.setVisibility(View.VISIBLE);
+                    recyclerView.setVisibility(View.GONE);
+                    slide_layout.setVisibility(View.GONE);
+                    focus = true;
+                } else {
+                    filterView.setVisibility(View.GONE);
+                    recyclerView.setVisibility(View.VISIBLE);
+                    slide_layout.setVisibility(View.VISIBLE);
+                    focus = false;
+                }
             }
             return false;
         });
@@ -123,9 +121,7 @@ public class MainViewActivity extends AppCompatActivity {
             slide_layout.setVisibility(View.VISIBLE);
         });
 
-        findViewById(R.id.home).setOnClickListener(v -> {
-            loadData();
-        });
+        findViewById(R.id.home).setOnClickListener(v -> loadData());
 
         ImageView myPage = findViewById(R.id.myPage);
         myPage.setOnClickListener(v -> {
@@ -201,7 +197,7 @@ public class MainViewActivity extends AppCompatActivity {
                 .commit();
     }
 
-    // 뒤로가기 두번하면 종료되는 코드
+    // 뒤로가기 두번하면 종료되는 코드 및 search focus 처리 기능.
     @Override
     public void onBackPressed() {
         if (doubleBackToExitPressedOnce) {

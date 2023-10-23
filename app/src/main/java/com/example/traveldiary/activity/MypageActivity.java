@@ -2,6 +2,7 @@ package com.example.traveldiary.activity;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
@@ -24,11 +25,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.Objects;
+
 public class MypageActivity extends AppCompatActivity {
     FragmentBoard fragmentBoard;
     FragmentBookmark fragmentBookmark;
-    private DatabaseReference mDatabase;
+    @SuppressLint("StaticFieldLeak")
     public static TextView postCount;
+    @SuppressLint("StaticFieldLeak")
     public static TextView bookmarkCount;
     private FragmentManager fragmentManager;
 
@@ -38,8 +42,8 @@ public class MypageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_mypage);
 
         TextView nickName = findViewById(R.id.nickName);
-        mDatabase = FirebaseDatabase.getInstance().getReference("UI");
-        mDatabase.child("users").child(FirebaseAuth.getInstance().getUid()).child("info").child("userNickName").addListenerForSingleValueEvent(new ValueEventListener() {
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("UI");
+        mDatabase.child("users").child(Objects.requireNonNull(FirebaseAuth.getInstance().getUid())).child("info").child("userNickName").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 nickName.setText(String.valueOf(snapshot.getValue()));
@@ -52,7 +56,7 @@ public class MypageActivity extends AppCompatActivity {
 
         postCount = findViewById(R.id.postCount);
         bookmarkCount = findViewById(R.id.bookmarkCount);
-        loadDataCount();
+        loadDataCount();    //bookmark 게시물 개수 불러오기.
         fragmentManager = getSupportFragmentManager();
 
         TextView logoutBtn = findViewById(R.id.logoutBtn);
@@ -122,9 +126,10 @@ public class MypageActivity extends AppCompatActivity {
         });
     }
 
+    //bookmark 게시물 개수를 불러오는 코드
     private void loadDataCount() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("data").whereArrayContains("bookmark", FirebaseAuth.getInstance().getUid()).get().
+        db.collection("data").whereArrayContains("bookmark", Objects.requireNonNull(FirebaseAuth.getInstance().getUid())).get().
                 addOnSuccessListener(queryDocumentSnapshots -> bookmarkCount.setText(String.valueOf(queryDocumentSnapshots.size())));
     }
 

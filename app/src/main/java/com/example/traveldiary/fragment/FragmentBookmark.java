@@ -27,25 +27,21 @@ import com.example.traveldiary.value.MyPageValue;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class FragmentBookmark extends Fragment implements OnItemClickListener {
     private RecyclerView recyclerView;
     private BookmarkValueAdapter adapter;
     private FirebaseFirestore db;
-    private StorageReference storageReference;
     LinearLayout content;
     ContentDownloadAdapter contentDownloadAdapter;
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_bookmark, container, false);
         recyclerView = v.findViewById(R.id.bookmarkRecyclerView);
-
-        storageReference = FirebaseStorage.getInstance().getReference();
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
@@ -61,7 +57,7 @@ public class FragmentBookmark extends Fragment implements OnItemClickListener {
     }
 
     public void loadData() {
-        db.collection("data").whereArrayContains("bookmark", FirebaseAuth.getInstance().getUid()).get().addOnSuccessListener(queryDocumentSnapshots -> {
+        db.collection("data").whereArrayContains("bookmark", Objects.requireNonNull(FirebaseAuth.getInstance().getUid())).get().addOnSuccessListener(queryDocumentSnapshots -> {
             for (QueryDocumentSnapshot queryDocumentSnapshot : queryDocumentSnapshots) {
                 MyPageValue mp = queryDocumentSnapshot.toObject(MyPageValue.class);
                 adapter.addItem(mp);

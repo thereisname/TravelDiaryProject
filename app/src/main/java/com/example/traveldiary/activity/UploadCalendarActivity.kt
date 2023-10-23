@@ -42,12 +42,12 @@ class UploadCalendarActivity : AppCompatActivity() {
         binding.next.setOnClickListener {
             if (!isDataPickerText) Toast.makeText(
                 applicationContext,
-                "여행 기간을 선택해주세요.",
+                getString(R.string.uploadCalender_isDate),
                 Toast.LENGTH_SHORT
             ).show()
             else if (!isMainImage) Toast.makeText(
                 applicationContext,
-                "대표 이미지를 선택해주세요.",
+                getString(R.string.uploadCalender_isMainImage),
                 Toast.LENGTH_SHORT
             ).show()
             else nextBtnClickEvent()
@@ -77,7 +77,7 @@ class UploadCalendarActivity : AppCompatActivity() {
 
                 val cursor = contentResolver.query(
                     it.data?.data as Uri,
-                    arrayOf<String>(MediaStore.Images.Media.DATA), null, null, null
+                    arrayOf(MediaStore.Images.Media.DATA), null, null, null
                 )
                 cursor?.moveToFirst().let {
                     filePath = Uri.fromFile(File(cursor?.getString(0) as String))
@@ -99,7 +99,7 @@ class UploadCalendarActivity : AppCompatActivity() {
         editIdList.add(1)
         // 경로 Edit 추가하기
         binding.addLoad.setOnClickListener {
-            addEditor();
+            addEditor()
         }
     }
 
@@ -126,19 +126,6 @@ class UploadCalendarActivity : AppCompatActivity() {
                 )
                 isDataPickerText = true
             }
-//                val dayCount: Int = (TimeUnit.MILLISECONDS.toDays(endDate - startDate) + 1).toInt()
-//                for (i in 1..dayCount) {
-//                    var textView = TextView(applicationContext)
-//                    textView.setText("Day$i")
-//                    textView.setTextAppearance(R.style.uploadCalender_rote)
-//                    val param: LinearLayout.LayoutParams = LinearLayout.LayoutParams(
-//                        ViewGroup.LayoutParams.WRAP_CONTENT,
-//                        ViewGroup.LayoutParams.WRAP_CONTENT
-//                    )
-//                    textView.layoutParams = param
-//                    listView.addView(textView)
-//                    addEditor()
-//                }
         }
     }
 
@@ -148,12 +135,12 @@ class UploadCalendarActivity : AppCompatActivity() {
         var dpValue = 300
         var density = resources.displayMetrics.density
         var pixelValue = dpValue * density
-        var editText: EditText = EditText(applicationContext)
+        var editText = EditText(applicationContext)
 
         editText.setHintTextColor(getColor(R.color.icon))
         editText.setTextColor(getColor(R.color.text_gray))
         editText.id = count
-        editText.setHint("경로" + count)
+        editText.hint = "경로$count"
         editText.textSize = 12f
         editText.setLinkTextColor(getColor(R.color.icon))
         editText.width = pixelValue.toInt()
@@ -171,7 +158,7 @@ class UploadCalendarActivity : AppCompatActivity() {
         count++
     }
 
-    private fun HashTagCustom(): ArrayList<String> {
+    private fun hashTagCustom(): ArrayList<String> {
         var arrayHashTag: ArrayList<String> = ArrayList()
         if (binding.chip1.isChecked) arrayHashTag.add("#혼자 여행 ")
         if (binding.chip2.isChecked) arrayHashTag.add("#커플 여행 ")
@@ -206,7 +193,7 @@ class UploadCalendarActivity : AppCompatActivity() {
         val intent = Intent(this, UploadBoardActivity::class.java)
         val info = HashMap<String, Any>()
         info["date"] = binding.dataPickerText.text.toString()
-        info["hashTag"] = HashTagCustom()
+        info["hashTag"] = hashTagCustom()
         info["route"] = arrayRoad
         info["mainImage"] = filePath
         intent.putExtra("info", info)
