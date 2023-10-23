@@ -18,8 +18,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.example.traveldiary.adapter.ContentUploadAdapter;
 import com.example.traveldiary.R;
+import com.example.traveldiary.adapter.ContentUploadAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -52,6 +52,7 @@ public class UploadBoardActivity extends AppCompatActivity {
 
         mEditor.setPadding(10, 10, 10, 10);
         mEditor.setPlaceholder("Insert text here...");
+        mEditor.setEditorFontColor(getColor(R.color.text_gray));
 
         mPreview = findViewById(R.id.preview);
         mEditor.setOnTextChangeListener(text -> mPreview.setText(text));
