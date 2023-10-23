@@ -122,6 +122,6 @@ public class MypageActivity extends AppCompatActivity {
         if (fragmentBookmark != null) {
             fragmentBookmark.onDestroy();
         }
-
+        postCount = null;
     }
 }
