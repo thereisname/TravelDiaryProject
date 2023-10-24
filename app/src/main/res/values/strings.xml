@@ -31,7 +31,8 @@
 
     <!-- mainView -->
     <string name="all_hint_search">검색</string>
-    <string name="mainView_filter_search">핉터 적용</string>
+    <string name="mainView_filter_search">필터 적용</string>
+    <string name="mainView_filter_nullSearch">검색 결과가 존재하지 않습니다.</string>
 
     <!--Main -->
     <string name="main_dataPick_startText">시작일 : </string>

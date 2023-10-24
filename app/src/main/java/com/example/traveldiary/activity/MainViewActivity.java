@@ -94,18 +94,18 @@ public class MainViewActivity extends AppCompatActivity {
         ConstraintLayout slide_layout = findViewById(R.id.slide_layout);
         filterView.setVisibility(View.GONE);  //초기 setting
         recyclerView.setVisibility(View.VISIBLE);   //초기 setting
-        slide_layout.setVisibility(View.VISIBLE);   //초기 setting
+        slide_layout.setAlpha(1);
         search.setOnTouchListener((v, event) -> {
             if (event.getAction() == MotionEvent.ACTION_UP) {
                 if (filterView.getVisibility() == View.GONE) {
                     filterView.setVisibility(View.VISIBLE);
                     recyclerView.setVisibility(View.GONE);
-                    slide_layout.setVisibility(View.GONE);
+                    slide_layout.setAlpha(0);
                     focus = true;
                 } else {
                     filterView.setVisibility(View.GONE);
                     recyclerView.setVisibility(View.VISIBLE);
-                    slide_layout.setVisibility(View.VISIBLE);
+                    slide_layout.setAlpha(1);
                     focus = false;
                 }
             }
@@ -118,7 +118,7 @@ public class MainViewActivity extends AppCompatActivity {
             searchLoadData(hashTagCustom());
             filterView.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
-            slide_layout.setVisibility(View.VISIBLE);
+            slide_layout.setAlpha(1);
         });
 
         findViewById(R.id.home).setOnClickListener(v -> loadData());
@@ -177,10 +177,11 @@ public class MainViewActivity extends AppCompatActivity {
                             adapter.addItem(mp);
                         }
                         recyclerView.setAdapter(adapter);
+                        onItemSelected(adapter.getItem(0));
                     } else {
-                        Toast.makeText(this, "검색 결과가 존재하기 않습니다.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, R.string.mainView_filter_nullSearch, Toast.LENGTH_SHORT).show();
                     }
-                }).addOnFailureListener(command -> Toast.makeText(this, "검색 결과가 존재하기 않습니다.", Toast.LENGTH_SHORT).show());
+                }).addOnFailureListener(command -> Toast.makeText(this, R.string.mainView_filter_nullSearch, Toast.LENGTH_SHORT).show());
     }
 
     // PagerSnapHelper로 스와이프된 경우 호출되는 메서드
