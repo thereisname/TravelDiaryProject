@@ -3,6 +3,7 @@ package com.example.traveldiary.adapter;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.net.Uri;
+import android.util.Log;
 import android.webkit.MimeTypeMap;
 import android.widget.Toast;
 
@@ -12,10 +13,14 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
+import jp.wasabeef.richeditor.RichEditor;
+
 public class ContentUploadAdapter {
     private ArrayList<Uri> uriArrayList = new ArrayList<>();
     private FirebaseFirestore db;
     private Context context;
+    private ArrayList<Integer> strImgStartIndex = new ArrayList<>();
+    private ArrayList<Integer> strImgEndIndex = new ArrayList<>();
 
     public ContentUploadAdapter(ArrayList<Uri> uriArrayList, Context context) {
         this.uriArrayList = uriArrayList;
@@ -24,9 +29,6 @@ public class ContentUploadAdapter {
     }
 
     public String changeText(String str) {
-        ArrayList<Integer> strImgStartIndex = new ArrayList<>();
-        ArrayList<Integer> strImgEndIndex = new ArrayList<>();
-
         // 이미지 링크 추출하는 loop
         for (int i = 0; i < str.length(); i++) {
             if (str.charAt(i) == '<' && str.charAt(i + 1) == 'i') {
@@ -35,6 +37,11 @@ public class ContentUploadAdapter {
             if (str.charAt(i) == '>' && str.charAt(i - 2) == '0' && str.charAt(i - 3) == '2') {
                 strImgEndIndex.add(i - 21);
             }
+        }
+        //문자에서 Uri를 추출
+        for(int i = 0; i < strImgStartIndex.size(); i++){
+            Uri img = Uri.parse(str.substring(strImgStartIndex.get(i), strImgEndIndex.get(i)));
+            uriArrayList.add(img);
         }
         // 이미지 링크 자리에 image 번호로 대체
         int count = strImgStartIndex.size();
