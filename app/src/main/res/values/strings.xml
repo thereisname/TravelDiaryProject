@@ -24,11 +24,13 @@
     <string name="register_con_enter_contents">Please enter the contents</string>
 
     <!-- MyPage -->
-    <string name="mypage_logoutBtn">로그아웃</string>
     <string name="mypage_boarder">게시물</string>
     <string name="mypage_bookmark">북마크</string>
     <string name="mypage_board_deleted_successful">Deletion completed successfully</string>
     <string name="mypage_board_deleted_fail">Deletion failed</string>
+    <string name="mypage_change_pw_success">비밀번호 변경이 완료되었습니다.</string>
+    <string name="mypage_delete_account_isAgree">계정 삭제 동의하기에 체크 해주세요.</string>
+    <string name="mypage_change_profile_success">프로필 수정이 완료되었습니다.</string>
 
     <!-- mainView -->
     <string name="all_hint_search">검색</string>
@@ -83,6 +85,17 @@
     <string name="uploadBoard_date">여행일: %s</string>
     <string name="uploadBoard_upload_successful">Upload successful</string>
     <string name="uploadBoard_upload_fail">Upload failed</string>
+
+    <!-- setting dialog -->
+    <string name="setting_notice_title">공지사항</string>
+    <string name="setting_ChangeProfile_title">프로필 수정</string>
+    <string name="setting_ChangePw_title">비밀번호 변경</string>
+    <string name="setting_terms_title">이용 약관 | 개인정보 보호 처리 방침</string>
+    <string name="setting_logout_title">로그아웃</string>
+    <string name="setting_deleteAccount_title">계정탈퇴</string>
+    <string name="setting_config">변경하기</string>
+    <string name="setting_deleteAccount_text">This is a permanent action and it can\'t be undone. After your delete your account no one will be able to recover it.</string>
+    <string name="setting_deleteAccount_text_agree">I understand this action is permanent and no one will be able to undo it.</string>
 
     <!-- Toast -->
     <string name="login_fail">Authentication failed.</string>
