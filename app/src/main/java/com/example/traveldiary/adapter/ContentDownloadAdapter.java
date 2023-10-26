@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.net.Uri;
 import android.text.Html;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -37,6 +38,7 @@ public class ContentDownloadAdapter {
     // 문자에서 이미지 시작과 끝을 가져오기
     public int checkText() {
         String con = mp.getCon();
+        Log.d("checkText", con);
 
         for (int index = 0; index < con.length(); index++) {
             if (con.charAt(index) == '<' && con.charAt(index + 1) == 'i' && con.charAt(index + 2) == 'm') {

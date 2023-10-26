@@ -150,7 +150,6 @@ public class MypageActivity extends AppCompatActivity {
                                 .with(getApplicationContext()).load(result.getData().getData())
                                 .centerCrop()
                                 .into(profileImage);
-                        // 이미지 크기를 4:3으로 저장
                         filePath = result.getData().getData();
                         isImage = true;
                     }
