@@ -115,9 +115,11 @@ public class FragmentClient extends Fragment implements OnMapReadyCallback {
                 }
                 mapFragment.getMapAsync(this);
             }
-            if (mp.getBookmark().contains(FirebaseAuth.getInstance().getUid())) {
-                bookmark.setImageResource(R.drawable.baseline_bookmark_24);
-                isAttBookmark = 1;
+            if (mp.getBookmark() != null) {
+                if (mp.getBookmark().contains(FirebaseAuth.getInstance().getUid())) {
+                    bookmark.setImageResource(R.drawable.baseline_bookmark_24);
+                    isAttBookmark = 1;
+                }
             }
         } else {
             db.collection("data").whereNotEqualTo("userToken", FirebaseAuth.getInstance().getUid()).limit(1).get()

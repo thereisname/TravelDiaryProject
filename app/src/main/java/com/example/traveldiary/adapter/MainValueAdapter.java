@@ -105,10 +105,17 @@ public class MainValueAdapter extends RecyclerView.Adapter<MainValueAdapter.View
             date.setText(item.getDate());
             mainImage.setImageResource(R.drawable.baseline_image_24);
             StorageReference storageReference = FirebaseStorage.getInstance().getReference();
-            storageReference.child("/Image/" + item.getBoardID() + "/MainImage.jpg").getDownloadUrl().addOnSuccessListener(command ->
+            storageReference.child("/Image/" + item.getBoardID() + "/MainImage.jpg").getDownloadUrl().addOnSuccessListener(jpgCommand -> {
+                Glide.with(context)
+                        .load(jpgCommand)
+                        .into(mainImage);
+            }).addOnFailureListener(jpgFailure -> {
+                storageReference.child("/Image/" + item.getBoardID() + "/MainImage.png").getDownloadUrl().addOnSuccessListener(pngCommand -> {
                     Glide.with(context)
-                            .load(command)
-                            .into(mainImage));
+                            .load(pngCommand)
+                            .into(mainImage);
+                });
+            });
         }
     }
 }
