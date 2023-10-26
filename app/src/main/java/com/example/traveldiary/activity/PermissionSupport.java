@@ -24,6 +24,8 @@ public class PermissionSupport {
     private String[] permissions = {    // Manifset에 권한을 작성 후 요청할 권한을 배열로 저장
             Manifest.permission.CAMERA,
             Manifest.permission.READ_MEDIA_IMAGES,
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION,
     };
     private List<Object> permissionList;    // 권한 요청을 할 때 발생하는 창에 대한 결과값
     private final int MULTIPLE_PERMISSIONS = 1023;
