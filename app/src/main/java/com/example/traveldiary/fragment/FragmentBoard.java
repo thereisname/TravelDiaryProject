@@ -1,6 +1,7 @@
 package com.example.traveldiary.fragment;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -24,6 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.traveldiary.OnItemClickListener;
 import com.example.traveldiary.R;
 import com.example.traveldiary.activity.MypageActivity;
+import com.example.traveldiary.activity.UpdateCalendarActivity;
 import com.example.traveldiary.adapter.BoardValueAdapter;
 import com.example.traveldiary.adapter.ContentDownloadAdapter;
 import com.example.traveldiary.value.MyPageValue;
@@ -169,6 +171,11 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
             ).addOnSuccessListener(command -> {
                 adapter.updateData(position);
                 dialog.dismiss();
+                Intent intent = new Intent(getContext(), UpdateCalendarActivity.class);
+                intent.putExtra("boardID", item.getBoardID());
+                intent.putExtra("hashTag", item.getHashTagArray());
+                intent.putExtra("date", item.getDate());
+                startActivity(intent);
             });
         });
     }
