@@ -298,7 +298,6 @@ public class FragmentClient extends Fragment implements OnMapReadyCallback {
                 googleMap.addMarker(markerOptions);
                 polylineOptions.add(mark);
 
-
                 latitudeSum += latitude;
                 longitudeSum += longitude;
             }

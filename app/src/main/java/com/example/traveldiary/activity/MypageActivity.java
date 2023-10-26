@@ -349,6 +349,12 @@ public class MypageActivity extends AppCompatActivity {
                     }
                 });
 
+                // 사용자 이미지 삭제
+                StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+                StorageReference desertRef = storageRef.child("Profile/" + FirebaseAuth.getInstance().getUid() + "/").child("ProfileImage.jpg");
+                desertRef.delete();
+
+                // realtime database 및 auth 삭제
                 mDatabase.child("users").child(Objects.requireNonNull(FirebaseAuth.getInstance().getUid())).removeValue();
                 FirebaseAuth.getInstance().getCurrentUser().delete().addOnSuccessListener(command -> Toast.makeText(getApplication(), "계정 삭제 완료", Toast.LENGTH_SHORT).show());
 
