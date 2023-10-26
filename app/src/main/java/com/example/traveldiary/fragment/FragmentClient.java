@@ -42,6 +42,7 @@ import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -331,6 +332,8 @@ public class FragmentClient extends Fragment implements OnMapReadyCallback {
         double longitudeSum = 0;
         Geocoder geocoder = new Geocoder(getContext());
 
+        PolylineOptions polylineOptions = new PolylineOptions(); // PolylineOptions 초기화
+
         for (int i = 0; i < arrayroute.size(); i++) {
             String name = arrayroute.get(i);
             // 지명으로 경도 위도 뽑기
@@ -350,12 +353,14 @@ public class FragmentClient extends Fragment implements OnMapReadyCallback {
                 //마커넣기
                 LatLng mark = new LatLng(latitude, longitude);
                 MarkerOptions markerOptions = new MarkerOptions();
-                markerOptions.position(mark).title(name);
+
+                markerOptions.position(mark).title((i+1) + name);
                 googleMap.addMarker(markerOptions);
+                polylineOptions.add(mark);
+
 
                 latitudeSum += latitude;
                 longitudeSum += longitude;
-
             }
         }
         LatLng markmean = new LatLng(latitudeSum / arrayroute.size(), longitudeSum / arrayroute.size());
@@ -365,7 +370,11 @@ public class FragmentClient extends Fragment implements OnMapReadyCallback {
         if(maxDistance>13470){
             defaultZoom = 11;
         }
+
+        // Polyline을 그립니다.
+        googleMap.addPolyline(polylineOptions);
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(markmean, defaultZoom));
+
     }
 
     private static double calculateDistance(ArrayList arraylat, ArrayList arraylon,  LatLng markMean) {
