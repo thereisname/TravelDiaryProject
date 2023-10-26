@@ -3,7 +3,6 @@ package com.example.traveldiary.activity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.os.Handler;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -30,9 +29,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
-
-import android.os.Handler;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,8 +74,6 @@ public class MainViewActivity extends AppCompatActivity {
                 }
             }
         });
-
-
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
         db = FirebaseFirestore.getInstance();
@@ -199,10 +193,6 @@ public class MainViewActivity extends AppCompatActivity {
         Bundle bundle = new Bundle();
         bundle.putParcelable("myPageValue", item);
         fragmentClient.setArguments(bundle);
-
-        //눌렀을때 패널이 올라오도록 설정
-//        main_frame = findViewById(R.id.main_frame);
-//        main_frame.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
 
         getSupportFragmentManager()
                 .beginTransaction()

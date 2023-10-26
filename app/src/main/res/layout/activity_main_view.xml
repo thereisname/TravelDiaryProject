@@ -13,7 +13,7 @@
         android:gravity="bottom"
         app:umanoDragView="@id/slide_layout"
         app:umanoOverlay="true"
-        app:umanoPanelHeight="150dp"
+        app:umanoPanelHeight="190dp"
         app:umanoShadowHeight="0dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
