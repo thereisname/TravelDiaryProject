@@ -53,9 +53,9 @@ ex)
 <br>
 
 ### DB 저장 방식 (firebase 사용 계획)
-=> DB 관리 전용 class를 생성하여 별도 관리.  (ex. DAO, VO class)
+=> DB 관리 전용 class를 생성하여 별도 관리.
 1. Authentication: 사용자 이메일정보를 수집
-2. RealTime Database: 회원가입 시 입력한 정보와 게시물 id, 북마크 id를 저장함. 이때 사용자 uid를 컬렉션명으로 함.<br>
+2. RealTime Database: 회원가입 시 입력한 정보와 게시물 id. 이때 사용자 uid를 컬렉션명으로 함.<br>
    -> user > [UID] > info > [사용자 정보들] <br>
    |Field|Type|ect|
    |:---:|:---:|:---:|
@@ -63,26 +63,21 @@ ex)
    |userEmail|String|사용자 이메일|
    |userNickName|String|사용자 nickname|
 
-   -> user > [UID] > bookmark > [id]
-   |Field|Type|ect|
-   |:---:|:---:|:---:|
-   |boardID|String|고유 board ID값. 이를 통해 firestore에서 board를 불러옴. 기본키처럼 사용.|
-   |uploadDate|String|업로드한 날짜 + 시간|
-
 3. firestore Database: 게시물 업로드 내용을 저장함. 이때 이름은 게시물별 id를 생성하여 저장.
    |Field|Type|ect|
    |:---:|:---:|:---:|
    |boardID|String|고유 board ID값. 기본키값처럼 사용|
    |con|String|작성한 게시글 내용. html tag형태 그대로 저장됨.|
    |date|String|여행일|
-   |hashTag|String|선택한 hashTag 저장.|
-   |mainImg|String|대표 이미지 경로 저장.|
+   |hashTag|Array|선택한 hashTag 저장.|
    |title|String|제목|
    |uploadDate|String|업로드한 날짜 + 시간. 업데이트 한 날짜는 별도 생성.|
    |updateDate|String|최종 수정일|
    |userToken|String|사용자 UID 값|
+   |route|Array|경로 입력|
+   |bookmark|Array|북마크 한 user의 UID 저장|
 
-4. Storage: image 경로를 저장. (사용할 logo도 저장하여 불러오기) <br>
+5. Storage: image 경로를 저장. (사용할 logo도 저장하여 불러오기) <br>
    -> image > [docId] > [img 경로]  (mainImage도 함께 docId 내 저장. 이름은 mainImg로 저장.) <br>
    -> logo > [image]
 

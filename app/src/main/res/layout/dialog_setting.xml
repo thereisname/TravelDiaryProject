@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="1dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/border_test"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/noticeLayout"
+            style="@style/settings.layout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/notice_icon"
+                style="@style/settings.icon"
+                android:src="@drawable/baseline_notifications_none_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/notice_text"
+                style="@style/settings.text"
+                android:text="@string/setting_notice_title"
+                app:layout_constraintBottom_toBottomOf="@+id/notice_icon"
+                app:layout_constraintStart_toEndOf="@+id/notice_icon"
+                app:layout_constraintTop_toTopOf="@+id/notice_icon" />
+
+            <ImageView
+                style="@style/settings.icon.navigate_next"
+                app:layout_constraintBottom_toBottomOf="@+id/notice_icon"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.975"
+                app:layout_constraintStart_toEndOf="@+id/notice_text"
+                app:layout_constraintTop_toTopOf="@+id/notice_icon"
+                app:layout_constraintVertical_bias="0.0" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View style="@style/setting_view" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/changeProfileLayout"
+            style="@style/settings.layout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/changeProfile_icon"
+                style="@style/settings.icon"
+                android:src="@drawable/baseline_drive_file_rename_outline_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/changeProfile_text"
+                style="@style/settings.text"
+                android:text="@string/setting_ChangeProfile_title"
+                app:layout_constraintBottom_toBottomOf="@+id/changeProfile_icon"
+                app:layout_constraintStart_toEndOf="@+id/changeProfile_icon"
+                app:layout_constraintTop_toTopOf="@+id/changeProfile_icon" />
+
+            <ImageView
+                style="@style/settings.icon.navigate_next"
+                app:layout_constraintBottom_toBottomOf="@+id/changeProfile_icon"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.975"
+                app:layout_constraintStart_toEndOf="@+id/changeProfile_text"
+                app:layout_constraintTop_toTopOf="@+id/changeProfile_icon"
+                app:layout_constraintVertical_bias="0.0" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View style="@style/setting_view" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/changePasswordLayout"
+            style="@style/settings.layout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/changePassword_icon"
+                style="@style/settings.icon"
+                android:src="@drawable/baseline_lock_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/changePassword_text"
+                style="@style/settings.text"
+                android:text="@string/setting_ChangePw_title"
+                app:layout_constraintBottom_toBottomOf="@+id/changePassword_icon"
+                app:layout_constraintStart_toEndOf="@+id/changePassword_icon"
+                app:layout_constraintTop_toTopOf="@+id/changePassword_icon" />
+
+            <ImageView
+                style="@style/settings.icon.navigate_next"
+                app:layout_constraintBottom_toBottomOf="@+id/changePassword_icon"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.975"
+                app:layout_constraintStart_toEndOf="@+id/changePassword_text"
+                app:layout_constraintTop_toTopOf="@+id/changePassword_icon"
+                app:layout_constraintVertical_bias="0.0" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View style="@style/setting_view" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/termsLayout"
+            style="@style/settings.layout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/terms_icon"
+                style="@style/settings.icon"
+                android:src="@drawable/baseline_description_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/terms_text"
+                style="@style/settings.text"
+                android:text="@string/setting_terms_title"
+                app:layout_constraintBottom_toBottomOf="@+id/terms_icon"
+                app:layout_constraintStart_toEndOf="@+id/terms_icon"
+                app:layout_constraintTop_toTopOf="@+id/terms_icon" />
+
+            <ImageView
+                style="@style/settings.icon.navigate_next"
+                app:layout_constraintBottom_toBottomOf="@+id/terms_icon"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.975"
+                app:layout_constraintStart_toEndOf="@+id/terms_text"
+                app:layout_constraintTop_toTopOf="@+id/terms_icon"
+                app:layout_constraintVertical_bias="0.0" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View style="@style/setting_view" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/LogoutLayout"
+            style="@style/settings.layout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/Logout_icon"
+                style="@style/settings.icon"
+                android:src="@drawable/baseline_logout_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/Logout_text"
+                style="@style/settings.text"
+                android:text="@string/setting_logout_title"
+                app:layout_constraintBottom_toBottomOf="@+id/Logout_icon"
+                app:layout_constraintStart_toEndOf="@+id/Logout_icon"
+                app:layout_constraintTop_toTopOf="@+id/Logout_icon" />
+
+            <ImageView
+                style="@style/settings.icon.navigate_next"
+                app:layout_constraintBottom_toBottomOf="@+id/Logout_icon"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.975"
+                app:layout_constraintStart_toEndOf="@+id/Logout_text"
+                app:layout_constraintTop_toTopOf="@+id/Logout_icon"
+                app:layout_constraintVertical_bias="0.0" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View style="@style/setting_view" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/deleteAccountLayout"
+            style="@style/settings.layout"
+            android:layout_marginBottom="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/deleteAccount_icon"
+                style="@style/settings.icon"
+                android:src="@drawable/baseline_delete_outline_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/deleteAccount_text"
+                style="@style/settings.text"
+                android:text="@string/setting_deleteAccount_title"
+                app:layout_constraintBottom_toBottomOf="@+id/deleteAccount_icon"
+                app:layout_constraintStart_toEndOf="@+id/deleteAccount_icon"
+                app:layout_constraintTop_toTopOf="@+id/deleteAccount_icon" />
+
+            <ImageView
+                style="@style/settings.icon.navigate_next"
+                app:layout_constraintBottom_toBottomOf="@+id/deleteAccount_icon"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.975"
+                app:layout_constraintStart_toEndOf="@+id/deleteAccount_text"
+                app:layout_constraintTop_toTopOf="@+id/deleteAccount_icon"
+                app:layout_constraintVertical_bias="0.0" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

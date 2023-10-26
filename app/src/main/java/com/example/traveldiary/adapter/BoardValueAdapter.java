@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.traveldiary.OnItemClickListener;
 import com.example.traveldiary.R;
+import com.example.traveldiary.activity.MypageActivity;
 import com.example.traveldiary.value.MyPageValue;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -69,6 +70,7 @@ public class BoardValueAdapter extends RecyclerView.Adapter<BoardValueAdapter.Vi
     public void removeData(int position) {
         items.remove(position);
         notifyItemRemoved(position);
+        MypageActivity.postCount.setText(String.valueOf(items.size()));
     }
 
     public void updateData(int position) {

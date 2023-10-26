@@ -24,7 +24,7 @@
 
             <EditText
                 android:id="@+id/search"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginStart="30dp"
@@ -35,6 +35,7 @@
                 android:drawablePadding="5dp"
                 android:fontFamily="@font/gangwon"
                 android:hint="@string/all_hint_search"
+                android:imeOptions="actionSearch"
                 android:inputType="text"
                 android:paddingHorizontal="10dp"
                 android:paddingVertical="7dp"
@@ -45,17 +46,143 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/filterView"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:theme="@style/mainActivity_dataBtn"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/search">
 
+                <TextView
+                    android:id="@+id/textView2"
+                    style="@style/uploadCalender_title"
+                    android:layout_marginStart="20dp"
+                    android:text="@string/uploadCalender_text_persons"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/chipGroup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView2">
 
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip1"
+                        style="@style/uploadCalender_CustomChipStyle"
+                        android:text="@string/uploadCalender_chip_persons_one" />
 
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip2"
+                        style="@style/uploadCalender_CustomChipStyle"
+                        android:text="@string/uploadCalender_chip_persons_couple" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip3"
+                        style="@style/uploadCalender_CustomChipStyle"
+                        android:text="@string/uploadCalender_chip_persons_friend" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip4"
+                        style="@style/uploadCalender_CustomChipStyle"
+                        android:text="@string/uploadCalender_chip_persons_family" />
+
+                </com.google.android.material.chip.ChipGroup>
+
+                <TextView
+                    android:id="@+id/textView"
+                    style="@style/uploadCalender_title"
+                    android:fontFamily="@font/gangwon"
+                    android:text="@string/uploadCalender_text_style"
+                    app:layout_constraintStart_toStartOf="@+id/textView2"
+                    app:layout_constraintTop_toBottomOf="@+id/chipGroup" />
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/chipGroup2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="@+id/chipGroup"
+                    app:layout_constraintTop_toBottomOf="@+id/textView">
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip10"
+                        style="@style/uploadCalender_CustomChipStyle"
+                        android:text="@string/uploadCalender_chip_style_plan" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip11"
+                        style="@style/uploadCalender_CustomChipStyle"
+                        android:text="@string/uploadCalender_chip_style_free" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip12"
+                        style="@style/uploadCalender_CustomChipStyle"
+                        android:text="@string/uploadCalender_chip_style_vacation" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip13"
+                        style="@style/uploadCalender_CustomChipStyle"
+                        android:text="@string/uploadCalender_chip_style_recollection" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip14"
+                        style="@style/uploadCalender_CustomChipStyle"
+                        android:text="@string/uploadCalender_chip_style_healing" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip15"
+                        style="@style/uploadCalender_CustomChipStyle"
+                        android:text="@string/uploadCalender_chip_style_activity" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip16"
+                        style="@style/uploadCalender_CustomChipStyle"
+                        android:text="@string/uploadCalender_chip_style_famous" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip17"
+                        style="@style/uploadCalender_CustomChipStyle"
+                        android:text="@string/uploadCalender_chip_style_romance" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip18"
+                        style="@style/uploadCalender_CustomChipStyle"
+                        android:text="@string/uploadCalender_chip_style_emotional" />
+                </com.google.android.material.chip.ChipGroup>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/filterSearchBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/border"
+                    android:fontFamily="@font/gangwon"
+                    android:paddingHorizontal="30dp"
+                    android:text="@string/mainView_filter_search"
+                    android:textColor="@color/icon"
+                    android:textSize="24sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/chipGroup2"
+                    app:layout_constraintVertical_bias="0.3" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_maineRcyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_marginTop="20dp"
-                android:padding="20dp"
+                android:layout_marginTop="30dp"
+                android:paddingBottom="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

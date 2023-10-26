@@ -15,10 +15,9 @@
         android:scrollbars="vertical"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintVertical_bias="0.033">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -63,9 +62,16 @@
 
             <TextView
                 android:id="@+id/textView2"
-                style="@style/uploadCalender_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="50dp"
+                android:fontFamily="@font/gangwon"
                 android:text="@string/uploadCalender_text_persons"
-                app:layout_constraintStart_toStartOf="@+id/text2"
+                android:textColor="@color/icon"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/dataRangeBtn" />
 
             <com.google.android.material.chip.ChipGroup
@@ -102,9 +108,14 @@
 
             <TextView
                 android:id="@+id/textView"
-                style="@style/uploadCalender_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
                 android:fontFamily="@font/gangwon"
                 android:text="@string/uploadCalender_text_style"
+                android:textColor="@color/icon"
+                android:textSize="24sp"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="@+id/textView2"
                 app:layout_constraintTop_toBottomOf="@+id/chipGroup" />
 
@@ -188,11 +199,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
                 android:background="#00ff0000"
-                android:padding="1dp"
-                android:text="경로 추가"
                 android:fontFamily="@font/gangwon"
-                android:textSize="24sp"
+                android:padding="1dp"
+                android:text="@string/uploadCalender_route_add"
                 android:textColor="@color/icon"
+                android:textSize="24sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/listView"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -236,6 +247,7 @@
                 android:text="@string/uploadCalender_boardBtn"
                 android:textColor="@color/icon"
                 android:textSize="24sp"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

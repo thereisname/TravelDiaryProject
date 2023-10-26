@@ -1,48 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_horizontal"
     android:background="@color/white"
-    android:orientation="vertical">
+    tools:context=".activity.RegisterActivity">
 
-    <EditText
-        android:id="@+id/inputNickName"
-        style="@style/inputEdit_style.register"
-        android:layout_marginTop="150dp"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout"
+        style="@style/register_Layout"
+        android:layout_marginTop="120dp"
         android:hint="@string/register_nickname"
-        android:inputType="text" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:startIconTint="@color/icon">
 
-    <EditText
-        android:id="@+id/inputEmail"
-        style="@style/inputEdit_style.register"
-        android:layout_marginTop="250dp"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/inputNickName"
+            style="@style/register_EditText"
+            android:inputType="text" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInput2"
+        style="@style/register_Layout"
         android:hint="@string/all_hint_email"
-        android:inputType="textEmailAddress" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout"
+        app:startIconTint="@color/icon">
 
-    <EditText
-        android:id="@+id/inputPw"
-        style="@style/inputEdit_style.register"
-        android:layout_marginTop="350dp"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/inputEmail"
+            style="@style/register_EditText"
+            android:inputType="textEmailAddress" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInput3"
+        style="@style/register_Layout"
         android:hint="@string/all_hint_pw"
-        android:inputType="textPassword" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInput2"
+        app:startIconTint="@color/icon">
 
-    <EditText
-        android:id="@+id/inputRePw"
-        style="@style/inputEdit_style.register"
-        android:layout_marginTop="450dp"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/inputPw"
+            style="@style/register_EditText"
+            android:inputType="textPassword" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInput4"
+        style="@style/register_Layout"
         android:hint="@string/register_rePw"
-        android:inputType="textPassword" />
+        app:hintTextColor="@color/icon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInput3">
 
-    <Button
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/inputRePw"
+            style="@style/register_EditText"
+            android:inputType="textPassword" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/confirm_button"
         style="@style/confirmBtn"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="105dp"
-        android:layout_marginBottom="80dp"
-        android:text="@string/register_ConfirmBtn" />
-
-
-</RelativeLayout>
+        android:layout_marginTop="64dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInput4" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -11,20 +11,21 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.text.Html;
-import android.util.Log;
 import android.view.Gravity;
+import android.os.Bundle;
+
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
@@ -32,9 +33,8 @@ import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import com.bumptech.glide.Glide;
-import com.example.traveldiary.adapter.ContentDownloadAdapter;
 import com.example.traveldiary.R;
+import com.example.traveldiary.adapter.ContentDownloadAdapter;
 import com.example.traveldiary.value.MyPageValue;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -46,6 +46,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -73,6 +74,7 @@ public class FragmentClient extends Fragment implements OnMapReadyCallback {
     private GoogleMap map; // 추가: GoogleMap 객체를 저장하는 변수
     private FusedLocationProviderClient fusedLocationClient;
     private int isAttBookmark; // 0: 북마크 비활성화 상태, 1: 북마크 활성화 상태
+    private ImageButton bookmark;
     private static MyPageValue mp;
     private LinearLayout listView, routeView;
     ImageView imageView;
@@ -94,7 +96,7 @@ public class FragmentClient extends Fragment implements OnMapReadyCallback {
     public static FragmentClient newInstance(MyPageValue myPageValue) {
         FragmentClient fragment = new FragmentClient();
         Bundle args = new Bundle();
-        args.putParcelable("myPageValue", (Parcelable) myPageValue);
+        args.putParcelable("myPageValue", myPageValue);
         fragment.setArguments(args);
         return fragment;
     }
@@ -123,14 +125,62 @@ public class FragmentClient extends Fragment implements OnMapReadyCallback {
         listView.setVisibility(View.VISIBLE);
         routeView.setVisibility(View.GONE);
         routeTitle.setVisibility(View.GONE);
-        googlemap.setVisibility(View.GONE);
+        googlemap.setVisibility(View.GONE);       
+      
+        bookmark = view.findViewById(R.id.bookMarkBtn);
+        TextView fragment_title = view.findViewById(R.id.fragment_title);
+        TextView fragment_hashtag = view.findViewById(R.id.fragment_hashtag);
+        listView = view.findViewById(R.id.listView);
+
+        if (getArguments() != null) {
+            mp = getArguments().getParcelable("myPageValue");
+            fragment_title.setText(mp.getTitle());
+            fragment_hashtag.setText(mp.getHashTag());
+            ContentDownloadAdapter contentDownloadAdapter = new ContentDownloadAdapter(getActivity(), listView, mp);
+            contentDownloadAdapter.checkText();
+            if (mp.getBookmark().contains(FirebaseAuth.getInstance().getUid())) {
+                bookmark.setImageResource(R.drawable.baseline_bookmark_24);
+                isAttBookmark = 1;
+            }
+        } else {
+            db.collection("data").whereNotEqualTo("userToken", FirebaseAuth.getInstance().getUid()).limit(1).get()
+                    .addOnSuccessListener(queryDocumentSnapshots -> {
+                                for (QueryDocumentSnapshot queryDocumentSnapshot : queryDocumentSnapshots) {
+                                    mp = queryDocumentSnapshot.toObject(MyPageValue.class);
+                                    ContentDownloadAdapter contentDownloadAdapter = new ContentDownloadAdapter(getActivity(), listView, mp);
+                                    contentDownloadAdapter.checkText();
+                                    fragment_title.setText(mp.getTitle());
+                                    fragment_hashtag.setText(mp.getHashTag());
+                                    if (mp.getBookmark().contains(FirebaseAuth.getInstance().getUid())) {
+                                        bookmark.setImageResource(R.drawable.baseline_bookmark_24);
+                                        isAttBookmark = 1;
+                                    }
+                                }
+                            }
+                    );
+        }
+
+        bookmark.setOnClickListener(v -> {
+            List<String> bookmarkArray = mp.getBookmark();
+            if (isAttBookmark == 0) {
+                bookmarkArray.add(FirebaseAuth.getInstance().getUid());
+                db.collection("data").document(mp.getBoardID()).update("bookmark", bookmarkArray).addOnSuccessListener(command -> {
+                    isAttBookmark = 1;
+                    bookmark.setImageResource(R.drawable.baseline_bookmark_24);
+                });
+            } else {
+                bookmarkArray.remove(FirebaseAuth.getInstance().getUid());
+                db.collection("data").document(mp.getBoardID()).update("bookmark", bookmarkArray).addOnSuccessListener(command -> {
+                    isAttBookmark = 0;
+                    bookmark.setImageResource(R.drawable.baseline_bookmark_border_24);
+                });
+            }
 
         ImageButton nextBtn = view.findViewById(R.id.imgBtn_next);
         ImageButton beforeBtn = view.findViewById(R.id.imgBtn_before);
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "다음페이지 보여줘", Toast.LENGTH_SHORT).show();
                 listView.setVisibility(View.GONE);
                 routeView.setVisibility(View.VISIBLE);
                 routeTitle.setVisibility(View.VISIBLE);
@@ -139,6 +189,7 @@ public class FragmentClient extends Fragment implements OnMapReadyCallback {
                 beforeBtn.setVisibility(View.VISIBLE);
             }
         });
+      
         beforeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -275,30 +326,7 @@ public class FragmentClient extends Fragment implements OnMapReadyCallback {
                 });
             }
         });
-    }
-
-    int imageId = 10000;
-
-    private void createImageView() {
-        imageView = new ImageView(getContext());
-        imageView.setId(imageId);
-        Glide.with(getContext()).load(R.drawable.baseline_image_24).into(imageView);
-
-        LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        imageView.setLayoutParams(param);
-        arrayimage.add(imageView);
-        listView.addView(imageView);
-        imageId++;
-    }
-
-    private void createTextView(String str) {
-        TextView textViewNm = new TextView(getActivity());
-        textViewNm.setText(Html.fromHtml(str, Html.FROM_HTML_MODE_LEGACY).toString());
-        textViewNm.setTextSize(15);
-        textViewNm.setTextColor(Color.rgb(0, 0, 0));
-        LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        textViewNm.setLayoutParams(param);
-        listView.addView(textViewNm);
+        return view;
     }
 
     // 경로 문자 쓰기
@@ -365,7 +393,6 @@ public class FragmentClient extends Fragment implements OnMapReadyCallback {
         }
         LatLng markmean = new LatLng(latitudeSum / arrayroute.size(), longitudeSum / arrayroute.size());
         double maxDistance = calculateDistance(arraylat, arraylon, markmean);
-        Log.d("로그", "최대거리 확인하기" + maxDistance);
         int defaultZoom = 13;
         if(maxDistance>13470){
             defaultZoom = 11;

@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">여행 일기</string>
     <string name="login">로그인</string>
+    <string name="Developers">\@2023. JRJ. All right reserved</string>
 
     <!-- StartView   -->
     <string name="startView_message">나만의 여행 일기를 만들어 보세요!</string>
@@ -16,18 +17,25 @@
     <string name="register_rePw">비밀번호 확인</string>
     <string name="register_nickname">닉네임</string>
     <string name="register_ConfirmBtn">가입하기</string>
+    <string name="register_non">Please enter your email and password.</string>
     <string name="register_con_successful_membership">Your membership has been successful.</string>
     <string name="register_con_failed_membership">The membership registration failed.</string>
     <string name="register_con_notMath">Password does not match</string>
     <string name="register_con_enter_contents">Please enter the contents</string>
 
     <!-- MyPage -->
-    <string name="mypage_logoutBtn">로그아웃</string>
     <string name="mypage_boarder">게시물</string>
     <string name="mypage_bookmark">북마크</string>
+    <string name="mypage_board_deleted_successful">Deletion completed successfully</string>
+    <string name="mypage_board_deleted_fail">Deletion failed</string>
+    <string name="mypage_change_pw_success">비밀번호 변경이 완료되었습니다.</string>
+    <string name="mypage_delete_account_isAgree">계정 삭제 동의하기에 체크 해주세요.</string>
+    <string name="mypage_change_profile_success">프로필 수정이 완료되었습니다.</string>
 
     <!-- mainView -->
     <string name="all_hint_search">검색</string>
+    <string name="mainView_filter_search">필터 적용</string>
+    <string name="mainView_filter_nullSearch">검색 결과가 존재하지 않습니다.</string>
 
     <!--Main -->
     <string name="main_dataPick_startText">시작일 : </string>
@@ -58,17 +66,42 @@
     <string name="uploadCalender_chip_style_romance">낭만</string>
     <string name="uploadCalender_chip_style_emotional">감성</string>
 
+    <string name="uploadCalender_route_add">경로 추가</string>
+
+    <string name="uploadCalender_isDate">여행 기간을 선택해 주세요</string>
+    <string name="uploadCalender_isMainImage">대표 이미지를 선택해 주세요</string>
+
+    <!-- Update content -->
+    <string name="update_board_changeBtn">수정하기</string>
+
     <string name="uploadCalender_boardBtn">글쓰기</string>
     <string name="uploadCalender_calendar">%s ~ %s</string>
 
     <!--Upload Board -->
+    <string name="uploadBoard_placeholder">Insert text here…</string>
     <string name="uploadBoard_uploadBtn">올리기</string>
     <string name="uploadBoard_hint_title">제목</string>
     <string name="uploadBoard_uploadDate">Upload Date: %s</string>
     <string name="uploadBoard_date">여행일: %s</string>
+    <string name="uploadBoard_upload_successful">Upload successful</string>
+    <string name="uploadBoard_upload_fail">Upload failed</string>
+
+    <!-- setting dialog -->
+    <string name="setting_notice_title">공지사항</string>
+    <string name="setting_ChangeProfile_title">프로필 수정</string>
+    <string name="setting_ChangePw_title">비밀번호 변경</string>
+    <string name="setting_terms_title">이용 약관 | 개인정보 보호 처리 방침</string>
+    <string name="setting_logout_title">로그아웃</string>
+    <string name="setting_deleteAccount_title">계정탈퇴</string>
+    <string name="setting_config">변경하기</string>
+    <string name="setting_deleteAccount_text">This is a permanent action and it can\'t be undone. After your delete your account no one will be able to recover it.</string>
+    <string name="setting_deleteAccount_text_agree">I understand this action is permanent and no one will be able to undo it.</string>
 
     <!-- Toast -->
     <string name="login_fail">Authentication failed.</string>
     <string name="login_enter">Please enter email, password.</string>
     <string name="logout">Logout Successful.</string>
+    <string name="upload_image_successful">Image Upload Successful</string>
+    <string name="upload_image_fail">Image Upload Failed</string>
+    <string name="error">알 수 없는 오류가 발생했습니다.</string>
 </resources>
