@@ -38,6 +38,7 @@
 
             <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/dataRangeBtn"
+                android:theme="@style/mainActivity_dataBtn"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_marginStart="20dp"
@@ -228,7 +229,7 @@
                 android:background="@drawable/border"
                 android:fontFamily="@font/gangwon"
                 android:paddingHorizontal="40dp"
-                android:text="@string/uploadCalender_boardBtn"
+                android:text="@string/update_board_changeBtn"
                 android:textColor="@color/icon"
                 android:textSize="24sp"
                 app:layout_constraintBottom_toBottomOf="parent"

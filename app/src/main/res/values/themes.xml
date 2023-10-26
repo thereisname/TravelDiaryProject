@@ -206,4 +206,35 @@
         <item name="android:textColorHighlight">@color/icon</item>
     </style>
 
+    <style name="settings">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+    <style name="settings.layout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_marginStart">20dp</item>
+        <item name="android:layout_marginEnd">15dp</item>
+        <item name="android:layout_marginTop">15dp</item>
+    </style>
+    <style name="settings.icon">
+        <item name="android:minWidth">30dp</item>
+        <item name="android:minHeight">30dp</item>
+    </style>
+    <style name="settings.text">
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_marginStart">15dp</item>
+        <item name="android:fontFamily">@font/gangwon</item>
+        <item name="android:textColor">@color/text_gray</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+    <style name="settings.icon.navigate_next">
+        <item name="android:src">@drawable/baseline_navigate_next_24</item>
+    </style>
+    <style name="setting_view">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">2dp</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:background">@color/gray</item>
+    </style>
+
 </resources>
