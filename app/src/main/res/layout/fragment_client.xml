@@ -2,11 +2,14 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragment.FragmentClient">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main_frame"
+        android:padding="10dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/border_client">
@@ -57,10 +60,38 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/fragment_title" />
 
+        <ImageButton
+            android:id="@+id/imgBtn_next"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:background="@color/white"
+            android:src="@drawable/baseline_navigate_next_24"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/scoreView"
+            app:layout_constraintTop_toTopOf="parent"
+           />
+
+        <ImageButton
+            android:id="@+id/imgBtn_before"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:background="@color/white"
+            android:src="@drawable/baseline_navigate_before_24"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/scoreView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <androidx.core.widget.NestedScrollView
+            android:id="@+id/scoreView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -78,10 +109,55 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="7dp"
                     android:orientation="vertical"
+                    android:visibility="visible"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />
+
+                <TextView
+                    android:id="@+id/routeTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/gangwon"
+                    android:text="* 코스 *"
+                    android:textColor="@color/black"
+                    android:textSize="24sp"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <LinearLayout
+                    android:id="@+id/routeView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="7dp"
+                    android:layout_marginTop="20dp"
+
+                    android:orientation="vertical"
+
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/routeTitle">
+
+                </LinearLayout>
+
+                <com.google.android.gms.maps.MapView
+                    android:id="@+id/map"
+                    android:name="com.google.android.gms.maps.MapFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:layout_marginTop="20dp"
+                    android:visibility="gone"
+                    app:layout_constraintTop_toBottomOf="@+id/routeView"
+                    tools:layout_editor_absoluteX="17dp" />
+
+
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 </FrameLayout>

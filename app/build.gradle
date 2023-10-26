@@ -3,6 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     // Add the Google services Gradle plugin
     id 'com.google.gms.google-services'
+    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
 
 }
 
@@ -77,6 +78,10 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.13.2'
 
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.2'
+
+    //구글 맵 추가
+    implementation('com.google.android.gms:play-services-maps:18.2.0')
+    implementation('com.google.android.gms:play-services-location:21.0.1')
 
 }
 

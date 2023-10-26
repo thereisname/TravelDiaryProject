@@ -2,6 +2,7 @@ package com.example.traveldiary.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.widget.ImageView;
 import androidx.annotation.NonNull;
@@ -61,6 +62,8 @@ public class MainViewActivity extends AppCompatActivity {
             }
         });
 
+
+
         recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
         db = FirebaseFirestore.getInstance();
 
@@ -92,7 +95,6 @@ public class MainViewActivity extends AppCompatActivity {
         });
     }
 
-    // PagerSnapHelper로 스와이프된 경우 호출되는 메서드
     public void onItemSelected(MyPageValue item) {
         // 현재 아이템 위치에 해당하는 아이템 데이터를 Fragment로 전달
         FragmentClient fragmentClient = new FragmentClient();
@@ -100,11 +102,17 @@ public class MainViewActivity extends AppCompatActivity {
         bundle.putParcelable("myPageValue", item);
         fragmentClient.setArguments(bundle);
 
+        //눌렀을때 패널이 올라오도록 설정
+//        main_frame = findViewById(R.id.main_frame);
+//        main_frame.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
+
+
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_view, fragmentClient)
                 .commit();
     }
+
 
     // 뒤로가기 두번하면 종료되는 코드
     @Override
