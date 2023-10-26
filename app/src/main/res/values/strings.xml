@@ -26,9 +26,13 @@
     <string name="mypage_logoutBtn">로그아웃</string>
     <string name="mypage_boarder">게시물</string>
     <string name="mypage_bookmark">북마크</string>
+    <string name="mypage_board_deleted_successful">Deletion completed successfully</string>
+    <string name="mypage_board_deleted_fail">Deletion failed</string>
 
     <!-- mainView -->
     <string name="all_hint_search">검색</string>
+    <string name="mainView_filter_search">필터 적용</string>
+    <string name="mainView_filter_nullSearch">검색 결과가 존재하지 않습니다.</string>
 
     <!--Main -->
     <string name="main_dataPick_startText">시작일 : </string>
@@ -59,6 +63,11 @@
     <string name="uploadCalender_chip_style_romance">낭만</string>
     <string name="uploadCalender_chip_style_emotional">감성</string>
 
+    <string name="uploadCalender_route_add">경로 추가</string>
+
+    <string name="uploadCalender_isDate">여행 기간을 선택해 주세요</string>
+    <string name="uploadCalender_isMainImage">대표 이미지를 선택해 주세요</string>
+
     <!-- Update content -->
     <string name="update_board_changeBtn">수정하기</string>
 
@@ -66,13 +75,19 @@
     <string name="uploadCalender_calendar">%s ~ %s</string>
 
     <!--Upload Board -->
+    <string name="uploadBoard_placeholder">Insert text here…</string>
     <string name="uploadBoard_uploadBtn">올리기</string>
     <string name="uploadBoard_hint_title">제목</string>
     <string name="uploadBoard_uploadDate">Upload Date: %s</string>
     <string name="uploadBoard_date">여행일: %s</string>
+    <string name="uploadBoard_upload_successful">Upload successful</string>
+    <string name="uploadBoard_upload_fail">Upload failed</string>
 
     <!-- Toast -->
     <string name="login_fail">Authentication failed.</string>
     <string name="login_enter">Please enter email, password.</string>
     <string name="logout">Logout Successful.</string>
+    <string name="upload_image_successful">Image Upload Successful</string>
+    <string name="upload_image_fail">Image Upload Failed</string>
+    <string name="error">알 수 없는 오류가 발생했습니다.</string>
 </resources>

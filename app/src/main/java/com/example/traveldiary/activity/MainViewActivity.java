@@ -42,7 +42,6 @@ public class MainViewActivity extends AppCompatActivity {
     private boolean focus = false;
     private static final int BACK_PRESS_INTERVAL = 2000; // 2 seconds
 
-
     @SuppressLint("ClickableViewAccessibility")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,7 +76,7 @@ public class MainViewActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
         db = FirebaseFirestore.getInstance();
 
-        loadData();
+        loadData();     //초기 데이터 값 불러오기.
 
         FragmentClient fragmentClient = new FragmentClient();
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_view, fragmentClient).commit();
@@ -93,20 +92,22 @@ public class MainViewActivity extends AppCompatActivity {
         //필터 화면 설정.
         ConstraintLayout filterView = findViewById(R.id.filterView);
         ConstraintLayout slide_layout = findViewById(R.id.slide_layout);
+        filterView.setVisibility(View.GONE);  //초기 setting
+        recyclerView.setVisibility(View.VISIBLE);   //초기 setting
+        slide_layout.setAlpha(1);
         search.setOnTouchListener((v, event) -> {
-            switch (event.getAction()) {
-                case MotionEvent.ACTION_UP:
-                    if (filterView.getVisibility() == View.GONE) {
-                        filterView.setVisibility(View.VISIBLE);
-                        recyclerView.setVisibility(View.GONE);
-                        slide_layout.setVisibility(View.GONE);
-                        focus = true;
-                    } else {
-                        filterView.setVisibility(View.GONE);
-                        recyclerView.setVisibility(View.VISIBLE);
-                        slide_layout.setVisibility(View.VISIBLE);
-                        focus = false;
-                    }
+            if (event.getAction() == MotionEvent.ACTION_UP) {
+                if (filterView.getVisibility() == View.GONE) {
+                    filterView.setVisibility(View.VISIBLE);
+                    recyclerView.setVisibility(View.GONE);
+                    slide_layout.setAlpha(0);
+                    focus = true;
+                } else {
+                    filterView.setVisibility(View.GONE);
+                    recyclerView.setVisibility(View.VISIBLE);
+                    slide_layout.setAlpha(1);
+                    focus = false;
+                }
             }
             return false;
         });
@@ -117,12 +118,10 @@ public class MainViewActivity extends AppCompatActivity {
             searchLoadData(hashTagCustom());
             filterView.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
-            slide_layout.setVisibility(View.VISIBLE);
+            slide_layout.setAlpha(1);
         });
 
-        findViewById(R.id.home).setOnClickListener(v -> {
-            loadData();
-        });
+        findViewById(R.id.home).setOnClickListener(v -> loadData());
 
         ImageView myPage = findViewById(R.id.myPage);
         myPage.setOnClickListener(v -> {
@@ -178,10 +177,11 @@ public class MainViewActivity extends AppCompatActivity {
                             adapter.addItem(mp);
                         }
                         recyclerView.setAdapter(adapter);
+                        onItemSelected(adapter.getItem(0));
                     } else {
-                        Toast.makeText(this, "검색 결과가 존재하기 않습니다.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, R.string.mainView_filter_nullSearch, Toast.LENGTH_SHORT).show();
                     }
-                }).addOnFailureListener(command -> Toast.makeText(this, "검색 결과가 존재하기 않습니다.", Toast.LENGTH_SHORT).show());
+                }).addOnFailureListener(command -> Toast.makeText(this, R.string.mainView_filter_nullSearch, Toast.LENGTH_SHORT).show());
     }
 
     // PagerSnapHelper로 스와이프된 경우 호출되는 메서드
@@ -198,7 +198,7 @@ public class MainViewActivity extends AppCompatActivity {
                 .commit();
     }
 
-    // 뒤로가기 두번하면 종료되는 코드
+    // 뒤로가기 두번하면 종료되는 코드 및 search focus 처리 기능.
     @Override
     public void onBackPressed() {
         if (doubleBackToExitPressedOnce) {

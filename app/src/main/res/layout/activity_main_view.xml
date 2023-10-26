@@ -168,13 +168,14 @@
                     android:background="@drawable/border"
                     android:fontFamily="@font/gangwon"
                     android:paddingHorizontal="30dp"
-                    android:text="필터 검색"
+                    android:text="@string/mainView_filter_search"
                     android:textColor="@color/icon"
                     android:textSize="24sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/chipGroup2" />
+                    app:layout_constraintTop_toBottomOf="@+id/chipGroup2"
+                    app:layout_constraintVertical_bias="0.3" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.recyclerview.widget.RecyclerView
@@ -182,7 +183,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_marginTop="30dp"
-                android:paddingHorizontal="20dp"
                 android:paddingBottom="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

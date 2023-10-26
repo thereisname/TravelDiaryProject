@@ -60,12 +60,12 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
 
         db = FirebaseFirestore.getInstance();
 
-        loadDate();
+        loadData();
 
         return v;
     }
 
-    public void loadDate() {
+    public void loadData() {
         db.collection("data").whereEqualTo("userToken", FirebaseAuth.getInstance().getUid()).get().addOnSuccessListener(queryDocumentSnapshots -> {
             MypageActivity.postCount.setText(String.valueOf(queryDocumentSnapshots.size()));
             for (QueryDocumentSnapshot queryDocumentSnapshot : queryDocumentSnapshots) {
@@ -184,7 +184,7 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
             desertRef.delete();
             dialog.dismiss();
             adapter.removeData(position);
-            Toast.makeText(getActivity().getApplicationContext(), "정상적으로 삭제가 완료되었습니다.", Toast.LENGTH_SHORT).show();
-        }).addOnFailureListener(command -> Toast.makeText(getActivity().getApplicationContext(), "삭제 실패!", Toast.LENGTH_SHORT).show());
+            Toast.makeText(getActivity().getApplicationContext(), R.string.mypage_board_deleted_successful, Toast.LENGTH_SHORT).show();
+        }).addOnFailureListener(command -> Toast.makeText(getActivity().getApplicationContext(), R.string.mypage_board_deleted_fail, Toast.LENGTH_SHORT).show());
     }
 }

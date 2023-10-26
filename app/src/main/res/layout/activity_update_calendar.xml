@@ -185,7 +185,7 @@
                 android:background="#00ff0000"
                 android:fontFamily="@font/gangwon"
                 android:padding="1dp"
-                android:text="경로 추가"
+                android:text="@string/uploadCalender_route_add"
                 android:textColor="@color/icon"
                 android:textSize="24sp"
                 android:textStyle="bold"

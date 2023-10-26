@@ -7,13 +7,13 @@ import java.util.ArrayList;
 
 public class MyPageValue implements Parcelable {
     private String con;
-    private String mainImg;
     private String title;
     private ArrayList<String> hashTag;
     private String date;
     private String uploadDate;
     private String boardID;
     private ArrayList<String> route;
+    private ArrayList<String> bookmark;
 
     public MyPageValue() {
     }
@@ -21,12 +21,12 @@ public class MyPageValue implements Parcelable {
     // Parcelable 객체를 생성하는 생성자
     protected MyPageValue(Parcel in) {
         con = in.readString();
-        mainImg = in.readString();
         title = in.readString();
         hashTag = in.readArrayList(null);
         date = in.readString();
         uploadDate = in.readString();
         boardID = in.readString();
+        bookmark = in.readArrayList(null);
     }
 
     // Parcelable 객체를 생성하는 메서드
@@ -50,15 +50,16 @@ public class MyPageValue implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(con);
-        dest.writeString(mainImg);
         dest.writeString(title);
         dest.writeList(hashTag);
+        dest.writeList(route);
+        dest.writeList(bookmark);
         dest.writeString(date);
         dest.writeString(uploadDate);
         dest.writeString(boardID);
     }
 
-    public MyPageValue(String con, String title, ArrayList<String> hashTag, String date, String uploadDate, String boardID, ArrayList<String> route) {
+    public MyPageValue(String con, String title, ArrayList<String> hashTag, String date, String uploadDate, String boardID, ArrayList<String> route, ArrayList<String> bookmark) {
         this.con = con;
         this.title = title;
         this.hashTag = hashTag;
@@ -66,6 +67,7 @@ public class MyPageValue implements Parcelable {
         this.uploadDate = uploadDate;
         this.boardID = boardID;
         this.route = route;
+        this.bookmark = bookmark;
     }
 
     public String getCon() {
@@ -100,6 +102,10 @@ public class MyPageValue implements Parcelable {
         return route;
     }
 
+    public ArrayList<String> getBookmark() {
+        return bookmark;
+    }
+
     public void setTitle(String title) {
         this.title = title;
     }
@@ -107,4 +113,5 @@ public class MyPageValue implements Parcelable {
     public void setCon(String con) {
         this.con = con;
     }
+
 }

@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.traveldiary.R;
@@ -19,8 +20,8 @@ import com.google.firebase.storage.StorageReference;
 import java.util.ArrayList;
 
 public class ContentDownloadAdapter {
-    private ArrayList<Integer> arrayStartIndex = new ArrayList<Integer>();
-    private ArrayList<Integer> arrayEndIndex = new ArrayList<Integer>();
+    private ArrayList<Integer> arrayStartIndex = new ArrayList<>();
+    private ArrayList<Integer> arrayEndIndex = new ArrayList<>();
     private ArrayList<View> arrayImage = new ArrayList();
     private LinearLayout listView;
     private Context context;
@@ -55,7 +56,7 @@ public class ContentDownloadAdapter {
                 for (int i = 0; i < arrayStartIndex.size(); i++) {
                     createImageView();
                     if (i == arrayStartIndex.size() - 1) {
-                        String str1 = mp.getCon().substring(arrayEndIndex.get(i) + 1, mp.getCon().length());
+                        String str1 = mp.getCon().substring(arrayEndIndex.get(i) + 1);
                         createTextView(str1);
                     } else {
                         String str1 = mp.getCon().substring(arrayEndIndex.get(i) + 1, arrayStartIndex.get(i + 1));
@@ -66,7 +67,7 @@ public class ContentDownloadAdapter {
                 for (int i = 0; i < arrayStartIndex.size(); i++) {
                     createImageView();
                     if (i == arrayStartIndex.size() - 1) {
-                        String str2 = mp.getCon().substring(arrayEndIndex.get(i) + 1, mp.getCon().length());
+                        String str2 = mp.getCon().substring(arrayEndIndex.get(i) + 1);
                         createTextView(str2);
                     } else {
                         String str3 = mp.getCon().substring(arrayEndIndex.get(i) + 1, arrayStartIndex.get(i + 1));
@@ -95,6 +96,7 @@ public class ContentDownloadAdapter {
                     });
                     Thread.sleep(100);
                 } catch (InterruptedException e) {
+                    Toast.makeText(context, R.string.error, Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -122,7 +124,6 @@ public class ContentDownloadAdapter {
         textViewNm.setLayoutParams(param);
         listView.addView(textViewNm);
     }
-
 
     public String checkTextEdit() {
         ArrayList<Integer> strImgStartIndex = new ArrayList<>();

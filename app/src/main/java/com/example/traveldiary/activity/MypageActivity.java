@@ -2,6 +2,7 @@ package com.example.traveldiary.activity;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
@@ -10,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 
 import com.example.traveldiary.R;
 import com.example.traveldiary.fragment.FragmentBoard;
@@ -21,19 +23,27 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.Objects;
 
 public class MypageActivity extends AppCompatActivity {
     FragmentBoard fragmentBoard;
     FragmentBookmark fragmentBookmark;
-    private DatabaseReference mDatabase;
+    @SuppressLint("StaticFieldLeak")
     public static TextView postCount;
+    @SuppressLint("StaticFieldLeak")
+    public static TextView bookmarkCount;
+    private FragmentManager fragmentManager;
 
     @Override
-    protected void onStart() {
-        super.onStart();
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_mypage);
+
         TextView nickName = findViewById(R.id.nickName);
-        mDatabase = FirebaseDatabase.getInstance().getReference("UI");
-        mDatabase.child("users").child(FirebaseAuth.getInstance().getUid()).child("info").child("userNickName").addListenerForSingleValueEvent(new ValueEventListener() {
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("UI");
+        mDatabase.child("users").child(Objects.requireNonNull(FirebaseAuth.getInstance().getUid())).child("info").child("userNickName").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 nickName.setText(String.valueOf(snapshot.getValue()));
@@ -43,17 +53,11 @@ public class MypageActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError error) {
             }
         });
-        fragmentBoard = new FragmentBoard();
-        fragmentBookmark = new FragmentBookmark();
-        getSupportFragmentManager().beginTransaction().replace(R.id.container, fragmentBoard).commit();
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_mypage);
 
         postCount = findViewById(R.id.postCount);
+        bookmarkCount = findViewById(R.id.bookmarkCount);
+        loadDataCount();    //bookmark 게시물 개수 불러오기.
+        fragmentManager = getSupportFragmentManager();
 
         TextView logoutBtn = findViewById(R.id.logoutBtn);
         logoutBtn.setOnClickListener(v -> {
@@ -66,7 +70,7 @@ public class MypageActivity extends AppCompatActivity {
         });
 
         fragmentBoard = new FragmentBoard();
-        fragmentBookmark = new FragmentBookmark();
+        fragmentManager.beginTransaction().replace(R.id.container, fragmentBoard).commit();
 
         TabLayout tabs = findViewById(R.id.tabs);
         tabs.addTab(tabs.newTab().setText(R.string.mypage_boarder));
@@ -76,16 +80,26 @@ public class MypageActivity extends AppCompatActivity {
             public void onTabSelected(TabLayout.Tab tab) {
                 int position = tab.getPosition();
                 if (position == 0) {
-                    //프레그먼트 instance가 종료가 안되어 누수가 일어나 show와 hide로 처리
-                    getSupportFragmentManager().beginTransaction()
-                            .show(fragmentBoard)
-                            .hide(fragmentBookmark)
-                            .commit();
+                    // position = 0: fragmentBoard 의미함.
+                    if (fragmentBoard == null) {
+                        fragmentBoard = new FragmentBoard();
+                        fragmentManager.beginTransaction().add(R.id.container, fragmentBoard).commit();
+                    } else {
+                        getSupportFragmentManager().beginTransaction()
+                                .show(fragmentBoard)
+                                .hide(fragmentBookmark)
+                                .commit();
+                    }
                 } else {
-                    getSupportFragmentManager().beginTransaction()
-                            .show(fragmentBookmark)
-                            .hide(fragmentBoard)
-                            .commit();
+                    if (fragmentBookmark == null) {
+                        fragmentBookmark = new FragmentBookmark();
+                        fragmentManager.beginTransaction().add(R.id.container, fragmentBookmark).commit();
+                    } else {
+                        getSupportFragmentManager().beginTransaction()
+                                .show(fragmentBookmark)
+                                .hide(fragmentBoard)
+                                .commit();
+                    }
                 }
             }
 
@@ -112,6 +126,13 @@ public class MypageActivity extends AppCompatActivity {
         });
     }
 
+    //bookmark 게시물 개수를 불러오는 코드
+    private void loadDataCount() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("data").whereArrayContains("bookmark", Objects.requireNonNull(FirebaseAuth.getInstance().getUid())).get().
+                addOnSuccessListener(queryDocumentSnapshots -> bookmarkCount.setText(String.valueOf(queryDocumentSnapshots.size())));
+    }
+
     //MypageActivity가 종료되었을때 fragment instance를 종료시킴
     @Override
     protected void onDestroy() {
@@ -122,6 +143,7 @@ public class MypageActivity extends AppCompatActivity {
         if (fragmentBookmark != null) {
             fragmentBookmark.onDestroy();
         }
-
+        postCount = null;
+        bookmarkCount = null;
     }
 }

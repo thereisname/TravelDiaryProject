@@ -1,7 +1,6 @@
 package com.example.traveldiary.activity;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.widget.Button;
 
@@ -50,12 +49,10 @@ public class StartViewActivity extends AppCompatActivity {
     // 권한 체크
     private void permissionCheck() {
         // sdk 23버전 이하 버전에서는 permission이 필요하지 않음
-        if (Build.VERSION.SDK_INT >= 23) {
-            // 클래스 객체 생성
-            permission = new PermissionSupport(this, this);
-            // 권한 체크한 후에 리턴이 false일 경우 권한 요청을 해준다.
-            if (!permission.checkPermission()) permission.requestPermission();
-        }
+        // 클래스 객체 생성
+        permission = new PermissionSupport(this, this);
+        // 권한 체크한 후에 리턴이 false일 경우 권한 요청을 해준다.
+        if (!permission.checkPermission()) permission.requestPermission();
     }
 
     // Request Permission에 대한 결과 값을 받는다.
