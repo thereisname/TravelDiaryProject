@@ -4,6 +4,8 @@ import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -19,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.traveldiary.ProgressDialog;
 import com.example.traveldiary.R;
 import com.example.traveldiary.adapter.ContentUploadAdapter;
 import com.google.firebase.auth.FirebaseAuth;
@@ -38,12 +41,16 @@ public class UploadBoardActivity extends AppCompatActivity {
     private TextView mPreview;
     private Uri filePath;
     private FirebaseFirestore db;
-
+    ProgressDialog customProgressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload_board);
         db = FirebaseFirestore.getInstance();
+
+        customProgressDialog = new ProgressDialog(this);
+        customProgressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        customProgressDialog.setCancelable(false);
 
         // Create a storage reference from our app
         mEditor = findViewById(R.id.editor);
@@ -115,6 +122,7 @@ public class UploadBoardActivity extends AppCompatActivity {
     }
 
     public void save() {
+        customProgressDialog.show();
         Map<String, Object> info = (Map<String, Object>) getIntent().getSerializableExtra("info");
         Map<String, Object> item = itemCustom(info);
         ContentUploadAdapter contentUploadAdapter = new ContentUploadAdapter(uriArrayList, getApplicationContext());
@@ -125,6 +133,8 @@ public class UploadBoardActivity extends AppCompatActivity {
                 contentUploadAdapter.uploadImage(getID, (Uri) info.get("mainImage"));
             String changeText = contentUploadAdapter.changeText(mEditor.getHtml());
             documentReference.update("con", changeText);
+
+            customProgressDialog.dismiss();
 
             Intent intent = new Intent(this, MainViewActivity.class);
             intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP);

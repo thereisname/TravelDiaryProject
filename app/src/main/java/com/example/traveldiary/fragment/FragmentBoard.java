@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -182,16 +183,35 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
 
     // 게시물 삭제 메서드.
     public void deleteBoard(String docID, Dialog dialog, int position, int imageCount) {
-        db.collection("data").document(docID).delete().addOnSuccessListener(unused -> {
-            for (int i = 0; i < imageCount; i++) {
-                StorageReference desertRef = storageReference.child("Image/" + docID + "/").child("contentImage" + i + ".jpg");
+        final Dialog dialog2 = new Dialog(getActivity());
+        dialog2.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog2.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog2.setContentView(R.layout.dialog_board_delete);
+        dialog2.getWindow().setGravity(Gravity.BOTTOM);
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(dialog2.getWindow().getAttributes());
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        Window window = dialog2.getWindow();
+        window.setAttributes(lp);
+
+        dialog2.show();
+
+        dialog2.findViewById(R.id.confirm_button).setOnClickListener(v -> {
+            db.collection("data").document(docID).delete().addOnSuccessListener(unused -> {
+                for (int i = 0; i < imageCount; i++) {
+                    StorageReference desertRef = storageReference.child("Image/" + docID + "/").child("contentImage" + i + ".jpg");
+                    desertRef.delete();
+                }
+                StorageReference desertRef = storageReference.child("Image/" + docID + "/").child("MainImage.jpg");
                 desertRef.delete();
-            }
-            StorageReference desertRef = storageReference.child("Image/" + docID + "/").child("MainImage.jpg");
-            desertRef.delete();
-            dialog.dismiss();
-            adapter.removeData(position);
-            Toast.makeText(getActivity().getApplicationContext(), R.string.mypage_board_deleted_successful, Toast.LENGTH_SHORT).show();
-        }).addOnFailureListener(command -> Toast.makeText(getActivity().getApplicationContext(), R.string.mypage_board_deleted_fail, Toast.LENGTH_SHORT).show());
+                dialog2.dismiss();
+                dialog.dismiss();
+                adapter.removeData(position);
+                Toast.makeText(getActivity().getApplicationContext(), R.string.mypage_board_deleted_successful, Toast.LENGTH_SHORT).show();
+            }).addOnFailureListener(command -> Toast.makeText(getActivity().getApplicationContext(), R.string.mypage_board_deleted_fail, Toast.LENGTH_SHORT).show());
+        });
+        dialog2.findViewById(R.id.fail_button).setOnClickListener(v -> dialog2.dismiss());
+
     }
 }
