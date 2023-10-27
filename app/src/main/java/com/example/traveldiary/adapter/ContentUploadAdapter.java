@@ -69,21 +69,23 @@ public class ContentUploadAdapter {
                         .addOnSuccessListener(uri1 -> Toast.makeText(context, R.string.upload_image_successful, Toast.LENGTH_SHORT).show()))
                 .addOnFailureListener(e -> Toast.makeText(context, R.string.upload_image_fail, Toast.LENGTH_SHORT).show());
     }
-
-    public void uploadEditImage(String docID, int imageCount) {
+    //richEditer에서 수정하기 버튼을 클릭시 실행할 함수, version을 올려서 리턴함
+    public Integer uploadEditImage(String docID, int imageCount, int version) {
+        int mVersion = version+1;
         StorageReference storageRef = FirebaseStorage.getInstance().getReference();
-        for (int i = 0; i < imageCount; i++) {
-            StorageReference desertRef = storageRef.child("Image/" + docID + "/").child("contentImage" + i + ".jpg");
-            desertRef.delete();
-        }
         // 다수의 이미지를 넣기 위해 for문 사용
         for (int index = 0; index < uriArrayList.size(); index++) {
             // content 이미지들 DB에 올리기.
-            StorageReference imgRef = storageRef.child("Image").child(docID).child("contentImage" + index + "." + getFileExtension(uriArrayList.get(index)));
+            StorageReference imgRef = storageRef.child("Image").child(docID).child("contentImage" + mVersion + index + "." + getFileExtension(uriArrayList.get(index)));
             imgRef.putFile(uriArrayList.get(index)).addOnSuccessListener(taskSnapshot -> imgRef.getDownloadUrl()
                             .addOnSuccessListener(uri1 -> Toast.makeText(context, R.string.upload_image_successful, Toast.LENGTH_SHORT).show()))
                     .addOnFailureListener(e -> Toast.makeText(context, R.string.upload_image_fail, Toast.LENGTH_SHORT).show());
         }
+        for (int i = 0; i < imageCount; i++) {
+            StorageReference desertRef = storageRef.child("Image/" + docID + "/").child("contentImage" + version + i + ".jpg");
+            desertRef.delete();
+        }
+        return mVersion;
     }
 
     // 이미지 형태 가져오는 함수

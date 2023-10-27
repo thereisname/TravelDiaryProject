@@ -1,10 +1,14 @@
 package com.example.traveldiary.fragment;
 
+import static android.app.Activity.RESULT_OK;
+
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,11 +21,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.traveldiary.OnItemClickListener;
 import com.example.traveldiary.R;
 import com.example.traveldiary.activity.MypageActivity;
@@ -44,6 +52,8 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
     private BoardValueAdapter adapter;
     private FirebaseFirestore db;
     private StorageReference storageReference;
+    private ActivityResultLauncher<Intent> activityResultLauncher;
+    private  RichEditor mEditor;
     LinearLayout content;
     ContentDownloadAdapter contentDownloadAdapter;
 
@@ -62,6 +72,19 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
 
         db = FirebaseFirestore.getInstance();
 
+        activityResultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == RESULT_OK && result != null) {
+                        Glide
+                                .with(getContext()).load(result.getData().getData())
+                                .apply(RequestOptions.overrideOf(250, 300))
+                                .centerCrop()
+                                .override(320, 240);
+                        // 이미지 크기를 4:3으로 저장
+                        mEditor.insertImage(String.valueOf(result.getData().getData()), " ", 320);
+                    }
+                });
         loadData();
 
         return v;
@@ -153,7 +176,7 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
         window.setAttributes(lp);
 
         EditText title = dialog.findViewById(R.id.title);
-        RichEditor mEditor = dialog.findViewById(R.id.editor);
+        mEditor = dialog.findViewById(R.id.editor);
 
         mEditor.setEditorHeight(200);
         mEditor.setEditorFontSize(18);
@@ -163,12 +186,41 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
         mEditor.setHtml(contentDownloadAdapter.checkTextEdit());
         dialog.show();
 
+        // 갤러리에서 사진 가져오기
+        dialog.findViewById(R.id.action_insert_image).setOnClickListener(v->{
+            Intent intent = new Intent(Intent.ACTION_PICK);
+            intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+            intent.setAction(Intent.ACTION_PICK);
+            activityResultLauncher.launch(intent);
+        });
+
+        // rich메뉴들 선택시 적용사항들
+        dialog.findViewById(R.id.action_undo).setOnClickListener(v -> mEditor.undo());
+        dialog.findViewById(R.id.action_redo).setOnClickListener(v -> mEditor.redo());
+
+        dialog.findViewById(R.id.action_bold).setOnClickListener(v -> mEditor.setBold());
+
+        dialog.findViewById(R.id.action_italic).setOnClickListener(v -> mEditor.setItalic());
+
+        dialog.findViewById(R.id.action_strikethrough).setOnClickListener(v -> mEditor.setStrikeThrough());
+
+        dialog.findViewById(R.id.action_underline).setOnClickListener(v -> mEditor.setUnderline());
+
+        dialog.findViewById(R.id.action_indent).setOnClickListener(v ->
+                mEditor.setIndent());
+
+        dialog.findViewById(R.id.action_outdent).setOnClickListener(v ->
+                mEditor.setOutdent());
+
+
         // '수정하기' 버튼 클릭 시 DB 업데이트.
         dialog.findViewById(R.id.updateBtn).setOnClickListener(v -> {
+
             item.setTitle(title.getText().toString());
             db.collection("data").document(item.getBoardID()).update(
                     "title", item.getTitle()
             ).addOnSuccessListener(command -> {
+//                 contentDownloadAdapter.uploadDate(mEditor.getHtml(), item.getVersion);
                 adapter.updateData(position);
                 dialog.dismiss();
                 Intent intent = new Intent(getContext(), UpdateCalendarActivity.class);
@@ -179,6 +231,8 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
             });
         });
     }
+
+
 
     // 게시물 삭제 메서드.
     public void deleteBoard(String docID, Dialog dialog, int position, int imageCount) {
