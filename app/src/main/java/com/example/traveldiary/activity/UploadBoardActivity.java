@@ -39,8 +39,7 @@ public class UploadBoardActivity extends AppCompatActivity {
     private TextView mPreview;
     private Uri filePath;
     private FirebaseFirestore db;
-    private ArrayList<Integer> arrayStartIndex = new ArrayList<Integer>();
-    private ArrayList<Integer> arrayEndIndex = new ArrayList<Integer>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
