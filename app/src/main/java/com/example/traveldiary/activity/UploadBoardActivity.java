@@ -156,6 +156,8 @@ public class UploadBoardActivity extends AppCompatActivity {
         item.put("hashTag", info.get("hashTag"));
         item.put("userToken", FirebaseAuth.getInstance().getUid());
         item.put("route", info.get("route"));
+        item.put("version", 0);
+        item.put("CorrectedDate", "");
 
         return item;
     }
