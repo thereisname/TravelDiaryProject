@@ -26,10 +26,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Design.NoActionBar">
 
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAmYMnp-4LaoYXTgbt2eQrthTZnEyWkRgM" />
+        <activity
+            android:name=".NoticeActivity"
+            android:exported="false" />
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />

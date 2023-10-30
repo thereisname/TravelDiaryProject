@@ -29,6 +29,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
 import com.bumptech.glide.Glide;
+import com.example.traveldiary.NoticeActivity;
 import com.example.traveldiary.ProgressDialog;
 import com.example.traveldiary.R;
 import com.example.traveldiary.SHA256;
@@ -213,7 +214,10 @@ public class MypageActivity extends AppCompatActivity {
 
         dialog.show();
 
-        dialog.findViewById(R.id.noticeLayout).setOnClickListener(v -> Toast.makeText(this, "공지가 없어요", Toast.LENGTH_SHORT).show());
+        dialog.findViewById(R.id.noticeLayout).setOnClickListener(v -> {
+            startActivity(new Intent(this, NoticeActivity.class));
+            dialog.dismiss();
+        });
 
         dialog.findViewById(R.id.changeProfileLayout).setOnClickListener(v -> {
             onClickSelectedChangeProfile();
