@@ -96,6 +96,8 @@
     <string name="setting_config">변경하기</string>
     <string name="setting_deleteAccount_text">This is a permanent action and it can\'t be undone. After your delete your account no one will be able to recover it.</string>
     <string name="setting_deleteAccount_text_agree">I understand this action is permanent and no one will be able to undo it.</string>
+    <string name="setting_newPw_hint">새 비밀번호</string>
+    <string name="setting_newPwRe_hint">새 비밀번호 확인</string>
 
     <!-- Toast -->
     <string name="login_fail">Authentication failed.</string>
