@@ -29,6 +29,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
 import com.bumptech.glide.Glide;
+import com.example.traveldiary.NoticeActivity;
+import com.example.traveldiary.ProgressDialog;
 import com.example.traveldiary.R;
 import com.example.traveldiary.SHA256;
 import com.example.traveldiary.fragment.FragmentBoard;
@@ -65,6 +67,7 @@ public class MypageActivity extends AppCompatActivity {
     private ImageView profileImage;
     private ActivityResultLauncher<Intent> activityResultLauncher;
     private boolean isImage;
+    ProgressDialog customProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -155,6 +158,10 @@ public class MypageActivity extends AppCompatActivity {
                     }
                 });
 
+        customProgressDialog = new ProgressDialog(this);
+        customProgressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        customProgressDialog.setCancelable(false);
+
         ImageView home = findViewById(R.id.home);
         home.setOnClickListener(v -> {
             finish();
@@ -207,7 +214,10 @@ public class MypageActivity extends AppCompatActivity {
 
         dialog.show();
 
-        dialog.findViewById(R.id.noticeLayout).setOnClickListener(v -> Toast.makeText(this, "공지가 없어요", Toast.LENGTH_SHORT).show());
+        dialog.findViewById(R.id.noticeLayout).setOnClickListener(v -> {
+            startActivity(new Intent(this, NoticeActivity.class));
+            dialog.dismiss();
+        });
 
         dialog.findViewById(R.id.changeProfileLayout).setOnClickListener(v -> {
             onClickSelectedChangeProfile();
@@ -390,23 +400,33 @@ public class MypageActivity extends AppCompatActivity {
 
     // onClickSelectedChangeProfile()에서(프로필 변경) 닉네임과 이미지를 변경할 때 사용하는 메소드
     public void changeProfile(String nickName, Dialog dialog) {
+        customProgressDialog.show();
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("userNickName", nickName);
+
+        mDatabase.child("users").child(Objects.requireNonNull(FirebaseAuth.getInstance().getUid())).child("info").updateChildren(hashMap);
+
         if (isImage) {
             StorageReference storageRef = FirebaseStorage.getInstance().getReference();
             StorageReference desertRef = storageRef.child("Profile/" + FirebaseAuth.getInstance().getUid() + "/").child("ProfileImage.jpg");
             desertRef.delete();
             StorageReference imgRef = storageRef.child("Profile").child(FirebaseAuth.getInstance().getUid()).child("ProfileImage" + "." + getFileExtension(filePath));
-            imgRef.putFile(filePath);
-        }
-        HashMap<String, Object> hashMap = new HashMap<>();
-        hashMap.put("userNickName", nickName);
-
-        mDatabase.child("users").child(Objects.requireNonNull(FirebaseAuth.getInstance().getUid())).child("info").updateChildren(hashMap).addOnSuccessListener(command -> {
+            imgRef.putFile(filePath).addOnSuccessListener(command -> {
+                Intent intent = new Intent(this, MypageActivity.class);
+                intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                Toast.makeText(this, R.string.mypage_change_profile_success, Toast.LENGTH_SHORT).show();
+                customProgressDialog.dismiss();
+                dialog.dismiss();
+            });
+        } else {
             Intent intent = new Intent(this, MypageActivity.class);
             intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
             Toast.makeText(this, R.string.mypage_change_profile_success, Toast.LENGTH_SHORT).show();
+            customProgressDialog.dismiss();
             dialog.dismiss();
-        });
+        }
     }
 
     private String getFileExtension(Uri uri) {

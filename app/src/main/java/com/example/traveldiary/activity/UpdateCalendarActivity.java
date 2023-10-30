@@ -32,6 +32,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -103,7 +105,10 @@ public class UpdateCalendarActivity extends AppCompatActivity {
                             .addOnSuccessListener(uri1 -> Toast.makeText(this, R.string.upload_image_successful, Toast.LENGTH_SHORT).show()))
                     .addOnFailureListener(e -> Toast.makeText(this, R.string.upload_image_fail, Toast.LENGTH_SHORT).show());
         }
+        LocalDateTime now = LocalDateTime.now();
+        String formatNow = now.format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm:ss"));
         doc.update("hashTag", editHashTagCou());
+        doc.update("correctedDate", formatNow);
 
         Intent intent = new Intent(this, MypageActivity.class);
         intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP);
