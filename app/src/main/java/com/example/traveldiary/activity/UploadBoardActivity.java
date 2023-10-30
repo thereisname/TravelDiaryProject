@@ -95,7 +95,6 @@ public class UploadBoardActivity extends AppCompatActivity {
                         // 이미지 크기를 4:3으로 저장
                         filePath = result.getData().getData();
                         mEditor.insertImage(String.valueOf(result.getData().getData()), " ", 320);
-                        uriArrayList.add(filePath);
                     }
                 });
 
@@ -125,17 +124,17 @@ public class UploadBoardActivity extends AppCompatActivity {
         customProgressDialog.show();
         Map<String, Object> info = (Map<String, Object>) getIntent().getSerializableExtra("info");
         Map<String, Object> item = itemCustom(info);
+
         ContentUploadAdapter contentUploadAdapter = new ContentUploadAdapter(uriArrayList, getApplicationContext());
+        String changeText = contentUploadAdapter.changeText(mEditor.getHtml());
         db.collection("data").add(item).addOnSuccessListener(documentReference -> {
             String getID = documentReference.getId();
             documentReference.update("boardID", getID);
+            documentReference.update("con", changeText);
             if (filePath != null)
                 contentUploadAdapter.uploadImage(getID, (Uri) info.get("mainImage"));
-            String changeText = contentUploadAdapter.changeText(mEditor.getHtml());
-            documentReference.update("con", changeText);
-
             customProgressDialog.dismiss();
-
+          
             Intent intent = new Intent(this, MainViewActivity.class);
             intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);

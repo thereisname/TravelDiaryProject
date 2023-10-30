@@ -3,6 +3,7 @@ package com.example.traveldiary.adapter;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.net.Uri;
+import android.util.Log;
 import android.webkit.MimeTypeMap;
 import android.widget.Toast;
 
@@ -13,10 +14,16 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
+import jp.wasabeef.richeditor.RichEditor;
+
 public class ContentUploadAdapter {
     private ArrayList<Uri> uriArrayList = new ArrayList<>();
     private FirebaseFirestore db;
     private Context context;
+    private ArrayList<Integer> strImgStartIndex = new ArrayList<>();
+    private ArrayList<Integer> strImgEndIndex = new ArrayList<>();
+
+    public ContentUploadAdapter(){};
 
     public ContentUploadAdapter(ArrayList<Uri> uriArrayList, Context context) {
         this.uriArrayList = uriArrayList;
@@ -25,9 +32,6 @@ public class ContentUploadAdapter {
     }
 
     public String changeText(String str) {
-        ArrayList<Integer> strImgStartIndex = new ArrayList<>();
-        ArrayList<Integer> strImgEndIndex = new ArrayList<>();
-
         // 이미지 링크 추출하는 loop
         for (int i = 0; i < str.length(); i++) {
             if (str.charAt(i) == '<' && str.charAt(i + 1) == 'i') {
@@ -36,6 +40,11 @@ public class ContentUploadAdapter {
             if (str.charAt(i) == '>' && str.charAt(i - 2) == '0' && str.charAt(i - 3) == '2') {
                 strImgEndIndex.add(i - 21);
             }
+        }
+        //문자에서 Uri를 추출
+        for(int i = 0; i < strImgStartIndex.size(); i++){
+            Uri img = Uri.parse(str.substring(strImgStartIndex.get(i), strImgEndIndex.get(i)));
+            uriArrayList.add(img);
         }
         // 이미지 링크 자리에 image 번호로 대체
         int count = strImgStartIndex.size();
@@ -61,6 +70,25 @@ public class ContentUploadAdapter {
         mImgRef.putFile(mainImage).addOnSuccessListener(taskSnapshot -> mImgRef.getDownloadUrl()
                         .addOnSuccessListener(uri1 -> Toast.makeText(context, R.string.upload_image_successful, Toast.LENGTH_SHORT).show()))
                 .addOnFailureListener(e -> Toast.makeText(context, R.string.upload_image_fail, Toast.LENGTH_SHORT).show());
+    }
+  
+    //richEditer에서 수정하기 버튼을 클릭시 실행할 함수, version을 올려서 리턴함
+    public Integer uploadEditImage(String docID, int imageCount, int version) {
+        int mVersion = version+1;
+        StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+        // 다수의 이미지를 넣기 위해 for문 사용
+        for (int index = 0; index < uriArrayList.size(); index++) {
+            // content 이미지들 DB에 올리기.
+            StorageReference imgRef = storageRef.child("Image").child(docID).child("contentImage" + mVersion + index + "." + getFileExtension(uriArrayList.get(index)));
+            imgRef.putFile(uriArrayList.get(index)).addOnSuccessListener(taskSnapshot -> imgRef.getDownloadUrl()
+                            .addOnSuccessListener(uri1 -> Toast.makeText(context, R.string.upload_image_successful, Toast.LENGTH_SHORT).show()))
+                    .addOnFailureListener(e -> Toast.makeText(context, R.string.upload_image_fail, Toast.LENGTH_SHORT).show());
+        }
+        for (int i = 0; i < imageCount; i++) {
+            StorageReference desertRef = storageRef.child("Image/" + docID + "/").child("contentImage" + version + i + ".jpg");
+            desertRef.delete();
+        }
+        return mVersion;
     }
 
     // 이미지 형태 가져오는 함수

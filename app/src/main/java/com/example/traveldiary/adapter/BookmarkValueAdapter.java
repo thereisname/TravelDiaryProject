@@ -101,10 +101,17 @@ public class BookmarkValueAdapter extends RecyclerView.Adapter<BookmarkValueAdap
             title.setText(item.getTitle());
             content.setText(Html.fromHtml(item.getCon(), Html.FROM_HTML_MODE_LEGACY));
             StorageReference storageReference = FirebaseStorage.getInstance().getReference();
-            storageReference.child("/Image/" + item.getBoardID() + "/MainImage.jpg").getDownloadUrl().addOnSuccessListener(command ->
+            storageReference.child("/Image/" + item.getBoardID() + "/MainImage.jpg").getDownloadUrl().addOnSuccessListener(jpgCommand -> {
+                Glide.with(context)
+                        .load(jpgCommand)
+                        .into(image);
+            }).addOnFailureListener(jpgFailure -> {
+                storageReference.child("/Image/" + item.getBoardID() + "/MainImage.png").getDownloadUrl().addOnSuccessListener(pngCommand -> {
                     Glide.with(context)
-                            .load(command)
-                            .into(image));
+                            .load(pngCommand)
+                            .into(image);
+                });
+            });
             hashTag.setText(item.getHashTag());
         }
     }

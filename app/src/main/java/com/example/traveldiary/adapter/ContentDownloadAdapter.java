@@ -1,5 +1,6 @@
 package com.example.traveldiary.adapter;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.graphics.Color;
 import android.net.Uri;
@@ -7,14 +8,19 @@ import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
 import com.bumptech.glide.Glide;
 import com.example.traveldiary.R;
 import com.example.traveldiary.value.MyPageValue;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -28,6 +34,7 @@ public class ContentDownloadAdapter {
     private Context context;
     private MyPageValue mp;
     ArrayList<Uri> imageUri;
+
 
     public ContentDownloadAdapter(Context context, LinearLayout listView, MyPageValue mp) {
         this.context = context;
@@ -88,6 +95,7 @@ public class ContentDownloadAdapter {
         imageUri = new ArrayList<>();
         StorageReference storageReference = FirebaseStorage.getInstance().getReference();
         storageReference.child("/Image/" + boardID).listAll().addOnSuccessListener(listResult -> {
+            Log.d("로그", String.valueOf(listResult.getItems().size()));
             for (int i = 1; i < listResult.getItems().size(); i++) {
                 StorageReference item = listResult.getItems().get(i);
                 int finalI = i - 1;
@@ -148,4 +156,6 @@ public class ContentDownloadAdapter {
         }
         return mp.getCon();
     }
+
+
 }

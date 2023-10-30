@@ -1,10 +1,13 @@
 package com.example.traveldiary.fragment;
 
+import static android.app.Activity.RESULT_OK;
+
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,17 +21,22 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.traveldiary.OnItemClickListener;
 import com.example.traveldiary.R;
 import com.example.traveldiary.activity.MypageActivity;
 import com.example.traveldiary.activity.UpdateCalendarActivity;
 import com.example.traveldiary.adapter.BoardValueAdapter;
 import com.example.traveldiary.adapter.ContentDownloadAdapter;
+import com.example.traveldiary.adapter.ContentUploadAdapter;
 import com.example.traveldiary.value.MyPageValue;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -45,6 +53,9 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
     private BoardValueAdapter adapter;
     private FirebaseFirestore db;
     private StorageReference storageReference;
+    private ActivityResultLauncher<Intent> activityResultLauncher;
+    private  RichEditor mEditor;
+    private int imageCount = 0;
     LinearLayout content;
     ContentDownloadAdapter contentDownloadAdapter;
 
@@ -63,6 +74,19 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
 
         db = FirebaseFirestore.getInstance();
 
+        activityResultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == RESULT_OK && result != null) {
+                        Glide
+                                .with(getContext()).load(result.getData().getData())
+                                .apply(RequestOptions.overrideOf(250, 300))
+                                .centerCrop()
+                                .override(320, 240);
+                        // 이미지 크기를 4:3으로 저장
+                        mEditor.insertImage(String.valueOf(result.getData().getData()), " ", 320);
+                    }
+                });
         loadData();
 
         return v;
@@ -113,7 +137,7 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
         date.setText(getString(R.string.uploadBoard_date, item.getDate()));
 
         contentDownloadAdapter = new ContentDownloadAdapter(getActivity(), content, item);
-        int imageCount = contentDownloadAdapter.checkText();
+        imageCount = contentDownloadAdapter.checkText();
 
         dialog.show();
         ImageView closeButton = dialog.findViewById(R.id.closeButton);
@@ -154,7 +178,7 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
         window.setAttributes(lp);
 
         EditText title = dialog.findViewById(R.id.title);
-        RichEditor mEditor = dialog.findViewById(R.id.editor);
+        mEditor = dialog.findViewById(R.id.editor);
 
         mEditor.setEditorHeight(200);
         mEditor.setEditorFontSize(18);
@@ -164,11 +188,46 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
         mEditor.setHtml(contentDownloadAdapter.checkTextEdit());
         dialog.show();
 
+        // 갤러리에서 사진 가져오기
+        dialog.findViewById(R.id.action_insert_image).setOnClickListener(v->{
+            Intent intent = new Intent(Intent.ACTION_PICK);
+            intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+            intent.setAction(Intent.ACTION_PICK);
+            activityResultLauncher.launch(intent);
+        });
+
+        // rich메뉴들 선택시 적용사항들
+        dialog.findViewById(R.id.action_undo).setOnClickListener(v -> mEditor.undo());
+        dialog.findViewById(R.id.action_redo).setOnClickListener(v -> mEditor.redo());
+
+        dialog.findViewById(R.id.action_bold).setOnClickListener(v -> mEditor.setBold());
+
+        dialog.findViewById(R.id.action_italic).setOnClickListener(v -> mEditor.setItalic());
+
+        dialog.findViewById(R.id.action_strikethrough).setOnClickListener(v -> mEditor.setStrikeThrough());
+
+        dialog.findViewById(R.id.action_underline).setOnClickListener(v -> mEditor.setUnderline());
+
+        dialog.findViewById(R.id.action_indent).setOnClickListener(v ->
+                mEditor.setIndent());
+
+        dialog.findViewById(R.id.action_outdent).setOnClickListener(v ->
+                mEditor.setOutdent());
+
+        // UploadAdapter가져오는 곳
+        ContentUploadAdapter contentUploadAdapter = new ContentUploadAdapter();
         // '수정하기' 버튼 클릭 시 DB 업데이트.
         dialog.findViewById(R.id.updateBtn).setOnClickListener(v -> {
+            // 변경된 글에서 이미지링크 추출 밑 이미지 제목 변경
+            mEditor.setHtml( contentUploadAdapter.changeText(mEditor.getHtml()));
+            // 변경된 글을 item.getCon()에 넣음
+            mEditor.setHtml(item.getCon());
+            int mVersion = contentUploadAdapter.uploadEditImage(item.getBoardID(), imageCount, item.getVersion());
+            // 버전 추가할시 넣을 것
             item.setTitle(title.getText().toString());
             db.collection("data").document(item.getBoardID()).update(
-                    "title", item.getTitle()
+                    "title", item.getTitle(), "con", item.getCon()
+                    , "version", item.getVersion()
             ).addOnSuccessListener(command -> {
                 adapter.updateData(position);
                 dialog.dismiss();
@@ -180,6 +239,7 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
             });
         });
     }
+
 
     // 게시물 삭제 메서드.
     public void deleteBoard(String docID, Dialog dialog, int position, int imageCount) {

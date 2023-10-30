@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import java.util.ArrayList;
 
 public class MyPageValue implements Parcelable {
+
     private String con;
     private String title;
     private ArrayList<String> hashTag;
