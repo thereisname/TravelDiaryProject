@@ -23,6 +23,8 @@ public class ContentUploadAdapter {
     private ArrayList<Integer> strImgStartIndex = new ArrayList<>();
     private ArrayList<Integer> strImgEndIndex = new ArrayList<>();
 
+    public ContentUploadAdapter(){};
+
     public ContentUploadAdapter(ArrayList<Uri> uriArrayList, Context context) {
         this.uriArrayList = uriArrayList;
         this.db = FirebaseFirestore.getInstance();
@@ -70,6 +72,7 @@ public class ContentUploadAdapter {
                 .addOnFailureListener(e -> Toast.makeText(context, R.string.upload_image_fail, Toast.LENGTH_SHORT).show());
     }
     //richEditer에서 수정하기 버튼을 클릭시 실행할 함수, version을 올려서 리턴함
+
     public Integer uploadEditImage(String docID, int imageCount, int version) {
         int mVersion = version+1;
         StorageReference storageRef = FirebaseStorage.getInstance().getReference();

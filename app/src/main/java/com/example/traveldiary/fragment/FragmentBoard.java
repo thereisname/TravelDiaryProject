@@ -36,6 +36,7 @@ import com.example.traveldiary.activity.MypageActivity;
 import com.example.traveldiary.activity.UpdateCalendarActivity;
 import com.example.traveldiary.adapter.BoardValueAdapter;
 import com.example.traveldiary.adapter.ContentDownloadAdapter;
+import com.example.traveldiary.adapter.ContentUploadAdapter;
 import com.example.traveldiary.value.MyPageValue;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -54,6 +55,7 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
     private StorageReference storageReference;
     private ActivityResultLauncher<Intent> activityResultLauncher;
     private  RichEditor mEditor;
+    private int imageCount = 0;
     LinearLayout content;
     ContentDownloadAdapter contentDownloadAdapter;
 
@@ -135,7 +137,7 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
         date.setText(getString(R.string.uploadBoard_date, item.getDate()));
 
         contentDownloadAdapter = new ContentDownloadAdapter(getActivity(), content, item);
-        int imageCount = contentDownloadAdapter.checkText();
+        imageCount = contentDownloadAdapter.checkText();
 
         dialog.show();
         ImageView closeButton = dialog.findViewById(R.id.closeButton);
@@ -212,15 +214,23 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
         dialog.findViewById(R.id.action_outdent).setOnClickListener(v ->
                 mEditor.setOutdent());
 
-
+        // UploadAdapter가져오는 곳
+        ContentUploadAdapter contentUploadAdapter = new ContentUploadAdapter();
         // '수정하기' 버튼 클릭 시 DB 업데이트.
         dialog.findViewById(R.id.updateBtn).setOnClickListener(v -> {
-
+            // 변경된 글에서 이미지링크 추출 밑 이미지 제목 변경
+            mEditor.setHtml( contentUploadAdapter.changeText(mEditor.getHtml()));
+            // 변경된 글을 item.getCon()에 넣음
+            mEditor.setHtml(item.getCon());
+            //int mVersion = contentUploadAdapter.uploadEditImage(item.getBoardID(), imageCount, item.version);
+            // 버전 추가할시 넣을 것
             item.setTitle(title.getText().toString());
             db.collection("data").document(item.getBoardID()).update(
-                    "title", item.getTitle()
+                    "title", item.getTitle(), "con", item.getCon()
+                    //,"version" , item.getVersion()
+                    //버전 추가할시 넣을 것
             ).addOnSuccessListener(command -> {
-//                 contentDownloadAdapter.uploadDate(mEditor.getHtml(), item.getVersion);
+
                 adapter.updateData(position);
                 dialog.dismiss();
                 Intent intent = new Intent(getContext(), UpdateCalendarActivity.class);
