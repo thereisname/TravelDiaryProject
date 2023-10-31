@@ -5,13 +5,17 @@ import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,8 +47,10 @@ public class UpdateCalendarActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private StorageReference storageReference;
     private TextView data_picker_text;
+    private LinearLayout listView;
     private boolean isChangeDate, isChangeImage;
     private Uri filePath;
+    private int count;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,11 +61,15 @@ public class UpdateCalendarActivity extends AppCompatActivity {
         storageReference = FirebaseStorage.getInstance().getReference();
         db = FirebaseFirestore.getInstance();
 
-        MyPageValue mp = new MyPageValue(getIntent().getStringArrayListExtra("hashTag"), getIntent().getStringExtra("date"), getIntent().getStringExtra("boardID"));
+        MyPageValue mp = new MyPageValue(getIntent().getStringArrayListExtra("hashTag"), getIntent().getStringExtra("date"), getIntent().getStringExtra("boardID"),getIntent().getStringArrayListExtra("route"));
         ImageButton dataRangeBtn = findViewById(R.id.dataRangeBtn);
         ImageView imageButton = findViewById(R.id.imageButton);
+        listView = findViewById(R.id.listView);
         data_picker_text = findViewById(R.id.data_picker_text);
         Button next = findViewById(R.id.next);
+
+        for (int i = 0; i < mp.getRoute().size(); i++)
+            routeEditor(i, mp.getRoute().get(i));
 
         data_picker_text.setText(mp.getDate());
         storageReference.child("/Image/" + mp.getBoardID() + "/MainImage.jpg").getDownloadUrl().addOnSuccessListener(command ->
@@ -91,7 +101,61 @@ public class UpdateCalendarActivity extends AppCompatActivity {
             intent.setAction(Intent.ACTION_PICK);
             activityResultLauncher.launch(intent);
         });
+
+        findViewById(R.id.addLoad).setOnClickListener(v -> addRouteEditor());
         next.setOnClickListener(v -> save(mp));
+    }
+
+    private void addRouteEditor() {
+        count += 1;
+        int dpValue = 300;
+        float density = getResources().getDisplayMetrics().density;
+        int pixelValue = (int) (dpValue * density);
+        EditText editText = new EditText(getApplicationContext());
+
+        editText.setHintTextColor(getColor(R.color.icon));
+        editText.setTextColor(getColor(R.color.text_gray));
+        editText.setId(count);
+        editText.setTextSize(12f);
+        editText.setHint("경로");
+        editText.setLinkTextColor(getColor(R.color.icon));
+        editText.setWidth(pixelValue);
+        editText.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.icon)));
+        editText.setTextAppearance(R.style.uploadCalender_rote);
+
+        ViewGroup.LayoutParams param = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+        );
+
+        editText.setLayoutParams(param);
+        listView.addView(editText);
+    }
+
+    private void routeEditor(int count, String route) {
+        int dpValue = 300;
+        float density = getResources().getDisplayMetrics().density;
+        int pixelValue = (int) (dpValue * density);
+        EditText editText = new EditText(getApplicationContext());
+
+        editText.setHintTextColor(getColor(R.color.icon));
+        editText.setTextColor(getColor(R.color.text_gray));
+        editText.setId(count);
+        editText.setTextSize(12f);
+        editText.setText(route);
+        editText.setLinkTextColor(getColor(R.color.icon));
+        editText.setWidth(pixelValue);
+        editText.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.icon)));
+        editText.setTextAppearance(R.style.uploadCalender_rote);
+
+        ViewGroup.LayoutParams param = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+        );
+
+        editText.setLayoutParams(param);
+        listView.addView(editText);
+        this.count = count;
     }
 
     private void save(MyPageValue mp) {
@@ -105,15 +169,24 @@ public class UpdateCalendarActivity extends AppCompatActivity {
                             .addOnSuccessListener(uri1 -> Toast.makeText(this, R.string.upload_image_successful, Toast.LENGTH_SHORT).show()))
                     .addOnFailureListener(e -> Toast.makeText(this, R.string.upload_image_fail, Toast.LENGTH_SHORT).show());
         }
+        if(mp.getRoute().size() != 0) doc.update("route", routeUpload(count));
         LocalDateTime now = LocalDateTime.now();
         String formatNow = now.format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm:ss"));
-        doc.update("hashTag", editHashTagCou());
-        doc.update("correctedDate", formatNow);
-
+        doc.update("hashTag", editHashTagCou(),
+                "correctedDate", formatNow);
         Intent intent = new Intent(this, MypageActivity.class);
         intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
         finish();
+    }
+
+    private ArrayList<String> routeUpload(int size) {
+        ArrayList<String> arrRoute = new ArrayList<>();
+        for (int i = 0; i <= size; i++) {
+            EditText editText = findViewById(i);
+            if (!editText.getText().toString().equals("")) arrRoute.add(editText.getText().toString());
+        }
+        return arrRoute;
     }
 
     private String getFileExtension(Uri uri) {

@@ -210,15 +210,7 @@
                 android:paddingTop="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView3">
-
-                <EditText
-                    android:id="@+id/et_load1"
-                    style="@style/uploadCalender_rote"
-                    android:layout_width="300dp"
-                    android:layout_height="wrap_content"
-                    android:hint="경로1" />
-            </LinearLayout>
+                app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/next"

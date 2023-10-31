@@ -235,6 +235,7 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
                 intent.putExtra("boardID", item.getBoardID());
                 intent.putExtra("hashTag", item.getHashTagArray());
                 intent.putExtra("date", item.getDate());
+                intent.putExtra("route", item.getRoute());
                 startActivity(intent);
             });
         });
