@@ -21,7 +21,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.example.traveldiary.ProgressDialog;
+import com.example.traveldiary.dialog.ProgressDialog;
 import com.example.traveldiary.R;
 import com.example.traveldiary.adapter.ContentUploadAdapter;
 import com.google.firebase.auth.FirebaseAuth;
@@ -29,14 +29,12 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import jp.wasabeef.richeditor.RichEditor;
 
 public class UploadBoardActivity extends AppCompatActivity {
-    private ArrayList<Uri> uriArrayList = new ArrayList<>();
     private RichEditor mEditor;
     private TextView mPreview;
     private Uri filePath;
@@ -125,7 +123,7 @@ public class UploadBoardActivity extends AppCompatActivity {
         Map<String, Object> info = (Map<String, Object>) getIntent().getSerializableExtra("info");
         Map<String, Object> item = itemCustom(info);
 
-        ContentUploadAdapter contentUploadAdapter = new ContentUploadAdapter(uriArrayList, getApplicationContext());
+        ContentUploadAdapter contentUploadAdapter = new ContentUploadAdapter(getApplicationContext());
         String changeText = contentUploadAdapter.changeText(mEditor.getHtml());
         db.collection("data").add(item).addOnSuccessListener(documentReference -> {
             String getID = documentReference.getId();
@@ -156,7 +154,7 @@ public class UploadBoardActivity extends AppCompatActivity {
         item.put("userToken", FirebaseAuth.getInstance().getUid());
         item.put("route", info.get("route"));
         item.put("version", 0);
-        item.put("CorrectedDate", "");
+        item.put("correctedDate", "");
 
         return item;
     }

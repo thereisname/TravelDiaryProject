@@ -30,7 +30,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.example.traveldiary.OnItemClickListener;
+import com.example.traveldiary.dialog.OnItemClickListener;
 import com.example.traveldiary.R;
 import com.example.traveldiary.activity.MypageActivity;
 import com.example.traveldiary.activity.UpdateCalendarActivity;
@@ -54,7 +54,7 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
     private FirebaseFirestore db;
     private StorageReference storageReference;
     private ActivityResultLauncher<Intent> activityResultLauncher;
-    private  RichEditor mEditor;
+    private RichEditor mEditor;
     private int imageCount = 0;
     LinearLayout content;
     ContentDownloadAdapter contentDownloadAdapter;
@@ -144,7 +144,7 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
         closeButton.setOnClickListener(v -> dialog.dismiss());
 
         ImageButton deleteButton = dialog.findViewById(R.id.deleteButton);
-        deleteButton.setOnClickListener(v -> deleteBoard(item.getBoardID(), dialog, position, imageCount));
+        deleteButton.setOnClickListener(v -> deleteBoard(item.getBoardID(), dialog, position, imageCount, item.getVersion()));
 
         ImageButton editButton = dialog.findViewById(R.id.editButton);
         editButton.setOnClickListener(v -> {
@@ -189,7 +189,7 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
         dialog.show();
 
         // 갤러리에서 사진 가져오기
-        dialog.findViewById(R.id.action_insert_image).setOnClickListener(v->{
+        dialog.findViewById(R.id.action_insert_image).setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_PICK);
             intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
             intent.setAction(Intent.ACTION_PICK);
@@ -208,26 +208,20 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
 
         dialog.findViewById(R.id.action_underline).setOnClickListener(v -> mEditor.setUnderline());
 
-        dialog.findViewById(R.id.action_indent).setOnClickListener(v ->
-                mEditor.setIndent());
+        dialog.findViewById(R.id.action_indent).setOnClickListener(v -> mEditor.setIndent());
 
-        dialog.findViewById(R.id.action_outdent).setOnClickListener(v ->
-                mEditor.setOutdent());
+        dialog.findViewById(R.id.action_outdent).setOnClickListener(v -> mEditor.setOutdent());
 
         // UploadAdapter가져오는 곳
-        ContentUploadAdapter contentUploadAdapter = new ContentUploadAdapter();
+        ContentUploadAdapter contentUploadAdapter = new ContentUploadAdapter(getActivity());
         // '수정하기' 버튼 클릭 시 DB 업데이트.
         dialog.findViewById(R.id.updateBtn).setOnClickListener(v -> {
-            // 변경된 글에서 이미지링크 추출 밑 이미지 제목 변경
-            mEditor.setHtml( contentUploadAdapter.changeText(mEditor.getHtml()));
-            // 변경된 글을 item.getCon()에 넣음
-            mEditor.setHtml(item.getCon());
-            int mVersion = contentUploadAdapter.uploadEditImage(item.getBoardID(), imageCount, item.getVersion());
-            // 버전 추가할시 넣을 것
             item.setTitle(title.getText().toString());
+//            item.setCon(contentUploadAdapter.changeText(mEditor.getHtml()));
+//            item.setVersion(contentUploadAdapter.uploadEditImage(item.getBoardID(), imageCount, item.getVersion()));
             db.collection("data").document(item.getBoardID()).update(
-                    "title", item.getTitle(), "con", item.getCon()
-                    , "version", item.getVersion()
+                    "title", item.getTitle(),
+                    "version", item.getVersion()
             ).addOnSuccessListener(command -> {
                 adapter.updateData(position);
                 dialog.dismiss();
@@ -241,9 +235,8 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
         });
     }
 
-
     // 게시물 삭제 메서드.
-    public void deleteBoard(String docID, Dialog dialog, int position, int imageCount) {
+    public void deleteBoard(String docID, Dialog dialog, int position, int imageCount, int version) {
         final Dialog dialog2 = new Dialog(getActivity());
         dialog2.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog2.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -261,7 +254,7 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
         dialog2.findViewById(R.id.confirm_button).setOnClickListener(v -> {
             db.collection("data").document(docID).delete().addOnSuccessListener(unused -> {
                 for (int i = 0; i < imageCount; i++) {
-                    StorageReference desertRef = storageReference.child("Image/" + docID + "/").child("contentImage" + i + ".jpg");
+                    StorageReference desertRef = storageReference.child("Image/" + docID + "/").child("contentImage" + version + i + ".jpg");
                     desertRef.delete();
                 }
                 StorageReference desertRef = storageReference.child("Image/" + docID + "/").child("MainImage.jpg");
@@ -273,6 +266,5 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
             }).addOnFailureListener(command -> Toast.makeText(getActivity().getApplicationContext(), R.string.mypage_board_deleted_fail, Toast.LENGTH_SHORT).show());
         });
         dialog2.findViewById(R.id.fail_button).setOnClickListener(v -> dialog2.dismiss());
-
     }
 }

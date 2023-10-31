@@ -1,4 +1,4 @@
-package com.example.traveldiary;
+package com.example.traveldiary.activity;
 
 import android.os.Bundle;
 import android.view.View;
@@ -7,7 +7,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.traveldiary.R;
 import com.example.traveldiary.adapter.NoticeAdapter;
+import com.example.traveldiary.dialog.OnNoticeClickListener;
 import com.example.traveldiary.value.NoticeValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -15,7 +17,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 
-public class NoticeActivity extends AppCompatActivity implements OnNoticeClickListener{
+public class NoticeActivity extends AppCompatActivity implements OnNoticeClickListener {
     private RecyclerView recyclerView;
     private NoticeAdapter adapter;
     private FirebaseFirestore db;

@@ -1,4 +1,4 @@
-package com.example.traveldiary;
+package com.example.traveldiary.dialog;
 
 import android.view.View;
 

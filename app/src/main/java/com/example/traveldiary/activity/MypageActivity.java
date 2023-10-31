@@ -29,8 +29,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
 import com.bumptech.glide.Glide;
-import com.example.traveldiary.NoticeActivity;
-import com.example.traveldiary.ProgressDialog;
+import com.example.traveldiary.dialog.ProgressDialog;
 import com.example.traveldiary.R;
 import com.example.traveldiary.SHA256;
 import com.example.traveldiary.fragment.FragmentBoard;

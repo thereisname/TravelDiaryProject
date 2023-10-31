@@ -13,7 +13,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.traveldiary.OnItemClickListener;
+import com.example.traveldiary.dialog.OnItemClickListener;
 import com.example.traveldiary.R;
 import com.example.traveldiary.activity.MypageActivity;
 import com.example.traveldiary.value.MyPageValue;

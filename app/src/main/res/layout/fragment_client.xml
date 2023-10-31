@@ -116,7 +116,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:fontFamily="@font/gangwon"
-                    android:text="* 코스 *"
+                    android:text="@string/main_route_title"
                     android:textColor="@color/black"
                     android:textSize="24sp"
                     android:visibility="gone"
@@ -130,15 +130,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="7dp"
                     android:layout_marginTop="20dp"
-
                     android:orientation="vertical"
-
                     android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/routeTitle">
-
-                </LinearLayout>
+                    app:layout_constraintTop_toBottomOf="@+id/routeTitle" />
 
                 <com.google.android.gms.maps.MapView
                     android:id="@+id/map"
@@ -149,8 +145,6 @@
                     android:visibility="gone"
                     app:layout_constraintTop_toBottomOf="@+id/routeView"
                     tools:layout_editor_absoluteX="17dp" />
-
-
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,6 +6,7 @@
         android:name="android.hardware.camera"
         android:required="false" />
 
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -24,18 +25,19 @@
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_icon_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Design.NoActionBar">
+        android:theme="@style/Theme.Design.NoActionBar"
+        android:usesCleartextTraffic="true">
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAmYMnp-4LaoYXTgbt2eQrthTZnEyWkRgM" />
-        <activity
-            android:name=".NoticeActivity"
-            android:exported="false" />
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
 
+        <activity
+            android:name=".activity.NoticeActivity"
+            android:exported="false" />
         <activity
             android:name=".activity.StartViewActivity"
             android:exported="false" />
@@ -52,16 +54,19 @@
             android:theme="@style/mainActivity_dataBtn" />
         <activity
             android:name=".fragment.FragmentBookmark"
-            android:exported="false" />
+            android:exported="false"
+            tools:ignore="Instantiatable" />
         <activity
             android:name=".fragment.FragmentBoard"
-            android:exported="false" />
+            android:exported="false"
+            tools:ignore="Instantiatable" />
         <activity
             android:name=".activity.MypageActivity"
             android:exported="false" />
         <activity
             android:name=".fragment.FragmentClient"
-            android:exported="false" />
+            android:exported="false"
+            tools:ignore="Instantiatable" />
         <activity
             android:name=".activity.MainViewActivity"
             android:exported="false"

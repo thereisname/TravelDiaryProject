@@ -7,11 +7,13 @@
  *
  * http://www.apache.org/licenses/LICENSE-2.0
  */
-package com.example.traveldiary;
+package com.example.traveldiary.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
 import android.view.Window;
+
+import com.example.traveldiary.R;
 
 public class ProgressDialog extends Dialog {
     public ProgressDialog(Context context) {

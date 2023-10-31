@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.traveldiary.OnNoticeClickListener;
+import com.example.traveldiary.dialog.OnNoticeClickListener;
 import com.example.traveldiary.R;
 import com.example.traveldiary.value.NoticeValue;
 

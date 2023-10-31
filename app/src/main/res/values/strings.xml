@@ -41,6 +41,7 @@
     <string name="main_dataPick_startText">시작일 : </string>
     <string name="main_dataPick_endText">종료일 : </string>
     <string name="main_dataPick_Btn">기간 선택</string>
+    <string name="main_route_title">** 코스 **</string>
 
     <string name="mainActivity_dataPick_title">Select dates</string>
 

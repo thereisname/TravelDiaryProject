@@ -19,7 +19,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.traveldiary.OnItemClickListener;
+import com.example.traveldiary.dialog.OnItemClickListener;
 import com.example.traveldiary.R;
 import com.example.traveldiary.adapter.BookmarkValueAdapter;
 import com.example.traveldiary.adapter.ContentDownloadAdapter;
@@ -100,7 +100,7 @@ public class FragmentBookmark extends Fragment implements OnItemClickListener {
         date.setText(getString(R.string.uploadBoard_date, item.getDate()));
 
         contentDownloadAdapter = new ContentDownloadAdapter(getActivity(), content, item);
-        int imageCount = contentDownloadAdapter.checkText();
+        contentDownloadAdapter.checkText();
 
         ImageButton bookmarkBtn = dialog.findViewById(R.id.bookMarkBtn);
         bookmarkBtn.setImageResource(R.drawable.baseline_bookmark_24);

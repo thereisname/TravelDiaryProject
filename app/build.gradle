@@ -65,8 +65,8 @@ dependencies {
     // TODO: Add the dependencies for Firebase products you want to use
     // When using the BoM, don't specify versions in Firebase dependencies
     implementation 'com.google.firebase:firebase-analytics-ktx'
-    implementation 'com.google.firebase:firebase-auth-ktx:22.0.0'
-    implementation 'com.google.firebase:firebase-database-ktx:20.2.2'
+    implementation('com.google.firebase:firebase-auth-ktx')
+    implementation('com.google.firebase:firebase-database-ktx')
     implementation("com.google.firebase:firebase-storage")
     implementation("com.google.firebase:firebase-firestore")
 
