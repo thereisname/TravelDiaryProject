@@ -2,13 +2,18 @@ package com.example.traveldiary.fragment;
 
 import static android.app.Activity.RESULT_OK;
 
+import android.content.ContentResolver;
 import android.app.Dialog;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +28,7 @@ import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -38,12 +44,22 @@ import com.example.traveldiary.adapter.BoardValueAdapter;
 import com.example.traveldiary.adapter.ContentDownloadAdapter;
 import com.example.traveldiary.adapter.ContentUploadAdapter;
 import com.example.traveldiary.value.MyPageValue;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import jp.wasabeef.richeditor.RichEditor;
@@ -54,10 +70,16 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
     private FirebaseFirestore db;
     private StorageReference storageReference;
     private ActivityResultLauncher<Intent> activityResultLauncher;
-    private  RichEditor mEditor;
+    private RichEditor mEditor;
     private int imageCount = 0;
+    private ArrayList<String> localArray;
+
     LinearLayout content;
     ContentDownloadAdapter contentDownloadAdapter;
+
+    public interface UploadCompleteListener {
+        void onUploadComplete();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -148,7 +170,9 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
 
         ImageButton editButton = dialog.findViewById(R.id.editButton);
         editButton.setOnClickListener(v -> {
+            localArray = new ArrayList<>();
             editBoard(position, item);
+            localArray = contentDownloadAdapter.downLowdImage();
             dialog.dismiss();
         });
     }
@@ -185,11 +209,13 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
         mEditor.setPadding(10, 10, 10, 10);
 
         title.setText(item.getTitle());
+        ;
         mEditor.setHtml(contentDownloadAdapter.checkTextEdit());
+
         dialog.show();
 
         // 갤러리에서 사진 가져오기
-        dialog.findViewById(R.id.action_insert_image).setOnClickListener(v->{
+        dialog.findViewById(R.id.action_insert_image).setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_PICK);
             intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
             intent.setAction(Intent.ACTION_PICK);
@@ -214,48 +240,72 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
         dialog.findViewById(R.id.action_outdent).setOnClickListener(v ->
                 mEditor.setOutdent());
 
-        // UploadAdapter가져오는 곳
-        ContentUploadAdapter contentUploadAdapter = new ContentUploadAdapter();
-        // '수정하기' 버튼 클릭 시 DB 업데이트.
-        dialog.findViewById(R.id.updateBtn).setOnClickListener(v -> {
-            // 변경된 글에서 이미지링크 추출 밑 이미지 제목 변경
-            mEditor.setHtml( contentUploadAdapter.changeText(mEditor.getHtml()));
-            // 변경된 글을 item.getCon()에 넣음
-            mEditor.setHtml(item.getCon());
-            //int mVersion = contentUploadAdapter.uploadEditImage(item.getBoardID(), imageCount, item.version);
-            // 버전 추가할시 넣을 것
-            item.setTitle(title.getText().toString());
-            db.collection("data").document(item.getBoardID()).update(
-                    "title", item.getTitle(), "con", item.getCon()
-                    //,"version" , item.getVersion()
-                    //버전 추가할시 넣을 것
-            ).addOnSuccessListener(command -> {
 
-                adapter.updateData(position);
-                dialog.dismiss();
-                Intent intent = new Intent(getContext(), UpdateCalendarActivity.class);
-                intent.putExtra("boardID", item.getBoardID());
-                intent.putExtra("hashTag", item.getHashTagArray());
-                intent.putExtra("date", item.getDate());
-                startActivity(intent);
+        // '수정하기' 버튼 클릭 시 DB 업데이트
+        dialog.findViewById(R.id.updateBtn).setOnClickListener(v -> {
+
+            ContentUploadAdapter contentUploadAdapter = new ContentUploadAdapter(item);
+            contentUploadAdapter.uploadTrans(() -> {
+                for (int i = 0; i < imageCount; i++) {
+                    StorageReference desertRef = storageReference.child("Image").child(item.getBoardID()).child("contentImage" + (item.getVersion() - 1) + i + ".jpg");
+                    desertRef.delete();
+                }
+                //핸드폰 파일 삭제 코드
+                for (int i = 0; i < imageCount; i++) {
+
+                    String folderName = "TraveFolder";
+                    String fileName = "contentImage" + (item.getVersion() - 1) + i + ".jpg";
+                    File fileToDelete = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), folderName + "/" + fileName);
+
+                    if (fileToDelete.exists()) {
+                        if (fileToDelete.delete()) {
+                            // 파일 삭제 성공
+                            Toast.makeText(getContext(), "파일 삭제 성공", Toast.LENGTH_SHORT).show();
+                        } else {
+                            // 파일 삭제 실패
+                            Toast.makeText(getContext(), "파일 삭제 실패", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        // 파일이 존재하지 않음
+                        Toast.makeText(getContext(), "파일이 존재하지 않습니다", Toast.LENGTH_SHORT).show();
+                    }
+                }
             });
+            dialog.dismiss();
         });
     }
 
 
-
     // 게시물 삭제 메서드.
     public void deleteBoard(String docID, Dialog dialog, int position, int imageCount) {
-        db.collection("data").document(docID).delete().addOnSuccessListener(unused -> {
-            for (int i = 0; i < imageCount; i++) {
-                StorageReference desertRef = storageReference.child("Image/" + docID + "/").child("contentImage" + i + ".jpg");
+        final Dialog dialog2 = new Dialog(getActivity());
+        dialog2.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog2.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog2.setContentView(R.layout.dialog_board_delete);
+        dialog2.getWindow().setGravity(Gravity.BOTTOM);
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(dialog2.getWindow().getAttributes());
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        Window window = dialog2.getWindow();
+        window.setAttributes(lp);
+
+        dialog2.show();
+
+        dialog2.findViewById(R.id.confirm_button).setOnClickListener(v -> {
+            db.collection("data").document(docID).delete().addOnSuccessListener(unused -> {
+                for (int i = 0; i < imageCount; i++) {
+                    StorageReference desertRef = storageReference.child("Image/" + docID + "/").child("contentImage" + i + ".jpg");
+                    desertRef.delete();
+                }
+                StorageReference desertRef = storageReference.child("Image/" + docID + "/").child("MainImage.jpg");
                 desertRef.delete();
-            }
-            StorageReference desertRef = storageReference.child("Image/" + docID + "/").child("MainImage.jpg");
-            desertRef.delete();
-            dialog.dismiss();
-            adapter.removeData(position);
-            Toast.makeText(getActivity().getApplicationContext(), R.string.mypage_board_deleted_successful, Toast.LENGTH_SHORT).show();
-        }).addOnFailureListener(command -> Toast.makeText(getActivity().getApplicationContext(), R.string.mypage_board_deleted_fail, Toast.LENGTH_SHORT).show());
+                dialog2.dismiss();
+                dialog.dismiss();
+                adapter.removeData(position);
+                Toast.makeText(getActivity().getApplicationContext(), R.string.mypage_board_deleted_successful, Toast.LENGTH_SHORT).show();
+            }).addOnFailureListener(command -> Toast.makeText(getActivity().getApplicationContext(), R.string.mypage_board_deleted_fail, Toast.LENGTH_SHORT).show());
+        });
+        dialog2.findViewById(R.id.fail_button).setOnClickListener(v -> dialog2.dismiss());
     }
 }
