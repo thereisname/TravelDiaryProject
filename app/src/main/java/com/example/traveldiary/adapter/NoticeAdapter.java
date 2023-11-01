@@ -16,7 +16,7 @@ import com.example.traveldiary.value.NoticeValue;
 
 import java.util.ArrayList;
 
-public class NoticeAdapter extends RecyclerView.Adapter<NoticeAdapter.ViewHolder>{
+public class NoticeAdapter extends RecyclerView.Adapter<NoticeAdapter.ViewHolder> {
     private ArrayList<NoticeValue> items = new ArrayList<>();
     private OnNoticeClickListener onNoticeClickListener;
     private Context context;
@@ -25,6 +25,7 @@ public class NoticeAdapter extends RecyclerView.Adapter<NoticeAdapter.ViewHolder
         this.context = context;
         this.onNoticeClickListener = onNoticeClickListener;
     }
+
     @NonNull
     @Override
     public NoticeAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
@@ -64,6 +65,7 @@ public class NoticeAdapter extends RecyclerView.Adapter<NoticeAdapter.ViewHolder
         ConstraintLayout cardView;
         TextView title;
         TextView date;
+
         public ViewHolder(View itemView) {
             super(itemView);
             cardView = itemView.findViewById(R.id.cardView);

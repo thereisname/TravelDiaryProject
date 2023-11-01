@@ -65,7 +65,7 @@ public class MyPageValue implements Parcelable {
         dest.writeString(correctedDate);
     }
 
-    public MyPageValue(String con, String title, ArrayList<String> hashTag, String date, String uploadDate, String boardID, ArrayList<String> route, ArrayList<String> bookmark, int version) {
+    public MyPageValue(String con, String title, ArrayList<String> hashTag, String date, String uploadDate, String boardID, ArrayList<String> route, ArrayList<String> bookmark) {
         this.con = con;
         this.title = title;
         this.hashTag = hashTag;
@@ -74,7 +74,6 @@ public class MyPageValue implements Parcelable {
         this.boardID = boardID;
         this.route = route;
         this.bookmark = bookmark;
-        this.version = version;
     }
 
     public MyPageValue(ArrayList<String> hashTag, String date, String boardID, ArrayList<String> route) {

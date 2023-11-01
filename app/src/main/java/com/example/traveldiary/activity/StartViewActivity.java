@@ -34,8 +34,8 @@ public class StartViewActivity extends AppCompatActivity {
         getWindow().setWindowAnimations(0);
         mAuth = FirebaseAuth.getInstance();
 
-        Button startlogin_btn = findViewById(R.id.startlogin_btn);
-        startlogin_btn.setOnClickListener(view -> {
+        Button startLogin_btn = findViewById(R.id.startlogin_btn);
+        startLogin_btn.setOnClickListener(view -> {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
         });

@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:fontFamily="@font/gangwon"
-        android:text="게시물 삭제"
+        android:text="@string/board_delete_title"
         android:textColor="@color/icon"
         android:textSize="28sp"
         android:textStyle="bold"
@@ -29,7 +29,7 @@
         android:layout_marginEnd="15dp"
         android:fontFamily="@font/gangwon"
         android:gravity="center"
-        android:text="선택한 게시물을 정말 삭제하시겠습니까?\n한번 삭제한 자료는 복구할 수 없습니다."
+        android:text="@string/board_delete_con"
         android:textColor="@color/text_gray"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -52,7 +52,7 @@
             style="@style/confirmBtn"
             android:layout_marginEnd="30dp"
             android:layout_weight="1"
-            android:text="취소"
+            android:text="@string/config_cancel"
             android:textSize="23sp" />
 
         <androidx.appcompat.widget.AppCompatButton
@@ -60,9 +60,8 @@
             style="@style/confirmBtn"
             android:layout_marginStart="30dp"
             android:layout_weight="1"
-            android:text="확인"
+            android:text="@string/config_ok"
             android:textSize="23sp" />
     </LinearLayout>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

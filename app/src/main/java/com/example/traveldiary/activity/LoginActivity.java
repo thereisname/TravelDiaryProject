@@ -41,7 +41,6 @@ public class LoginActivity extends AppCompatActivity {
             }
             if (email.equals("") || password.equals(""))
                 Toast.makeText(this, R.string.register_non, Toast.LENGTH_SHORT).show();
-
             else
                 mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(LoginActivity.this, task -> {
                     if (task.isSuccessful()) {

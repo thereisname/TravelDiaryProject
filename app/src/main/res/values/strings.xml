@@ -100,6 +100,10 @@
     <string name="setting_newPw_hint">새 비밀번호</string>
     <string name="setting_newPwRe_hint">새 비밀번호 확인</string>
 
+    <string name="board_delete_title">게시물 삭제</string>
+    <string name="board_delete_con">선택한 게시물을 정말 삭제하시겠습니까?\n한번 삭제한 자료는 복구할 수 없습니다.</string>
+    <string name="config_ok">확인</string>
+    <string name="config_cancel">취소</string>
     <!-- Toast -->
     <string name="login_fail">Authentication failed.</string>
     <string name="login_enter">Please enter email, password.</string>

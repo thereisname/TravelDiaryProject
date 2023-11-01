@@ -89,7 +89,7 @@ public class ContentUploadAdapter {
     }
 
     private String getOnlyExtension(String fullUri) {
-        int fileIndex = fullUri.toString().lastIndexOf(".");
+        int fileIndex = fullUri.lastIndexOf(".");
         return fullUri.substring(fileIndex + 1, fullUri.length());
     }
 

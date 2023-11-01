@@ -78,6 +78,4 @@
             android:text="@string/login"
             android:textColor="@color/icon" />
     </LinearLayout>
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

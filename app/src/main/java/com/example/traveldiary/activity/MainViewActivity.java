@@ -28,7 +28,6 @@ import com.google.android.material.chip.Chip;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +41,6 @@ public class MainViewActivity extends AppCompatActivity {
     private boolean doubleBackToExitPressedOnce = false;
     private boolean focus = false;
     private static final int BACK_PRESS_INTERVAL = 2000; // 2 seconds
-    SlidingUpPanelLayout main_frame;
 
     @SuppressLint("ClickableViewAccessibility")
     protected void onCreate(Bundle savedInstanceState) {

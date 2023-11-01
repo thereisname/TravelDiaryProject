@@ -23,7 +23,6 @@ import java.util.ArrayList;
 
 public class MainValueAdapter extends RecyclerView.Adapter<MainValueAdapter.ViewHolder> {
     private ArrayList<MyPageValue> items = new ArrayList<>();
-    private ImageButton bookmark;
     private Context context;
     private long lastClickTime = 0;
     private static final long CLICK_TIME_INTERVAL = 1000; // 클릭 간격을 1초로 설정

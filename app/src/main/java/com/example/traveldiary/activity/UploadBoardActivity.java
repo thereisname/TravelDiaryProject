@@ -29,6 +29,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -85,7 +86,7 @@ public class UploadBoardActivity extends AppCompatActivity {
         ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
-                    if (result.getResultCode() == RESULT_OK && result != null) {
+                    if (result.getResultCode() == RESULT_OK) {
                         Glide
                                 .with(getApplicationContext()).load(result.getData().getData())
                                 .apply(RequestOptions.overrideOf(250, 300))
@@ -148,14 +149,15 @@ public class UploadBoardActivity extends AppCompatActivity {
         String formatNow = now.format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm:ss"));
 
         Map<String, Object> item = new HashMap<>();
-        item.put("uploadDate", formatNow);
-        item.put("title", title.getText().toString());
+        item.put("bookmark", new ArrayList<String>());
+        item.put("correctedDate", "");
         item.put("date", info.get("date"));
         item.put("hashTag", info.get("hashTag"));
-        item.put("userToken", FirebaseAuth.getInstance().getUid());
         item.put("route", info.get("route"));
+        item.put("title", title.getText().toString());
+        item.put("uploadDate", formatNow);
+        item.put("userToken", FirebaseAuth.getInstance().getUid());
         item.put("version", 0);
-        item.put("correctedDate", "");
 
         return item;
     }

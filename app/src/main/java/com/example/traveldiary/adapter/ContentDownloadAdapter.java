@@ -30,7 +30,6 @@ public class ContentDownloadAdapter {
     private MyPageValue mp;
     ArrayList<Uri> imageUri;
 
-
     public ContentDownloadAdapter(Context context, LinearLayout listView, MyPageValue mp) {
         this.context = context;
         this.listView = listView;

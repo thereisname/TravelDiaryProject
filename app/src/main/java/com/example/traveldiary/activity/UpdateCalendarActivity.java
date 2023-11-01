@@ -6,6 +6,8 @@ import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -27,6 +29,7 @@ import androidx.core.util.Pair;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.traveldiary.R;
+import com.example.traveldiary.dialog.ProgressDialog;
 import com.example.traveldiary.value.MyPageValue;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.datepicker.MaterialDatePicker;
@@ -51,6 +54,7 @@ public class UpdateCalendarActivity extends AppCompatActivity {
     private boolean isChangeDate, isChangeImage;
     private Uri filePath;
     private int count;
+    ProgressDialog customProgressDialog;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,7 +86,7 @@ public class UpdateCalendarActivity extends AppCompatActivity {
         ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
-                    if (result.getResultCode() == RESULT_OK && result != null) {
+                    if (result.getResultCode() == RESULT_OK) {
                         Glide
                                 .with(getApplicationContext()).load(result.getData().getData())
                                 .apply(RequestOptions.overrideOf(250, 200))
@@ -93,6 +97,10 @@ public class UpdateCalendarActivity extends AppCompatActivity {
                         isChangeImage = true;
                     }
                 });
+
+        customProgressDialog = new ProgressDialog(this);
+        customProgressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        customProgressDialog.setCancelable(false);
 
         dataRangeBtn.setOnClickListener(v -> calendarPick());
         imageButton.setOnClickListener(v -> {
@@ -159,25 +167,38 @@ public class UpdateCalendarActivity extends AppCompatActivity {
     }
 
     private void save(MyPageValue mp) {
+        customProgressDialog.show();
         DocumentReference doc = db.collection("data").document(mp.getBoardID());
         if (isChangeDate) doc.update("date", data_picker_text.getText());
-        if (isChangeImage) {
-            StorageReference desertRef = storageReference.child("Image/" + mp.getBoardID() + "/").child("MainImage.jpg");
-            desertRef.delete();
-            StorageReference mImgRef = storageReference.child("Image").child(mp.getBoardID()).child("MainImage" + "." + getFileExtension(filePath));
-            mImgRef.putFile(filePath).addOnSuccessListener(taskSnapshot -> mImgRef.getDownloadUrl()
-                            .addOnSuccessListener(uri1 -> Toast.makeText(this, R.string.upload_image_successful, Toast.LENGTH_SHORT).show()))
-                    .addOnFailureListener(e -> Toast.makeText(this, R.string.upload_image_fail, Toast.LENGTH_SHORT).show());
-        }
         if (mp.getRoute().size() != 0) doc.update("route", routeUpload(count));
         LocalDateTime now = LocalDateTime.now();
         String formatNow = now.format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm:ss"));
         doc.update("hashTag", editHashTagCou(),
                 "correctedDate", formatNow);
-        Intent intent = new Intent(this, MypageActivity.class);
-        intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
-        finish();
+        if (isChangeImage) {
+            StorageReference desertRef = storageReference.child("Image/" + mp.getBoardID() + "/").child("MainImage.jpg");
+            desertRef.delete();
+            StorageReference mImgRef = storageReference.child("Image").child(mp.getBoardID()).child("MainImage" + "." + getFileExtension(filePath));
+            mImgRef.putFile(filePath).addOnSuccessListener(taskSnapshot -> mImgRef.getDownloadUrl()
+                            .addOnSuccessListener(uri1 -> {
+                                Toast.makeText(this, R.string.upload_image_successful, Toast.LENGTH_SHORT).show();
+                                customProgressDialog.dismiss();
+                                Intent intent = new Intent(this, MypageActivity.class);
+                                intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(intent);
+                                finish();
+                            }))
+                    .addOnFailureListener(e -> {
+                        Toast.makeText(this, R.string.upload_image_fail, Toast.LENGTH_SHORT).show();
+                        customProgressDialog.dismiss();
+                    });
+        } else {
+            customProgressDialog.dismiss();
+            Intent intent = new Intent(this, MypageActivity.class);
+            intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            finish();
+        }
     }
 
     private ArrayList<String> routeUpload(int size) {
