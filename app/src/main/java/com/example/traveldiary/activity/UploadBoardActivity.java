@@ -132,7 +132,7 @@ public class UploadBoardActivity extends AppCompatActivity {
             if (filePath != null)
                 contentUploadAdapter.uploadImage(getID, (Uri) info.get("mainImage"));
             customProgressDialog.dismiss();
-          
+
             Intent intent = new Intent(this, MainViewActivity.class);
             intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);

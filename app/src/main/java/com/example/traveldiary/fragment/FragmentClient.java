@@ -21,6 +21,7 @@ import androidx.fragment.app.Fragment;
 import com.example.traveldiary.R;
 import com.example.traveldiary.adapter.ContentDownloadAdapter;
 import com.example.traveldiary.value.MyPageValue;
+import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -40,6 +41,7 @@ import java.util.List;
 public class FragmentClient extends Fragment implements OnMapReadyCallback {
     private MapView googlemap = null;
     private GoogleMap map; // 추가: GoogleMap 객체를 저장하는 변수
+    private FusedLocationProviderClient fusedLocationClient;
     private int isAttBookmark; // 0: 북마크 비활성화 상태, 1: 북마크 활성화 상태
     private ImageButton bookmark;
     private static MyPageValue mp;
@@ -47,11 +49,15 @@ public class FragmentClient extends Fragment implements OnMapReadyCallback {
     ImageView imageView;
     TextView routeTitle;
     FirebaseFirestore db;
+    ArrayList<Integer> arrayStartIndex = new ArrayList<Integer>();
+    ArrayList<Integer> arrayEndIndex = new ArrayList<Integer>();
+    ArrayList<View> arrayimage = new ArrayList();
     ArrayList<String> arrayroute = new ArrayList();
     ArrayList<Double> arraylat = new ArrayList<>();
     ArrayList<Double> arraylon = new ArrayList<>();
     TextView fragment_title;
     TextView fragment_hashtag;
+    int clickCheck = 0;
 
     public FragmentClient() {
     }

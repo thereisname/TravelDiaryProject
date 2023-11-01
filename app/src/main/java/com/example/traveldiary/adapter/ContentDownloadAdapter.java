@@ -3,6 +3,7 @@ package com.example.traveldiary.adapter;
 import android.content.Context;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Environment;
 import android.text.Html;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import com.example.traveldiary.value.MyPageValue;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class ContentDownloadAdapter {
@@ -104,7 +106,6 @@ public class ContentDownloadAdapter {
     }
 
     int imageId = 10000;
-
     private void createImageView() {
         ImageView imageView = new ImageView(context);
         imageView.setId(imageId);
@@ -146,5 +147,26 @@ public class ContentDownloadAdapter {
             count--;
         }
         return mp.getCon();
+    }
+
+    public ArrayList<String> downLowdImage() {
+        ArrayList<String> localArray = new ArrayList<>();
+        // 폴더 생성
+        String folderName = "TraveFolder";
+        File dir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), folderName);
+
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageReference = storage.getReferenceFromUrl("gs://traveldiary-356ee.appspot.com");
+
+        for (int i = 0; i < arrayImage.size(); i++) {
+            // 파일에 저장할 이름 결정
+            String imageName = "contentImage" + mp.getVersion() + i + ".jpg";
+            File localFile = new File(dir, imageName); // 파일 경로 및 이름 지정
+            localArray.add(imageName);
+            //다운로드할 파일을 가르키는 참조 만들기
+            StorageReference pathReference = storageReference.child("Image").child(mp.getBoardID()).child(imageName);
+            pathReference.getFile(localFile);
+        }
+        return localArray;
     }
 }

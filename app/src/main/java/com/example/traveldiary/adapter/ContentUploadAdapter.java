@@ -7,16 +7,26 @@ import android.webkit.MimeTypeMap;
 import android.widget.Toast;
 
 import com.example.traveldiary.R;
+import com.example.traveldiary.fragment.FragmentBoard;
+import com.example.traveldiary.value.MyPageValue;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class ContentUploadAdapter {
     private ArrayList<Uri> uriArrayList = new ArrayList<>();
+
+    private FirebaseFirestore db;
     private Context context;
-    private ArrayList<Integer> strImgStartIndex = new ArrayList<>();
-    private ArrayList<Integer> strImgEndIndex = new ArrayList<>();
+    private MyPageValue mp;
+
+    public ContentUploadAdapter(MyPageValue item) {
+        this.mp = item;
+    }
 
     public ContentUploadAdapter() {
     }
@@ -25,7 +35,11 @@ public class ContentUploadAdapter {
         this.context = context;
     }
 
+
     public String changeText(String str) {
+        ArrayList<Integer> strImgStartIndex = new ArrayList<>();
+        ArrayList<Integer> strImgEndIndex = new ArrayList<>();
+
         // 이미지 링크 추출하는 loop
         for (int i = 0; i < str.length(); i++) {
             if (str.charAt(i) == '<' && str.charAt(i + 1) == 'i') {
@@ -110,5 +124,31 @@ public class ContentUploadAdapter {
     private String getOnlyExtension(String fullUri) {
         int fileIndex = fullUri.toString().lastIndexOf(".");
         return fullUri.substring(fileIndex + 1, fullUri.length());
+    }
+
+    public void uploadTrans(FragmentBoard.UploadCompleteListener listener) {
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageReference = storage.getReferenceFromUrl("gs://traveldiary-356ee.appspot.com");
+
+        String folderName = "TraveFolder";
+        int mVersion = mp.getVersion() + 1;
+        final int totalImages = 4; // 이미지 업로드할 총 이미지 수
+        AtomicInteger uploadedImages = new AtomicInteger(0);
+
+        for (int i = 0; i < totalImages; i++) {
+            StorageReference imageRef = storageReference.child("Image").child(mp.getBoardID()).child("contentImage" + mVersion + i + ".jpg");
+            File localFile2 = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), folderName + "/" + "contentImage" + mp.getVersion() + i + ".jpg");
+            imageRef.putFile(Uri.fromFile(localFile2))
+                    .addOnSuccessListener(taskSnapshot -> {
+                        // 이미지 업로드 성공
+                        uploadedImages.incrementAndGet();
+                        if (uploadedImages.get() == totalImages) {
+                            // 모든 이미지 업로드가 완료된 경우에만 버전 업데이트
+                            mp.setVersion(mVersion);
+                            listener.onUploadComplete();
+                        }
+                    })
+                    .addOnFailureListener(e -> Toast.makeText(context, "이미지 업로드 실패", Toast.LENGTH_SHORT).show());
+        }
     }
 }
