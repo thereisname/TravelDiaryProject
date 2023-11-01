@@ -2,18 +2,14 @@ package com.example.traveldiary.fragment;
 
 import static android.app.Activity.RESULT_OK;
 
-import android.content.ContentResolver;
 import android.app.Dialog;
-import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.MediaStore;
-import android.util.Log;
 import android.view.Gravity;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -209,9 +205,7 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
         mEditor.setPadding(10, 10, 10, 10);
 
         title.setText(item.getTitle());
-        ;
         mEditor.setHtml(contentDownloadAdapter.checkTextEdit());
-
         dialog.show();
 
         // 갤러리에서 사진 가져오기
@@ -243,7 +237,6 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
 
         // '수정하기' 버튼 클릭 시 DB 업데이트
         dialog.findViewById(R.id.updateBtn).setOnClickListener(v -> {
-
             ContentUploadAdapter contentUploadAdapter = new ContentUploadAdapter(item);
             contentUploadAdapter.uploadTrans(() -> {
                 for (int i = 0; i < imageCount; i++) {
@@ -271,10 +264,30 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
                     }
                 }
             });
-            dialog.dismiss();
+
+            // 변경된 글에서 이미지링크 추출 밑 이미지 제목 변경
+//            mEditor.setHtml( contentUploadAdapter.changeText(mEditor.getHtml()));
+//            // 변경된 글을 item.getCon()에 넣음
+//            mEditor.setHtml(item.getCon());
+            //int mVersion = contentUploadAdapter.uploadEditImage(item.getBoardID(), imageCount, item.version);
+            // 버전 추가할시 넣을 것
+            item.setTitle(title.getText().toString());
+            db.collection("data").document(item.getBoardID()).update(
+                    "title", item.getTitle()
+                    //"con", item.getCon()
+                    //,"version" , item.getVersion()
+                    //버전 추가할시 넣을 것
+            ).addOnSuccessListener(command -> {
+                adapter.updateData(position);
+                dialog.dismiss();
+                Intent intent = new Intent(getContext(), UpdateCalendarActivity.class);
+                intent.putExtra("boardID", item.getBoardID());
+                intent.putExtra("hashTag", item.getHashTagArray());
+                intent.putExtra("date", item.getDate());
+                startActivity(intent);
+            });
         });
     }
-
 
     // 게시물 삭제 메서드.
     public void deleteBoard(String docID, Dialog dialog, int position, int imageCount) {
