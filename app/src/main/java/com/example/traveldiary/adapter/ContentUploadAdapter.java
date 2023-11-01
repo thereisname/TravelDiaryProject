@@ -3,7 +3,6 @@ package com.example.traveldiary.adapter;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.net.Uri;
-import android.os.Environment;
 import android.webkit.MimeTypeMap;
 import android.widget.Toast;
 
@@ -18,13 +17,16 @@ import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class ContentUploadAdapter {
-    private ArrayList<Uri> uriArrayList = new ArrayList<>();
+    private ArrayList<Uri> uriArrayList;
     private Context context;
     private MyPageValue mp;
+    private ArrayList<File> localArray;
 
-    public ContentUploadAdapter(Context context, MyPageValue item) {
+    public ContentUploadAdapter(Context context, MyPageValue item, ArrayList<File> localArray) {
         this.context = context;
         this.mp = item;
+        this.localArray = localArray;
+        uriArrayList = new ArrayList<>();
     }
 
     public ContentUploadAdapter() {
@@ -32,8 +34,8 @@ public class ContentUploadAdapter {
 
     public ContentUploadAdapter(Context context) {
         this.context = context;
+        uriArrayList = new ArrayList<>();
     }
-
 
     public String changeText(String str) {
         ArrayList<Integer> strImgStartIndex = new ArrayList<>();
@@ -79,40 +81,6 @@ public class ContentUploadAdapter {
                 .addOnFailureListener(e -> Toast.makeText(context, R.string.upload_image_fail, Toast.LENGTH_SHORT).show());
     }
 
-    /**
-     * 수정된 이미지 저장 방식 알고리즘
-     * <p>이미지 다운로드. 로컬(외부 저장소)에 이미지 저장. -> 이미지 저장 한 로컬 경로를 localImg에 순서대로 저장. -> 수정 클릭 시 -> arrayUri과 localImg와 비교(아래 코드) -> 이미지 업로드 및 로컬 이미지 삭제</p>
-     * <pre> {@code ArrayList<String> localImg = new ArrayList<>();  //localImg 로컬에 저장한 이미지 경로들을 저장하는 변수
-     *
-     * int j = 0;
-     * for(int i = 0; i < arrayUri.size(); i++) {
-     *      if(uriArrayList.get(i)가 http로 시작(firebase에서 가져왔는가)하는 가?) {
-     *          uriArrayList.get(i) = localImg.get(j);
-     *          j++;
-     *      }
-     * }}
-     * </pre>
-     */
-    //richEditer에서 수정하기 버튼을 클릭시 실행할 함수, version을 올려서 리턴함
-    public Integer uploadEditImage(String docID, int imageCount, int version) {
-        int mVersion = version + 1;
-        StorageReference storageRef = FirebaseStorage.getInstance().getReference();
-        // 다수의 이미지를 넣기 위해 for문 사용
-        for (int index = 0; index < uriArrayList.size(); index++) {
-            // content 이미지들 DB에 올리기.
-            StorageReference imgRef = storageRef.child("Image").child(docID).child("contentImage" + mVersion + index + "." + getFileExtension(uriArrayList.get(index)));
-            imgRef.putFile(uriArrayList.get(index)).addOnSuccessListener(taskSnapshot -> imgRef.getDownloadUrl()
-                            .addOnSuccessListener(uri1 -> Toast.makeText(context, R.string.upload_image_successful, Toast.LENGTH_SHORT).show()))
-                    .addOnFailureListener(e -> Toast.makeText(context, R.string.upload_image_fail, Toast.LENGTH_SHORT).show());
-        }
-        // 기존 이미지 삭제
-        for (int i = 0; i < imageCount; i++) {
-            StorageReference desertRef = storageRef.child("Image/" + docID + "/").child("contentImage" + version + i + ".jpg");
-            desertRef.delete();
-        }
-        return mVersion;
-    }
-
     // 이미지 형태 가져오는 함수
     private String getFileExtension(Uri uri) {
         ContentResolver cr = context.getContentResolver();
@@ -125,19 +93,21 @@ public class ContentUploadAdapter {
         return fullUri.substring(fileIndex + 1, fullUri.length());
     }
 
-    public void uploadTrans(FragmentBoard.UploadCompleteListener listener) {
+    public Integer uploadTrans(FragmentBoard.UploadCompleteListener listener) {
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageReference = storage.getReferenceFromUrl("gs://traveldiary-356ee.appspot.com");
-
-        String folderName = "TraveFolder";
         int mVersion = mp.getVersion() + 1;
-        final int totalImages = 3; // 이미지 업로드할 총 이미지 수
+        final int totalImages = uriArrayList.size();      // 이미지 업로드할 총 이미지 수
         AtomicInteger uploadedImages = new AtomicInteger(0);
 
         for (int i = 0; i < totalImages; i++) {
+            //이미지 경로 수정.
+            String chatUri = uriArrayList.get(i).toString();
+            if (chatUri.contains("http"))
+                uriArrayList.set(i, Uri.fromFile(localArray.get(Character.getNumericValue((chatUri.charAt((chatUri.indexOf(".jpg") - 1)))))));
+            //이미지 DB에 업로드 하기.
             StorageReference imageRef = storageReference.child("Image").child(mp.getBoardID()).child("contentImage" + mVersion + i + ".jpg");
-            File localFile2 = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), folderName + "/" + "contentImage" + mp.getVersion() + i + ".jpg");
-            imageRef.putFile(Uri.fromFile(localFile2))
+            imageRef.putFile(uriArrayList.get(i))
                     .addOnSuccessListener(taskSnapshot -> {
                         // 이미지 업로드 성공
                         uploadedImages.incrementAndGet();
@@ -146,8 +116,8 @@ public class ContentUploadAdapter {
                             mp.setVersion(mVersion);
                             listener.onUploadComplete();
                         }
-                    })
-                    .addOnFailureListener(e -> Toast.makeText(context, "이미지 업로드 실패", Toast.LENGTH_SHORT).show());
+                    }).addOnFailureListener(e -> Toast.makeText(context, "이미지 업로드 실패", Toast.LENGTH_SHORT).show());
         }
+        return mVersion;
     }
 }

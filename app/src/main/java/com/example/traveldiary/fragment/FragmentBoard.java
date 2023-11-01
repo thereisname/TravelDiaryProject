@@ -38,6 +38,7 @@ import com.example.traveldiary.adapter.BoardValueAdapter;
 import com.example.traveldiary.adapter.ContentDownloadAdapter;
 import com.example.traveldiary.adapter.ContentUploadAdapter;
 import com.example.traveldiary.dialog.OnItemClickListener;
+import com.example.traveldiary.dialog.ProgressDialog;
 import com.example.traveldiary.value.MyPageValue;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -58,10 +59,10 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
     private ActivityResultLauncher<Intent> activityResultLauncher;
     private RichEditor mEditor;
     private int imageCount = 0;
-    private ArrayList<String> localArray;
-
+    private ArrayList<File> localArray;
     LinearLayout content;
     ContentDownloadAdapter contentDownloadAdapter;
+    ProgressDialog customProgressDialog;
 
     public interface UploadCompleteListener {
         void onUploadComplete();
@@ -95,6 +96,10 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
                         mEditor.insertImage(String.valueOf(result.getData().getData()), " ", 320);
                     }
                 });
+        customProgressDialog = new ProgressDialog(getActivity());
+        customProgressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        customProgressDialog.setCancelable(false);
+
         loadData();
 
         return v;
@@ -157,8 +162,8 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
         ImageButton editButton = dialog.findViewById(R.id.editButton);
         editButton.setOnClickListener(v -> {
             localArray = new ArrayList<>();
-            editBoard(position, item);
             localArray = contentDownloadAdapter.downLoadImage();
+            editBoard(position, item);
             dialog.dismiss();
         });
     }
@@ -222,11 +227,13 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
 
         dialog.findViewById(R.id.action_outdent).setOnClickListener(v -> mEditor.setOutdent());
 
-
         // '수정하기' 버튼 클릭 시 DB 업데이트
         dialog.findViewById(R.id.updateBtn).setOnClickListener(v -> {
-            ContentUploadAdapter contentUploadAdapter = new ContentUploadAdapter(getActivity(), item);
-            contentUploadAdapter.uploadTrans(() -> {
+            customProgressDialog.show();
+            ContentUploadAdapter contentUploadAdapter = new ContentUploadAdapter(getActivity(), item, localArray);
+            item.setTitle(title.getText().toString());
+            item.setCon(contentUploadAdapter.changeText(mEditor.getHtml()));
+            item.setVersion(contentUploadAdapter.uploadTrans(() -> {
                 for (int i = 0; i < imageCount; i++) {
                     StorageReference desertRef = storageReference.child("Image").child(item.getBoardID()).child("contentImage" + (item.getVersion() - 1) + i + ".jpg");
                     desertRef.delete();
@@ -250,22 +257,14 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
                         Toast.makeText(getContext(), "파일이 존재하지 않습니다", Toast.LENGTH_SHORT).show();
                     }
                 }
-            });
-
-            // 변경된 글에서 이미지링크 추출 밑 이미지 제목 변경
-//            mEditor.setHtml( contentUploadAdapter.changeText(mEditor.getHtml()));
-//            // 변경된 글을 item.getCon()에 넣음
-//            mEditor.setHtml(item.getCon());
-            //int mVersion = contentUploadAdapter.uploadEditImage(item.getBoardID(), imageCount, item.version);
-            // 버전 추가할시 넣을 것
-            item.setTitle(title.getText().toString());
-//            item.setCon(contentUploadAdapter.changeText(mEditor.getHtml()));
-//            item.setVersion(contentUploadAdapter.uploadEditImage(item.getBoardID(), imageCount, item.getVersion()));
+            }));
             db.collection("data").document(item.getBoardID()).update(
                     "title", item.getTitle(),
-                    "version", item.getVersion()
+                    "version", item.getVersion(),
+                    "con", item.getCon()
             ).addOnSuccessListener(command -> {
                 adapter.updateData(position);
+                customProgressDialog.dismiss();
                 dialog.dismiss();
                 Intent intent = new Intent(getContext(), UpdateCalendarActivity.class);
                 intent.putExtra("boardID", item.getBoardID());

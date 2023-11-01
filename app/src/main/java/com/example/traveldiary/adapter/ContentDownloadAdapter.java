@@ -40,7 +40,6 @@ public class ContentDownloadAdapter {
     // 문자에서 이미지 시작과 끝을 가져오기
     public int checkText() {
         String con = mp.getCon();
-
         for (int index = 0; index < con.length(); index++) {
             if (con.charAt(index) == '<' && con.charAt(index + 1) == 'i' && con.charAt(index + 2) == 'm') {
                 arrayStartIndex.add(index);
@@ -92,11 +91,11 @@ public class ContentDownloadAdapter {
             for (int i = 1; i < listResult.getItems().size(); i++) {
                 StorageReference item = listResult.getItems().get(i);
                 int finalI = i - 1;
+                item.getDownloadUrl().addOnSuccessListener(command -> {
+                    imageUri.add(command);
+                    Glide.with(context).load(command).into(((ImageView) arrayImage.get(finalI)));
+                });
                 try {
-                    item.getDownloadUrl().addOnSuccessListener(command -> {
-                        imageUri.add(command);
-                        Glide.with(context).load(command).into(((ImageView) arrayImage.get(finalI)));
-                    });
                     Thread.sleep(100);
                 } catch (InterruptedException e) {
                     Toast.makeText(context, R.string.error, Toast.LENGTH_SHORT).show();
@@ -150,8 +149,8 @@ public class ContentDownloadAdapter {
         return mp.getCon();
     }
 
-    public ArrayList<String> downLoadImage() {
-        ArrayList<String> localArray = new ArrayList<>();
+    public ArrayList<File> downLoadImage() {
+        ArrayList<File> localArray = new ArrayList<>();
         // 폴더 생성
         String folderName = "TraveFolder";
         File dir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), folderName);
@@ -164,7 +163,7 @@ public class ContentDownloadAdapter {
             // 파일에 저장할 이름 결정
             String imageName = "contentImage" + mp.getVersion() + i + ".jpg";
             File localFile = new File(dir, imageName); // 파일 경로 및 이름 지정
-            localArray.add(String.valueOf(localFile));
+            localArray.add(localFile);
             //다운로드할 파일을 가르키는 참조 만들기
             StorageReference pathReference = storageReference.child("Image").child(mp.getBoardID()).child(imageName);
             pathReference.getFile(localFile);
