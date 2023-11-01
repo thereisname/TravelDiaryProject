@@ -36,6 +36,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -59,7 +61,7 @@ public class UpdateCalendarActivity extends AppCompatActivity {
         storageReference = FirebaseStorage.getInstance().getReference();
         db = FirebaseFirestore.getInstance();
 
-        MyPageValue mp = new MyPageValue(getIntent().getStringArrayListExtra("hashTag"), getIntent().getStringExtra("date"), getIntent().getStringExtra("boardID"),getIntent().getStringArrayListExtra("route"));
+        MyPageValue mp = new MyPageValue(getIntent().getStringArrayListExtra("hashTag"), getIntent().getStringExtra("date"), getIntent().getStringExtra("boardID"), getIntent().getStringArrayListExtra("route"));
         ImageButton dataRangeBtn = findViewById(R.id.dataRangeBtn);
         ImageView imageButton = findViewById(R.id.imageButton);
         listView = findViewById(R.id.listView);
@@ -167,7 +169,7 @@ public class UpdateCalendarActivity extends AppCompatActivity {
                             .addOnSuccessListener(uri1 -> Toast.makeText(this, R.string.upload_image_successful, Toast.LENGTH_SHORT).show()))
                     .addOnFailureListener(e -> Toast.makeText(this, R.string.upload_image_fail, Toast.LENGTH_SHORT).show());
         }
-        if(mp.getRoute().size() != 0) doc.update("route", routeUpload(count));
+        if (mp.getRoute().size() != 0) doc.update("route", routeUpload(count));
         LocalDateTime now = LocalDateTime.now();
         String formatNow = now.format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm:ss"));
         doc.update("hashTag", editHashTagCou(),
@@ -182,7 +184,8 @@ public class UpdateCalendarActivity extends AppCompatActivity {
         ArrayList<String> arrRoute = new ArrayList<>();
         for (int i = 0; i <= size; i++) {
             EditText editText = findViewById(i);
-            if (!editText.getText().toString().equals("")) arrRoute.add(editText.getText().toString());
+            if (!editText.getText().toString().equals(""))
+                arrRoute.add(editText.getText().toString());
         }
         return arrRoute;
     }

@@ -8,8 +8,8 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Environment;
-import android.view.Gravity;
 import android.provider.MediaStore;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +24,6 @@ import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -32,30 +31,21 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.example.traveldiary.dialog.OnItemClickListener;
 import com.example.traveldiary.R;
 import com.example.traveldiary.activity.MypageActivity;
 import com.example.traveldiary.activity.UpdateCalendarActivity;
 import com.example.traveldiary.adapter.BoardValueAdapter;
 import com.example.traveldiary.adapter.ContentDownloadAdapter;
 import com.example.traveldiary.adapter.ContentUploadAdapter;
+import com.example.traveldiary.dialog.OnItemClickListener;
 import com.example.traveldiary.value.MyPageValue;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 
 import jp.wasabeef.richeditor.RichEditor;
@@ -168,7 +158,7 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
         editButton.setOnClickListener(v -> {
             localArray = new ArrayList<>();
             editBoard(position, item);
-            localArray = contentDownloadAdapter.downLowdImage();
+            localArray = contentDownloadAdapter.downLoadImage();
             dialog.dismiss();
         });
     }
@@ -235,7 +225,7 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
 
         // '수정하기' 버튼 클릭 시 DB 업데이트
         dialog.findViewById(R.id.updateBtn).setOnClickListener(v -> {
-            ContentUploadAdapter contentUploadAdapter = new ContentUploadAdapter(item);
+            ContentUploadAdapter contentUploadAdapter = new ContentUploadAdapter(getActivity(), item);
             contentUploadAdapter.uploadTrans(() -> {
                 for (int i = 0; i < imageCount; i++) {
                     StorageReference desertRef = storageReference.child("Image").child(item.getBoardID()).child("contentImage" + (item.getVersion() - 1) + i + ".jpg");
@@ -243,7 +233,6 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
                 }
                 //핸드폰 파일 삭제 코드
                 for (int i = 0; i < imageCount; i++) {
-
                     String folderName = "TraveFolder";
                     String fileName = "contentImage" + (item.getVersion() - 1) + i + ".jpg";
                     File fileToDelete = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), folderName + "/" + fileName);

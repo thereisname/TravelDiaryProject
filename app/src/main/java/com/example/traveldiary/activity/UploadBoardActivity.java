@@ -40,6 +40,7 @@ public class UploadBoardActivity extends AppCompatActivity {
     private Uri filePath;
     private FirebaseFirestore db;
     ProgressDialog customProgressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -6,7 +6,6 @@ import android.os.Parcelable;
 import java.util.ArrayList;
 
 public class MyPageValue implements Parcelable {
-
     private String con;
     private String title;
     private ArrayList<String> hashTag;
@@ -15,6 +14,8 @@ public class MyPageValue implements Parcelable {
     private String boardID;
     private ArrayList<String> route;
     private ArrayList<String> bookmark;
+    private int version;
+    private String correctedDate;
 
     public MyPageValue() {
     }
@@ -28,6 +29,8 @@ public class MyPageValue implements Parcelable {
         uploadDate = in.readString();
         boardID = in.readString();
         bookmark = in.readArrayList(null);
+        version = in.readInt();
+        correctedDate = in.readString();
     }
 
     // Parcelable 객체를 생성하는 메서드
@@ -58,9 +61,11 @@ public class MyPageValue implements Parcelable {
         dest.writeString(date);
         dest.writeString(uploadDate);
         dest.writeString(boardID);
+        dest.writeInt(version);
+        dest.writeString(correctedDate);
     }
 
-    public MyPageValue(String con, String title, ArrayList<String> hashTag, String date, String uploadDate, String boardID, ArrayList<String> route, ArrayList<String> bookmark) {
+    public MyPageValue(String con, String title, ArrayList<String> hashTag, String date, String uploadDate, String boardID, ArrayList<String> route, ArrayList<String> bookmark, int version) {
         this.con = con;
         this.title = title;
         this.hashTag = hashTag;
@@ -69,6 +74,7 @@ public class MyPageValue implements Parcelable {
         this.boardID = boardID;
         this.route = route;
         this.bookmark = bookmark;
+        this.version = version;
     }
 
     public MyPageValue(ArrayList<String> hashTag, String date, String boardID, ArrayList<String> route) {
@@ -76,12 +82,6 @@ public class MyPageValue implements Parcelable {
         this.date = date;
         this.boardID = boardID;
         this.route = route;
-    }
-
-    public MyPageValue(String boardID, String title, String con) {
-        this.boardID = boardID;
-        this.title = title;
-        this.con = con;
     }
 
     public String getCon() {
@@ -124,6 +124,14 @@ public class MyPageValue implements Parcelable {
         return bookmark;
     }
 
+    public int getVersion() {
+        return version;
+    }
+
+    public String getCorrectedDate() {
+        return correctedDate;
+    }
+
     public void setTitle(String title) {
         this.title = title;
     }
@@ -140,5 +148,11 @@ public class MyPageValue implements Parcelable {
         this.date = date;
     }
 
+    public void setVersion(int version) {
+        this.version = version;
+    }
 
+    public void setCorrectedDate(String correctedDate) {
+        this.correctedDate = correctedDate;
+    }
 }

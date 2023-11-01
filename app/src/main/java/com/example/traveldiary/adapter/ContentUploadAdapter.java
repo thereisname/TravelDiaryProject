@@ -3,13 +3,13 @@ package com.example.traveldiary.adapter;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.net.Uri;
+import android.os.Environment;
 import android.webkit.MimeTypeMap;
 import android.widget.Toast;
 
 import com.example.traveldiary.R;
 import com.example.traveldiary.fragment.FragmentBoard;
 import com.example.traveldiary.value.MyPageValue;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -19,12 +19,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class ContentUploadAdapter {
     private ArrayList<Uri> uriArrayList = new ArrayList<>();
-
-    private FirebaseFirestore db;
     private Context context;
     private MyPageValue mp;
 
-    public ContentUploadAdapter(MyPageValue item) {
+    public ContentUploadAdapter(Context context, MyPageValue item) {
+        this.context = context;
         this.mp = item;
     }
 
@@ -132,7 +131,7 @@ public class ContentUploadAdapter {
 
         String folderName = "TraveFolder";
         int mVersion = mp.getVersion() + 1;
-        final int totalImages = 4; // 이미지 업로드할 총 이미지 수
+        final int totalImages = 3; // 이미지 업로드할 총 이미지 수
         AtomicInteger uploadedImages = new AtomicInteger(0);
 
         for (int i = 0; i < totalImages; i++) {

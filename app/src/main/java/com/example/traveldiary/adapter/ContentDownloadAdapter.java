@@ -106,6 +106,7 @@ public class ContentDownloadAdapter {
     }
 
     int imageId = 10000;
+
     private void createImageView() {
         ImageView imageView = new ImageView(context);
         imageView.setId(imageId);
@@ -149,11 +150,12 @@ public class ContentDownloadAdapter {
         return mp.getCon();
     }
 
-    public ArrayList<String> downLowdImage() {
+    public ArrayList<String> downLoadImage() {
         ArrayList<String> localArray = new ArrayList<>();
         // 폴더 생성
         String folderName = "TraveFolder";
         File dir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), folderName);
+        dir.mkdir();
 
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageReference = storage.getReferenceFromUrl("gs://traveldiary-356ee.appspot.com");
@@ -162,7 +164,7 @@ public class ContentDownloadAdapter {
             // 파일에 저장할 이름 결정
             String imageName = "contentImage" + mp.getVersion() + i + ".jpg";
             File localFile = new File(dir, imageName); // 파일 경로 및 이름 지정
-            localArray.add(imageName);
+            localArray.add(String.valueOf(localFile));
             //다운로드할 파일을 가르키는 참조 만들기
             StorageReference pathReference = storageReference.child("Image").child(mp.getBoardID()).child(imageName);
             pathReference.getFile(localFile);
