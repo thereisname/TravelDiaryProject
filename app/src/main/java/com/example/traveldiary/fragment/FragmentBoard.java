@@ -173,7 +173,7 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
      *
      * @param position 클릭한 게시물 Position. RecyclerView update시 사용.
      * @param item     클릭한 게시물의 내용들이 담겨있는.
-     * @Authors thereisname
+     * @author thereisname
      * @since 1.0
      */
     private void editBoard(int position, MyPageValue item) {
@@ -236,26 +236,14 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
             item.setVersion(contentUploadAdapter.uploadTrans(() -> {
                 for (int i = 0; i < imageCount; i++) {
                     StorageReference desertRef = storageReference.child("Image").child(item.getBoardID()).child("contentImage" + (item.getVersion() - 1) + i + ".jpg");
-                    desertRef.delete();
-                }
-                //핸드폰 파일 삭제 코드
-                for (int i = 0; i < imageCount; i++) {
-                    String folderName = "TraveFolder";
-                    String fileName = "contentImage" + (item.getVersion() - 1) + i + ".jpg";
-                    File fileToDelete = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), folderName + "/" + fileName);
-
-                    if (fileToDelete.exists()) {
-                        if (fileToDelete.delete()) {
-                            // 파일 삭제 성공
-                            Toast.makeText(getContext(), "파일 삭제 성공", Toast.LENGTH_SHORT).show();
-                        } else {
-                            // 파일 삭제 실패
-                            Toast.makeText(getContext(), "파일 삭제 실패", Toast.LENGTH_SHORT).show();
-                        }
-                    } else {
-                        // 파일이 존재하지 않음
-                        Toast.makeText(getContext(), "파일이 존재하지 않습니다", Toast.LENGTH_SHORT).show();
-                    }
+                    int finalI = i;
+                    desertRef.delete().addOnSuccessListener(command -> {
+                        //핸드폰 파일 삭제 코드
+                        phoneFileDelete(item.getVersion(), finalI);
+                    }).addOnFailureListener(command -> {
+                        for (int j = 0; j < imageCount; j++) phoneFileDelete(item.getVersion(), j);
+                        Toast.makeText(getContext(), "파일 삭제에 실패했습니다.", Toast.LENGTH_SHORT).show();
+                    });
                 }
             }));
             db.collection("data").document(item.getBoardID()).update(
@@ -274,6 +262,24 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
                 startActivity(intent);
             });
         });
+    }
+
+    private void phoneFileDelete(int version, int count) {
+        String folderName = "TraveFolder";
+        String fileName = "contentImage" + (version - 1) + count + ".jpg";
+        File fileToDelete = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), folderName + "/" + fileName);
+        if (fileToDelete.exists()) {
+            if (fileToDelete.delete()) {
+                // 파일 삭제 성공
+                Toast.makeText(getContext(), "파일 삭제 성공", Toast.LENGTH_SHORT).show();
+            } else {
+                // 파일 삭제 실패
+                Toast.makeText(getContext(), "파일 삭제 실패", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            // 파일이 존재하지 않음
+            Toast.makeText(getContext(), "파일이 존재하지 않습니다", Toast.LENGTH_SHORT).show();
+        }
     }
 
     // 게시물 삭제 메서드.

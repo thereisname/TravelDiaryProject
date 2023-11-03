@@ -95,7 +95,7 @@ public class ContentDownloadAdapter {
                     Glide.with(context).load(command).into(((ImageView) arrayImage.get(finalI)));
                 });
                 try {
-                    Thread.sleep(150);
+                    Thread.sleep(180);
                 } catch (InterruptedException e) {
                     Toast.makeText(context, R.string.error, Toast.LENGTH_SHORT).show();
                 }
