@@ -293,17 +293,27 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
         dialog2.show();
 
         dialog2.findViewById(R.id.confirm_button).setOnClickListener(v -> {
+            customProgressDialog.show();
             db.collection("data").document(docID).delete().addOnSuccessListener(unused -> {
                 for (int i = 0; i < imageCount; i++) {
                     StorageReference desertRef = storageReference.child("Image/" + docID + "/").child("contentImage" + version + i + ".jpg");
                     desertRef.delete();
                 }
                 StorageReference desertRef = storageReference.child("Image/" + docID + "/").child("MainImage.jpg");
-                desertRef.delete();
-                dialog2.dismiss();
-                dialog.dismiss();
-                adapter.removeData(position);
-                Toast.makeText(getActivity().getApplicationContext(), R.string.mypage_board_deleted_successful, Toast.LENGTH_SHORT).show();
+                desertRef.delete().addOnSuccessListener(command -> {
+                    customProgressDialog.dismiss();
+                    dialog2.dismiss();
+                    dialog.dismiss();
+                    adapter.removeData(position);
+                    Toast.makeText(getActivity().getApplicationContext(), R.string.mypage_board_deleted_successful, Toast.LENGTH_SHORT).show();
+                }).addOnFailureListener(command -> {
+                    storageReference.child("Image/" + docID + "/").child("MainImage.png").delete();
+                    customProgressDialog.dismiss();
+                    dialog2.dismiss();
+                    dialog.dismiss();
+                    adapter.removeData(position);
+                    Toast.makeText(getActivity().getApplicationContext(), R.string.mypage_board_deleted_successful, Toast.LENGTH_SHORT).show();
+                });
             }).addOnFailureListener(command -> Toast.makeText(getActivity().getApplicationContext(), R.string.mypage_board_deleted_fail, Toast.LENGTH_SHORT).show());
         });
         dialog2.findViewById(R.id.fail_button).setOnClickListener(v -> dialog2.dismiss());

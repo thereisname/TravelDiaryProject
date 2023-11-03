@@ -11,6 +11,7 @@
     <color name="transparent_white">#00FFFFFF</color>
     <color name="white_op">#FFFFFFFF</color>
     <color name="gray">#ffdedede</color>
+    <color name="white_gray">#FBFBFB</color>
     <color name="green">#0f7255</color>
     <color name="darkGray">#616161</color>
     <color name="colorPrimary">#2196F3</color>

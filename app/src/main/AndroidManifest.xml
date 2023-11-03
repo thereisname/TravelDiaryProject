@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -32,10 +31,14 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAmYMnp-4LaoYXTgbt2eQrthTZnEyWkRgM" />
+
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
 
+        <activity
+            android:name=".activity.TermsActivity"
+            android:exported="false" />
         <activity
             android:name=".activity.NoticeActivity"
             android:exported="false" />
@@ -88,4 +91,5 @@
             android:name=".activity.LoginActivity"
             android:exported="false" />
     </application>
+
 </manifest>

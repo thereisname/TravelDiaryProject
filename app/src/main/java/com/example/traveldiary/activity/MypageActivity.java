@@ -228,7 +228,10 @@ public class MypageActivity extends AppCompatActivity {
             dialog.dismiss();
         });
 
-        dialog.findViewById(R.id.termsLayout).setOnClickListener(v -> Toast.makeText(this, "안알랴줌", Toast.LENGTH_SHORT).show());
+        dialog.findViewById(R.id.termsLayout).setOnClickListener(v -> {
+            startActivity(new Intent(this, TermsActivity.class));
+            dialog.dismiss();
+        });
 
         dialog.findViewById(R.id.LogoutLayout).setOnClickListener(v -> {
             Intent intent = new Intent(this, StartViewActivity.class);
