@@ -115,7 +115,9 @@ public class MainViewActivity extends AppCompatActivity {
         //필터 적용 하여 output code.
         AppCompatButton filterSearchBtn = findViewById(R.id.filterSearchBtn);
         filterSearchBtn.setOnClickListener(v -> {
-            searchLoadData(hashTagCustom());
+            List<String> arrayHashTag = hashTagCustom();
+            if (arrayHashTag.size() != 0) searchLoadData(arrayHashTag);
+            else loadData();
             filterView.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
             slide_layout.setAlpha(1);

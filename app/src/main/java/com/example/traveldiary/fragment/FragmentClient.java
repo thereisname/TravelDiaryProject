@@ -48,8 +48,6 @@ public class FragmentClient extends Fragment implements OnMapReadyCallback {
     ArrayList<String> arrayroute = new ArrayList();
     ArrayList<Double> arraylat = new ArrayList<>();
     ArrayList<Double> arraylon = new ArrayList<>();
-    TextView fragment_title;
-    TextView fragment_hashtag;
 
     public FragmentClient() {
     }

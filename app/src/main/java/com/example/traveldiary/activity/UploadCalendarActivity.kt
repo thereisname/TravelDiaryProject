@@ -183,10 +183,10 @@ class UploadCalendarActivity : AppCompatActivity() {
         var arrayRoad: ArrayList<String> = ArrayList()
         for (i in editIdList) {
             if (i == 1) {
-                arrayRoad.add(binding.etLoad1.text.toString())
+                if (binding.etLoad1.text.toString() != "") arrayRoad.add(binding.etLoad1.text.toString())
             } else {
                 val edit1: EditText = findViewById(i)
-                arrayRoad.add(edit1.text.toString())
+                if (edit1.text.toString() != "") arrayRoad.add(edit1.text.toString())
             }
         }
         // uploadBoardActivity로 넘어가기
