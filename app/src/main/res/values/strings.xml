@@ -104,6 +104,8 @@
     <string name="board_delete_con">선택한 게시물을 정말 삭제하시겠습니까?\n한번 삭제한 자료는 복구할 수 없습니다.</string>
     <string name="config_ok">확인</string>
     <string name="config_cancel">취소</string>
+    <string name="terms_terms_title">이용약관</string>
+    <string name="terms_personalInformation">개인청보보호 처리 방침</string>
     <!-- Toast -->
     <string name="login_fail">Authentication failed.</string>
     <string name="login_enter">Please enter email, password.</string>

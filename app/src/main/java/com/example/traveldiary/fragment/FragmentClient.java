@@ -43,7 +43,7 @@ public class FragmentClient extends Fragment implements OnMapReadyCallback {
     private ImageButton bookmark;
     private static MyPageValue mp;
     private LinearLayout listView, routeView;
-    TextView routeTitle;
+    TextView routeTitle, fragment_title, fragment_hashtag, uploadDate;
     FirebaseFirestore db;
     ArrayList<String> arrayroute = new ArrayList();
     ArrayList<Double> arraylat = new ArrayList<>();
@@ -73,6 +73,7 @@ public class FragmentClient extends Fragment implements OnMapReadyCallback {
         bookmark = view.findViewById(R.id.bookMarkBtn);
         fragment_title = view.findViewById(R.id.fragment_title);
         fragment_hashtag = view.findViewById(R.id.fragment_hashtag);
+        uploadDate = view.findViewById(R.id.uploadDate);
 
         //리스트뷰 content와 image 담아두는 곳
         listView = view.findViewById(R.id.listView);
@@ -82,6 +83,7 @@ public class FragmentClient extends Fragment implements OnMapReadyCallback {
         googlemap.onCreate(savedInstanceState); // 지도의 onCreate 호출
 
         listView.setVisibility(View.VISIBLE);
+        uploadDate.setVisibility(View.VISIBLE);
         routeView.setVisibility(View.GONE);
         routeTitle.setVisibility(View.GONE);
         googlemap.setVisibility(View.GONE);
@@ -95,6 +97,7 @@ public class FragmentClient extends Fragment implements OnMapReadyCallback {
             mp = getArguments().getParcelable("myPageValue");
             fragment_title.setText(mp.getTitle());
             fragment_hashtag.setText(mp.getHashTag());
+            uploadDate.setText(getString(R.string.uploadBoard_uploadDate, mp.getUploadDate()));
             arrayroute = mp.getRoute();
             ContentDownloadAdapter contentDownloadAdapter = new ContentDownloadAdapter(getActivity(), listView, mp);
             contentDownloadAdapter.checkText();
@@ -124,6 +127,7 @@ public class FragmentClient extends Fragment implements OnMapReadyCallback {
                                     contentDownloadAdapter.checkText();
                                     fragment_title.setText(mp.getTitle());
                                     fragment_hashtag.setText(mp.getHashTag());
+                                    uploadDate.setText(getString(R.string.uploadBoard_uploadDate, mp.getUploadDate()));
                                     // 데이터를 가져온 후에 onMapReady를 호출
                                     SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
                                     if (mapFragment == null) {
@@ -164,6 +168,7 @@ public class FragmentClient extends Fragment implements OnMapReadyCallback {
         beforeBtn.bringToFront();
         nextBtn.setOnClickListener(v -> {
             listView.setVisibility(View.GONE);
+            uploadDate.setVisibility(View.GONE);
             routeView.setVisibility(View.VISIBLE);
             routeTitle.setVisibility(View.VISIBLE);
             googlemap.setVisibility(View.VISIBLE);
@@ -173,6 +178,7 @@ public class FragmentClient extends Fragment implements OnMapReadyCallback {
 
         beforeBtn.setOnClickListener(v -> {
             listView.setVisibility(View.VISIBLE);
+            uploadDate.setVisibility(View.VISIBLE);
             routeView.setVisibility(View.GONE);
             routeTitle.setVisibility(View.GONE);
             googlemap.setVisibility(View.GONE);
@@ -306,7 +312,6 @@ public class FragmentClient extends Fragment implements OnMapReadyCallback {
         // Polyline을 그립니다.
         googleMap.addPolyline(polylineOptions);
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(markmean, defaultZoom));
-
     }
 
     private static double calculateDistance(ArrayList arraylat, ArrayList arraylon, LatLng markMean) {

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -101,7 +100,7 @@ public class MainValueAdapter extends RecyclerView.Adapter<MainValueAdapter.View
 
         public void setItem(MyPageValue item) {
             mainTitle.setText(item.getTitle());
-            date.setText(item.getDate());
+            date.setText("여행기간: " + item.getDate());
             mainImage.setImageResource(R.drawable.baseline_image_24);
             StorageReference storageReference = FirebaseStorage.getInstance().getReference();
             storageReference.child("/Image/" + item.getBoardID() + "/MainImage.jpg").getDownloadUrl().addOnSuccessListener(jpgCommand -> {

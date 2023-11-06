@@ -48,8 +48,6 @@
             android:fontFamily="@font/gangwon"
             android:gravity="end"
             android:maxLines="1"
-            android:paddingRight="20dp"
-            android:text="main Title"
             android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold" />
