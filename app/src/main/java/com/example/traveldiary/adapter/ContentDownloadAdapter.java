@@ -77,13 +77,27 @@ public class ContentDownloadAdapter {
                 }
             }
         }
-        ImageDown(mp.getBoardID());
 
         return arrayStartIndex.size();
     }
 
     // Image 다운로드 함수
-    private void ImageDown(String boardID) {
+    public void ImageDown(String boardID) {
+        imageUri = new ArrayList<>();
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+        storageReference.child("/Image/" + boardID).listAll().addOnSuccessListener(listResult -> {
+            for (int i = 1; i < listResult.getItems().size(); i++) {
+                StorageReference item = listResult.getItems().get(i);
+                int finalI = i - 1;
+                item.getDownloadUrl().addOnSuccessListener(command -> {
+                    imageUri.add(command);
+                    Glide.with(context).load(command).into(((ImageView) arrayImage.get(finalI)));
+                });
+            }
+        });
+    }
+
+    public void ImageDown(String boardID, long millis) {
         imageUri = new ArrayList<>();
         StorageReference storageReference = FirebaseStorage.getInstance().getReference();
         storageReference.child("/Image/" + boardID).listAll().addOnSuccessListener(listResult -> {
@@ -95,7 +109,7 @@ public class ContentDownloadAdapter {
                     Glide.with(context).load(command).into(((ImageView) arrayImage.get(finalI)));
                 });
                 try {
-                    Thread.sleep(180);
+                    Thread.sleep(millis);
                 } catch (InterruptedException e) {
                     Toast.makeText(context, R.string.error, Toast.LENGTH_SHORT).show();
                 }

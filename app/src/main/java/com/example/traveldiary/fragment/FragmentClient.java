@@ -99,6 +99,7 @@ public class FragmentClient extends Fragment implements OnMapReadyCallback {
             arrayroute = mp.getRoute();
             ContentDownloadAdapter contentDownloadAdapter = new ContentDownloadAdapter(getActivity(), listView, mp);
             contentDownloadAdapter.checkText();
+            contentDownloadAdapter.ImageDown(mp.getBoardID());
             createTextView2(arrayroute);
             if (arrayroute != null) {
                 SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
@@ -123,6 +124,7 @@ public class FragmentClient extends Fragment implements OnMapReadyCallback {
                                     ContentDownloadAdapter contentDownloadAdapter = new ContentDownloadAdapter(getActivity(), listView, mp);
                                     createTextView2(arrayroute);
                                     contentDownloadAdapter.checkText();
+                                    contentDownloadAdapter.ImageDown(mp.getBoardID());
                                     fragment_title.setText(mp.getTitle());
                                     fragment_hashtag.setText(mp.getHashTag());
                                     uploadDate.setText(getString(R.string.uploadBoard_uploadDate, mp.getUploadDate()));

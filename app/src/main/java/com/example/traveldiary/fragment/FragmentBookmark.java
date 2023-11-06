@@ -101,6 +101,7 @@ public class FragmentBookmark extends Fragment implements OnItemClickListener {
 
         contentDownloadAdapter = new ContentDownloadAdapter(getActivity(), content, item);
         contentDownloadAdapter.checkText();
+        contentDownloadAdapter.ImageDown(item.getBoardID());
 
         ImageButton bookmarkBtn = dialog.findViewById(R.id.bookMarkBtn);
         bookmarkBtn.setImageResource(R.drawable.baseline_bookmark_24);

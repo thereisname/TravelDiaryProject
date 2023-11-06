@@ -151,6 +151,7 @@ public class FragmentBoard extends Fragment implements OnItemClickListener {
 
         contentDownloadAdapter = new ContentDownloadAdapter(getActivity(), content, item);
         imageCount = contentDownloadAdapter.checkText();
+        contentDownloadAdapter.ImageDown(item.getBoardID(), 180);
 
         dialog.show();
         ImageView closeButton = dialog.findViewById(R.id.closeButton);
