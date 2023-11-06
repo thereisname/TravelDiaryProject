@@ -305,9 +305,9 @@ public class FragmentClient extends Fragment implements OnMapReadyCallback {
         LatLng markmean = new LatLng(latitudeSum / arrayroute.size(), longitudeSum / arrayroute.size());
         double maxDistance = calculateDistance(arraylat, arraylon, markmean);
         int defaultZoom = 13;
-        if ( 13330 < maxDistance && maxDistance < 13470) {
+        if (13330 < maxDistance && maxDistance < 13470) {
             defaultZoom = 12;
-        }else{
+        } else {
             defaultZoom = 11;
         }
 
