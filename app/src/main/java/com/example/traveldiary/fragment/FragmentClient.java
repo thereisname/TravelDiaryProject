@@ -116,7 +116,7 @@ public class FragmentClient extends Fragment implements OnMapReadyCallback {
                 }
             }
         } else {
-            db.collection("data").whereNotEqualTo("userToken", FirebaseAuth.getInstance().getUid()).limit(1).get()
+            db.collection("data").whereEqualTo("isPrivate", false).whereNotEqualTo("userToken", FirebaseAuth.getInstance().getUid()).limit(1).get()
                     .addOnSuccessListener(queryDocumentSnapshots -> {
                                 for (QueryDocumentSnapshot queryDocumentSnapshot : queryDocumentSnapshots) {
                                     mp = queryDocumentSnapshot.toObject(MyPageValue.class);

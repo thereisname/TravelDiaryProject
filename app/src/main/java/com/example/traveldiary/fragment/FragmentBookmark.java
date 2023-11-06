@@ -57,7 +57,7 @@ public class FragmentBookmark extends Fragment implements OnItemClickListener {
     }
 
     public void loadData() {
-        db.collection("data").whereArrayContains("bookmark", Objects.requireNonNull(FirebaseAuth.getInstance().getUid())).get().addOnSuccessListener(queryDocumentSnapshots -> {
+        db.collection("data").whereEqualTo("isPrivate", false).whereArrayContains("bookmark", Objects.requireNonNull(FirebaseAuth.getInstance().getUid())).get().addOnSuccessListener(queryDocumentSnapshots -> {
             for (QueryDocumentSnapshot queryDocumentSnapshot : queryDocumentSnapshots) {
                 MyPageValue mp = queryDocumentSnapshot.toObject(MyPageValue.class);
                 adapter.addItem(mp);

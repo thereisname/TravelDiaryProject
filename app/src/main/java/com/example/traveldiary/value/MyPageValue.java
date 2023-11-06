@@ -16,6 +16,7 @@ public class MyPageValue implements Parcelable {
     private ArrayList<String> bookmark;
     private int version;
     private String correctedDate;
+    private boolean isPrivate;
 
     public MyPageValue() {
     }
@@ -31,6 +32,7 @@ public class MyPageValue implements Parcelable {
         bookmark = in.readArrayList(null);
         version = in.readInt();
         correctedDate = in.readString();
+        isPrivate = in.readBoolean();
     }
 
     // Parcelable 객체를 생성하는 메서드
@@ -65,7 +67,7 @@ public class MyPageValue implements Parcelable {
         dest.writeString(correctedDate);
     }
 
-    public MyPageValue(String con, String title, ArrayList<String> hashTag, String date, String uploadDate, String boardID, ArrayList<String> route, ArrayList<String> bookmark) {
+    public MyPageValue(String con, String title, ArrayList<String> hashTag, String date, String uploadDate, String boardID, ArrayList<String> route, ArrayList<String> bookmark, boolean isPrivate) {
         this.con = con;
         this.title = title;
         this.hashTag = hashTag;
@@ -74,6 +76,7 @@ public class MyPageValue implements Parcelable {
         this.boardID = boardID;
         this.route = route;
         this.bookmark = bookmark;
+        this.isPrivate = isPrivate;
     }
 
     public MyPageValue(ArrayList<String> hashTag, String date, String boardID, ArrayList<String> route) {
@@ -131,6 +134,10 @@ public class MyPageValue implements Parcelable {
         return correctedDate;
     }
 
+    public boolean isPrivate() {
+        return isPrivate;
+    }
+
     public void setTitle(String title) {
         this.title = title;
     }
@@ -153,5 +160,9 @@ public class MyPageValue implements Parcelable {
 
     public void setCorrectedDate(String correctedDate) {
         this.correctedDate = correctedDate;
+    }
+
+    public void setUploadDate(String uploadDate) {
+        this.uploadDate = uploadDate;
     }
 }

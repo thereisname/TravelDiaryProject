@@ -158,6 +158,7 @@ public class UploadBoardActivity extends AppCompatActivity {
         item.put("uploadDate", formatNow);
         item.put("userToken", FirebaseAuth.getInstance().getUid());
         item.put("version", 0);
+        item.put("isPrivate", false);
 
         return item;
     }

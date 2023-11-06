@@ -159,7 +159,7 @@ public class MainViewActivity extends AppCompatActivity {
     }
 
     public void loadData() {
-        db.collection("data").whereNotEqualTo("userToken", FirebaseAuth.getInstance().getUid()).get().addOnSuccessListener(queryDocumentSnapshots -> {
+        db.collection("data").whereEqualTo("isPrivate", false).whereNotEqualTo("userToken", FirebaseAuth.getInstance().getUid()).get().addOnSuccessListener(queryDocumentSnapshots -> {
             adapter = new MainValueAdapter(this);
             for (QueryDocumentSnapshot queryDocumentSnapshot : queryDocumentSnapshots) {
                 MyPageValue mp = queryDocumentSnapshot.toObject(MyPageValue.class);
@@ -170,7 +170,7 @@ public class MainViewActivity extends AppCompatActivity {
     }
 
     public void searchLoadData(List<String> searchList) {
-        db.collection("data").whereNotEqualTo("userToken", FirebaseAuth.getInstance().getUid()).whereArrayContainsAny("hashTag", searchList).get()
+        db.collection("data").whereEqualTo("isPrivate", false).whereNotEqualTo("userToken", FirebaseAuth.getInstance().getUid()).whereArrayContainsAny("hashTag", searchList).get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     if (queryDocumentSnapshots.size() != 0) {
                         adapter = new MainValueAdapter(this);

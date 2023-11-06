@@ -178,7 +178,7 @@ public class MypageActivity extends AppCompatActivity {
     //bookmark 게시물 개수를 불러오는 코드
     private void loadDataCount() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("data").whereArrayContains("bookmark", Objects.requireNonNull(FirebaseAuth.getInstance().getUid())).get().
+        db.collection("data").whereEqualTo("isPrivate", false).whereArrayContains("bookmark", Objects.requireNonNull(FirebaseAuth.getInstance().getUid())).get().
                 addOnSuccessListener(queryDocumentSnapshots -> bookmarkCount.setText(String.valueOf(queryDocumentSnapshots.size())));
     }
 
