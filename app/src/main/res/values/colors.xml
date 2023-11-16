@@ -20,7 +20,7 @@
     <color name="icon">#04C4D9</color>
 
     <color name="text_gray">#73777b</color>
-    <color name="chip_background_color_selected">#69B7BF</color>
+    <color name="chip_background_color_selected">#04C4D9</color>
     <color name="chip_background_color_unselected">#F8F8F8</color>
     <color name="chip_text_color_selected">#FFFFFF</color>
     <color name="chip_text_color_unselected">#73777b</color>
