@@ -25,11 +25,13 @@
 <img src="https://img.shields.io/badge/XML-FF9900?style=flag&logo=html5&logoColor=white"/>
 </div>
 
-<!--## 📸 Screenshots
+## 📸 Screenshots
 
-| | | | | |
-|-|-|-|-|-|
-| ![screenshot_01](https://via.placeholder.com/300x600?text=Screenshot+1) | ![screenshot_02](https://via.placeholder.com/300x600?text=Screenshot+2) | ![screenshot_03](https://via.placeholder.com/300x600?text=Screenshot+3) | ![screenshot_04](https://via.placeholder.com/300x600?text=Screenshot+4) | ![screenshot_05](https://via.placeholder.com/300x600?text=Screenshot+5) | -->
+![3](https://github.com/user-attachments/assets/f1a50088-9de8-4031-ae06-4f0dc1e1080a)
+![2](https://github.com/user-attachments/assets/1b084077-76d9-4881-a8f5-e108c0ac4cee)
+![1](https://github.com/user-attachments/assets/395ff267-cf41-4257-bce5-c0a7e9b31e7f)
+
+
 
 ## 🚀 Installation
 1. **Clone Repository**
